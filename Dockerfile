@@ -21,11 +21,14 @@ FROM nginx:alpine
 # Copy built assets from build stage
 COPY --from=build /app/dist /usr/share/nginx/html
 
-# Copy nginx configuration
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Copy nginx configuration template
+COPY nginx.conf.template /etc/nginx/templates/default.conf.template
 
-# Expose port 80
-EXPOSE 80
+# Railway uses PORT env variable - default to 8080
+ENV PORT=8080
 
-# Start nginx
+# Expose the port
+EXPOSE 8080
+
+# nginx docker image automatically processes templates in /etc/nginx/templates/
 CMD ["nginx", "-g", "daemon off;"]
