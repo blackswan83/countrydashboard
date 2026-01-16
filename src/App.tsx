@@ -36,7 +36,7 @@ function App() {
       {/* Header */}
       <header className="header">
         <div className="header-brand">
-          <div className="brand-badge">NURAXI</div>
+          <img src="/nuraxi_horizontal_rgb.svg" alt="Nuraxi" className="brand-logo" />
           <div className="header-title">
             <h1>Kingdom of Saudi Arabia</h1>
             <p className="header-subtitle">
