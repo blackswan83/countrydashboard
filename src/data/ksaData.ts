@@ -494,10 +494,10 @@ export const diseaseburden = {
 
 // Tier definitions
 export const tierDefinitions = {
-  1: { label: 'Critical', color: '#EF4444', description: 'Immediate intervention required' },
-  2: { label: 'High Priority', color: '#F59E0B', description: 'Accelerated programs needed' },
-  3: { label: 'Moderate', color: '#3B82F6', description: 'Steady improvement path' },
-  4: { label: 'Monitor', color: '#10B981', description: 'Maintain current trajectory' },
+  1: { label: 'Critical', color: '#C75B5B', description: 'Immediate intervention required' },
+  2: { label: 'High Priority', color: '#D4A574', description: 'Accelerated programs needed' },
+  3: { label: 'Moderate', color: '#00A0B0', description: 'Steady improvement path' },
+  4: { label: 'Monitor', color: '#4A7C59', description: 'Maintain current trajectory' },
 };
 
 // GeoJSON data for KSA regions (simplified boundaries)
