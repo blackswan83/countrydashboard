@@ -22,13 +22,17 @@ FROM nginx:alpine
 COPY --from=build /app/dist /usr/share/nginx/html
 
 # Copy nginx configuration template
-COPY nginx.conf.template /etc/nginx/templates/default.conf.template
+COPY nginx.conf.template /etc/nginx/nginx.conf.template
+
+# Copy startup script
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
+
+# Remove default nginx config
+RUN rm /etc/nginx/conf.d/default.conf
 
 # Railway uses PORT env variable - default to 8080
 ENV PORT=8080
 
-# Expose the port
-EXPOSE 8080
-
-# nginx docker image automatically processes templates in /etc/nginx/templates/
-CMD ["nginx", "-g", "daemon off;"]
+# Start with our script
+CMD ["/start.sh"]
