@@ -6,13 +6,82 @@ import { ProvinceDetail } from './components/ProvinceDetail';
 import { ProvinceTable } from './components/ProvinceTable';
 import { DiseaseAnalysis } from './components/DiseaseAnalysis';
 import { HealthcareInfrastructure } from './components/HealthcareInfrastructure';
+import { AgingTrajectory } from './components/AgingTrajectory';
+import { PopulationPyramid } from './components/PopulationPyramid';
 import { nationalStats, provinces } from './data/ksaData';
 
-type ViewType = 'national' | 'provincial' | 'disease' | 'infrastructure';
+type ViewType = 'national' | 'provincial' | 'aging' | 'disease' | 'infrastructure';
+
+// Simple Aging Curve Preview SVG for National Overview
+const AgingCurvePreview: React.FC = () => {
+  const width = 400;
+  const height = 180;
+  const padding = { top: 15, right: 20, bottom: 30, left: 40 };
+  const chartWidth = width - padding.left - padding.right;
+  const chartHeight = height - padding.top - padding.bottom;
+
+  // Generate curve points
+  const generateCurve = (start: number, end: number, power: number) => {
+    const points = [];
+    for (let age = 30; age <= 90; age += 5) {
+      const t = (age - 30) / 60;
+      const value = start - (start - end) * Math.pow(t, power);
+      points.push({ age, value });
+    }
+    return points;
+  };
+
+  const populationCurve = generateCurve(95, 35, 1.4);
+  const superAgerCurve = generateCurve(95, 72, 0.8);
+
+  const xScale = (age: number) => padding.left + ((age - 30) / 60) * chartWidth;
+  const yScale = (val: number) => padding.top + (1 - val / 100) * chartHeight;
+
+  const pathD = (points: { age: number; value: number }[]) =>
+    points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${xScale(p.age)} ${yScale(p.value)}`).join(' ');
+
+  const areaD = () => {
+    const top = superAgerCurve.map(p => `${xScale(p.age)},${yScale(p.value)}`).join(' ');
+    const bottom = [...populationCurve].reverse().map(p => `${xScale(p.age)},${yScale(p.value)}`).join(' ');
+    return `M ${top} L ${bottom} Z`;
+  };
+
+  return (
+    <svg width={width} height={height} style={{ width: '100%', height: 'auto' }}>
+      {/* Background */}
+      <rect x={padding.left} y={padding.top} width={chartWidth} height={chartHeight} fill="#F5F0EB" rx="4" />
+
+      {/* Grid */}
+      {[25, 50, 75].map(v => (
+        <line key={v} x1={padding.left} y1={yScale(v)} x2={width - padding.right} y2={yScale(v)}
+              stroke="rgba(139, 115, 85, 0.1)" strokeDasharray="2,4" />
+      ))}
+
+      {/* Gap area */}
+      <path d={areaD()} fill="#4A7C59" opacity="0.15" />
+
+      {/* Curves */}
+      <path d={pathD(populationCurve)} fill="none" stroke="#C75B5B" strokeWidth="2.5" />
+      <path d={pathD(superAgerCurve)} fill="none" stroke="#4A7C59" strokeWidth="2.5" />
+
+      {/* X axis labels */}
+      {[30, 50, 70, 90].map(age => (
+        <text key={age} x={xScale(age)} y={height - 8} fill="#8B8B8B" fontSize="10" textAnchor="middle">
+          {age}
+        </text>
+      ))}
+
+      {/* Legend */}
+      <text x={width - 20} y={yScale(72) - 8} fill="#4A7C59" fontSize="9" textAnchor="end">Super Ager</text>
+      <text x={width - 20} y={yScale(35) + 14} fill="#C75B5B" fontSize="9" textAnchor="end">KSA Pop</text>
+    </svg>
+  );
+};
 
 const navItems: { id: ViewType; label: string; icon: string }[] = [
   { id: 'national', label: 'National Overview', icon: '🏛️' },
   { id: 'provincial', label: 'Regional Analysis', icon: '🗺️' },
+  { id: 'aging', label: 'Aging & Longevity', icon: '🧬' },
   { id: 'disease', label: 'Disease Deep-Dive', icon: '🩺' },
   { id: 'infrastructure', label: 'Healthcare Infrastructure', icon: '🏥' },
 ];
@@ -66,7 +135,7 @@ function App() {
             {item.label}
           </button>
         ))}
-        {currentView === 'national' || currentView === 'provincial' ? (
+        {(currentView === 'national' || currentView === 'provincial') && (
           <div style={{ marginLeft: 'auto', display: 'flex', gap: 8 }}>
             <select
               value={mapColorMode}
@@ -87,7 +156,7 @@ function App() {
               <option value="infrastructure">Color by: Infrastructure</option>
             </select>
           </div>
-        ) : null}
+        )}
       </nav>
 
       {/* Main Content */}
@@ -145,6 +214,47 @@ function App() {
               ) : (
                 <Vision2030Tracker />
               )}
+            </div>
+
+            {/* Population & KPIs Row */}
+            <div className="content-grid content-grid-2">
+              <PopulationPyramid />
+              <div className="card">
+                <div className="card-header">
+                  <span className="card-title">The Intervention Opportunity</span>
+                  <span className="card-badge live">VITRUVIA</span>
+                </div>
+                <div className="card-body">
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 16 }}>
+                    <div>
+                      <div style={{ fontSize: 13, color: '#6B6B6B', marginBottom: 4 }}>
+                        Population trajectory vs optimal aging
+                      </div>
+                    </div>
+                    <div style={{
+                      background: 'rgba(74, 124, 89, 0.1)',
+                      padding: '8px 14px',
+                      borderRadius: 8,
+                      border: '1px solid rgba(74, 124, 89, 0.2)',
+                    }}>
+                      <div style={{ fontSize: 10, color: '#4A7C59' }}>GAP AT AGE 65</div>
+                      <div style={{ fontSize: 22, fontWeight: 700, color: '#4A7C59' }}>+37%</div>
+                    </div>
+                  </div>
+                  <AgingCurvePreview />
+                  <div style={{
+                    marginTop: 16,
+                    padding: '12px 16px',
+                    background: '#F5F0EB',
+                    borderRadius: 8,
+                    fontSize: 13,
+                    color: '#6B6B6B',
+                    lineHeight: 1.6,
+                  }}>
+                    <strong style={{ color: '#4A7C59' }}>The shaded area represents addressable health optimization.</strong> Closing this gap through predictive intervention could add 10+ healthy life years for millions of Saudis.
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* Province Table */}
@@ -208,6 +318,11 @@ function App() {
               onProvinceSelect={setSelectedProvince}
             />
           </>
+        )}
+
+        {/* Aging & Longevity */}
+        {currentView === 'aging' && (
+          <AgingTrajectory />
         )}
 
         {/* Disease Deep-Dive */}
