@@ -1,0 +1,7 @@
+# Extracted reference content
+files_content/
+prototype_content/
+
+# OS files
+.DS_Store
+Thumbs.db
