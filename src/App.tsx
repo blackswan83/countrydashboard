@@ -8,9 +8,10 @@ import { DiseaseAnalysis } from './components/DiseaseAnalysis';
 import { HealthcareInfrastructure } from './components/HealthcareInfrastructure';
 import { AgingTrajectory } from './components/AgingTrajectory';
 import { PopulationPyramid } from './components/PopulationPyramid';
+import { InterventionSimulator } from './components/InterventionSimulator';
 import { nationalStats, provinces } from './data/ksaData';
 
-type ViewType = 'national' | 'provincial' | 'aging' | 'disease' | 'infrastructure';
+type ViewType = 'national' | 'provincial' | 'aging' | 'intervention' | 'disease' | 'infrastructure';
 
 // Simple Aging Curve Preview SVG for National Overview
 const AgingCurvePreview: React.FC = () => {
@@ -78,10 +79,11 @@ const AgingCurvePreview: React.FC = () => {
   );
 };
 
-const navItems: { id: ViewType; label: string; icon: string }[] = [
+const navItems: { id: ViewType; label: string; icon: string; highlight?: boolean }[] = [
   { id: 'national', label: 'National Overview', icon: '🏛️' },
   { id: 'provincial', label: 'Regional Analysis', icon: '🗺️' },
   { id: 'aging', label: 'Aging & Longevity', icon: '🧬' },
+  { id: 'intervention', label: 'Intervention Lab', icon: '🎯', highlight: true },
   { id: 'disease', label: 'Disease Deep-Dive', icon: '🩺' },
   { id: 'infrastructure', label: 'Healthcare Infrastructure', icon: '🏥' },
 ];
@@ -128,11 +130,22 @@ function App() {
         {navItems.map((item) => (
           <button
             key={item.id}
-            className={`nav-btn ${currentView === item.id ? 'active' : ''}`}
+            className={`nav-btn ${currentView === item.id ? 'active' : ''} ${item.highlight ? 'highlight' : ''}`}
             onClick={() => handleViewChange(item.id)}
           >
             <span className="nav-icon">{item.icon}</span>
             {item.label}
+            {item.highlight && currentView !== item.id && (
+              <span style={{
+                marginLeft: 6,
+                fontSize: 9,
+                padding: '2px 6px',
+                background: '#C4A77D',
+                color: '#FFFFFF',
+                borderRadius: 4,
+                fontWeight: 600,
+              }}>NEW</span>
+            )}
           </button>
         ))}
         {(currentView === 'national' || currentView === 'provincial') && (
@@ -323,6 +336,11 @@ function App() {
         {/* Aging & Longevity */}
         {currentView === 'aging' && (
           <AgingTrajectory />
+        )}
+
+        {/* Intervention Lab - Country Health Twin */}
+        {currentView === 'intervention' && (
+          <InterventionSimulator />
         )}
 
         {/* Disease Deep-Dive */}

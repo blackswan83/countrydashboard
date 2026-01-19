@@ -243,9 +243,9 @@ export const AgingTrajectory: React.FC = () => {
           <div className="stat-card-accent" style={{ backgroundColor: '#00A0B0' }} />
           <div className="stat-card-label">Reference Cohort</div>
           <div className="stat-card-value" style={{ color: '#00A0B0' }}>
-            1,224
+            44.6K
           </div>
-          <div className="stat-card-subtext">Centenarians (AMORIS)</div>
+          <div className="stat-card-subtext">AMORIS Study subjects</div>
         </div>
         <div className="stat-card">
           <div className="stat-card-accent" style={{ backgroundColor: '#C75B5B' }} />
