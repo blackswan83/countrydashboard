@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { DataSovereigntySection } from './DataSovereignty';
 
 // Policy intervention definitions
 interface PolicyLever {
@@ -660,6 +661,9 @@ export const InterventionSimulator: React.FC = () => {
               </div>
             </div>
           </div>
+
+          {/* Data Sovereignty Section */}
+          <DataSovereigntySection />
         </div>
       </div>
 

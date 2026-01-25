@@ -116,8 +116,16 @@ function App() {
           </div>
         </div>
         <div className="header-actions">
-          <div className="header-tag sovereign">
-            Sovereign Data
+          <div className="header-tag sovereign" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <span>🇨🇭</span>
+            <span>Swiss Neutrality</span>
+          </div>
+          <div className="header-tag" style={{
+            background: 'rgba(74, 124, 89, 0.1)',
+            color: '#4A7C59',
+            border: '1px solid rgba(74, 124, 89, 0.2)',
+          }}>
+            Saudi Sovereignty
           </div>
           <div className="header-tag language">
             عربي | EN
@@ -360,7 +368,9 @@ function App() {
           Data: GASTAT Census 2022 | Saudi Health Interview Survey | MOH Statistical Yearbook | IHME GBD
         </div>
         <div className="footer-right">
-          <span>Sovereign Data | In-Kingdom Processing</span>
+          <span>🇨🇭 Swiss Privacy Architecture</span>
+          <span style={{ margin: '0 8px', opacity: 0.4 }}>|</span>
+          <span>In-Kingdom Data</span>
           <span className="footer-dot pulse">●</span>
           <span>Last updated: January 2025</span>
         </div>
