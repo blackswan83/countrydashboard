@@ -387,3 +387,196 @@ body {
 
 @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 .slide-in { animation: slideIn 0.3s ease-out forwards; }
+
+/* Prominent Sovereign Data Badge */
+.header-tag.sovereign-prominent {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, rgba(74, 124, 89, 0.15) 0%, rgba(74, 124, 89, 0.05) 100%);
+  color: var(--accent-success);
+  border: 1px solid rgba(74, 124, 89, 0.3);
+  padding: 8px 16px;
+  border-radius: 12px;
+}
+
+/* Toggle Buttons */
+.header-tag.toggle-btn {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  padding: 8px 14px;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.header-tag.toggle-btn:hover {
+  background: var(--bg-secondary);
+}
+
+/* RTL Support */
+[dir="rtl"] .header-brand { flex-direction: row-reverse; }
+[dir="rtl"] .header-actions { flex-direction: row-reverse; }
+[dir="rtl"] .nav { flex-direction: row-reverse; }
+[dir="rtl"] .nav-btn { flex-direction: row-reverse; }
+[dir="rtl"] .footer { flex-direction: row-reverse; }
+[dir="rtl"] .footer-right { flex-direction: row-reverse; }
+[dir="rtl"] .stat-card-accent { left: auto; right: 0; border-radius: 0 16px 16px 0; }
+[dir="rtl"] .province-cell { flex-direction: row-reverse; }
+[dir="rtl"] .data-table th { text-align: right; }
+
+/* ============================================
+   DARK MODE
+   ============================================ */
+
+.dark-mode {
+  /* Background Colors */
+  --bg-primary: #0F1419;
+  --bg-secondary: #1A2332;
+  --bg-tertiary: #1E2A3A;
+  --bg-card: #182230;
+
+  /* Text Colors */
+  --text-primary: #E8E6E3;
+  --text-secondary: #9CA3AF;
+  --text-muted: #6B7280;
+
+  /* Border */
+  --border-color: rgba(255, 255, 255, 0.1);
+  --border-color-light: rgba(255, 255, 255, 0.05);
+
+  /* Nuraxi Brand - adjusted for dark */
+  --nuraxi-primary: #C4A77D;
+  --nuraxi-accent: #D4B896;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.dark-mode body {
+  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+}
+
+.dark-mode .header {
+  background: var(--bg-card);
+  border-bottom-color: var(--border-color);
+}
+
+.dark-mode .nav {
+  background: var(--bg-card);
+  border-bottom-color: var(--border-color);
+}
+
+.dark-mode .nav-btn {
+  border-color: var(--border-color);
+  color: var(--text-secondary);
+}
+
+.dark-mode .nav-btn:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.dark-mode .nav-btn.active {
+  background: var(--nuraxi-primary);
+  color: #1A2332;
+  border-color: var(--nuraxi-primary);
+}
+
+.dark-mode .stat-card {
+  background: var(--bg-card);
+  border-color: var(--border-color);
+}
+
+.dark-mode .card {
+  background: var(--bg-card);
+  border-color: var(--border-color);
+}
+
+.dark-mode .card-header {
+  background: var(--bg-tertiary);
+  border-bottom-color: var(--border-color);
+}
+
+.dark-mode .footer {
+  background: var(--bg-card);
+  border-top-color: var(--border-color);
+}
+
+.dark-mode .metric-item {
+  background: var(--bg-tertiary);
+  border-color: var(--border-color);
+}
+
+.dark-mode .map-legend {
+  background: var(--bg-card);
+  border-color: var(--border-color);
+}
+
+.dark-mode .province-panel {
+  background: var(--bg-card);
+  border-color: var(--border-color);
+}
+
+.dark-mode .data-table th {
+  background: var(--bg-tertiary);
+}
+
+.dark-mode .data-table th:hover {
+  background: var(--bg-secondary);
+}
+
+.dark-mode .data-table td {
+  border-bottom-color: var(--border-color);
+}
+
+.dark-mode .data-table tr:hover {
+  background: var(--bg-tertiary);
+}
+
+.dark-mode .data-table tr.selected {
+  background: rgba(196, 167, 125, 0.15);
+}
+
+.dark-mode .kpi-progress {
+  background: var(--bg-tertiary);
+}
+
+.dark-mode .header-tag.sovereign-prominent {
+  background: linear-gradient(135deg, rgba(74, 124, 89, 0.25) 0%, rgba(74, 124, 89, 0.1) 100%);
+  border-color: rgba(74, 124, 89, 0.4);
+}
+
+.dark-mode .header-tag.toggle-btn {
+  background: var(--bg-tertiary);
+  border-color: var(--border-color);
+}
+
+.dark-mode .header-tag.toggle-btn:hover {
+  background: var(--bg-secondary);
+}
+
+.dark-mode .leaflet-container {
+  background: var(--bg-tertiary);
+}
+
+.dark-mode .leaflet-popup-content-wrapper {
+  background: var(--bg-card);
+}
+
+.dark-mode .leaflet-popup-tip {
+  background: var(--bg-card);
+}
+
+.dark-mode .leaflet-popup-content {
+  color: var(--text-primary);
+}
+
+/* Dark mode for specific components */
+.dark-mode select {
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  border-color: var(--border-color);
+}
