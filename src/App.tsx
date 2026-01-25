@@ -79,19 +79,76 @@ const AgingCurvePreview: React.FC = () => {
   );
 };
 
-const navItems: { id: ViewType; label: string; icon: string; highlight?: boolean }[] = [
-  { id: 'national', label: 'National Overview', icon: '🏛️' },
-  { id: 'provincial', label: 'Regional Analysis', icon: '🗺️' },
-  { id: 'aging', label: 'Aging & Longevity', icon: '🧬' },
-  { id: 'intervention', label: 'Intervention Lab', icon: '🎯', highlight: true },
-  { id: 'disease', label: 'Disease Deep-Dive', icon: '🩺' },
-  { id: 'infrastructure', label: 'Healthcare Infrastructure', icon: '🏥' },
+const navItemsConfig: { id: ViewType; labelKey: keyof typeof translations.en.nav; icon: string; highlight?: boolean }[] = [
+  { id: 'national', labelKey: 'national', icon: '🏛️' },
+  { id: 'provincial', labelKey: 'provincial', icon: '🗺️' },
+  { id: 'aging', labelKey: 'aging', icon: '🧬' },
+  { id: 'intervention', labelKey: 'intervention', icon: '🎯', highlight: true },
+  { id: 'disease', labelKey: 'disease', icon: '🩺' },
+  { id: 'infrastructure', labelKey: 'infrastructure', icon: '🏥' },
 ];
+
+// Translations
+const translations = {
+  en: {
+    title: 'Kingdom of Saudi Arabia',
+    subtitle: 'National Health Intelligence Dashboard | Vision 2030',
+    sovereignData: 'Sovereign Data',
+    inKingdom: 'In-Kingdom Processing',
+    nav: {
+      national: 'National Overview',
+      provincial: 'Regional Analysis',
+      aging: 'Aging & Longevity',
+      intervention: 'Intervention Lab',
+      disease: 'Disease Deep-Dive',
+      infrastructure: 'Healthcare Infrastructure',
+    },
+    colorBy: {
+      tier: 'Color by: Priority Tier',
+      diabetes: 'Color by: Diabetes Rate',
+      obesity: 'Color by: Obesity Rate',
+      infrastructure: 'Color by: Infrastructure',
+    },
+    footer: {
+      data: 'Data: GASTAT Census 2022 | Saudi Health Interview Survey | MOH Statistical Yearbook | IHME GBD',
+      lastUpdated: 'Last updated: January 2025',
+    },
+  },
+  ar: {
+    title: 'المملكة العربية السعودية',
+    subtitle: 'لوحة معلومات الصحة الوطنية | رؤية 2030',
+    sovereignData: 'بيانات سيادية',
+    inKingdom: 'معالجة داخل المملكة',
+    nav: {
+      national: 'نظرة عامة وطنية',
+      provincial: 'التحليل الإقليمي',
+      aging: 'الشيخوخة وطول العمر',
+      intervention: 'مختبر التدخل',
+      disease: 'تحليل الأمراض',
+      infrastructure: 'البنية التحتية الصحية',
+    },
+    colorBy: {
+      tier: 'تلوين حسب: مستوى الأولوية',
+      diabetes: 'تلوين حسب: معدل السكري',
+      obesity: 'تلوين حسب: معدل السمنة',
+      infrastructure: 'تلوين حسب: البنية التحتية',
+    },
+    footer: {
+      data: 'البيانات: تعداد الهيئة العامة للإحصاء 2022 | مسح المقابلات الصحية السعودية | الكتاب الإحصائي لوزارة الصحة',
+      lastUpdated: 'آخر تحديث: يناير 2025',
+    },
+  },
+};
 
 function App() {
   const [currentView, setCurrentView] = useState<ViewType>('national');
   const [selectedProvince, setSelectedProvince] = useState<string | null>(null);
   const [mapColorMode, setMapColorMode] = useState<'tier' | 'diabetes' | 'obesity' | 'infrastructure'>('tier');
+  const [language, setLanguage] = useState<'en' | 'ar'>('en');
+  const [darkMode, setDarkMode] = useState(false);
+
+  const t = translations[language];
+  const isRTL = language === 'ar';
 
   const handleViewChange = (view: ViewType) => {
     setCurrentView(view);
@@ -103,61 +160,69 @@ function App() {
   const highPriorityProvinces = Object.values(provinces).filter(p => p.tier === 2).length;
 
   return (
-    <div className="app-container">
+    <div className={`app-container ${darkMode ? 'dark-mode' : ''}`} dir={isRTL ? 'rtl' : 'ltr'}>
       {/* Header */}
       <header className="header">
         <div className="header-brand">
           <img src="/nuraxi_horizontal_rgb.svg" alt="Nuraxi" className="brand-logo" />
           <div className="header-title">
-            <h1>Kingdom of Saudi Arabia</h1>
-            <p className="header-subtitle">
-              National Health Intelligence Dashboard | Vision 2030
-            </p>
+            <h1>{t.title}</h1>
+            <p className="header-subtitle">{t.subtitle}</p>
           </div>
         </div>
         <div className="header-actions">
-          <div className="header-tag sovereign" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <span>🇨🇭</span>
-            <span>Swiss Neutrality</span>
+          {/* Sovereign Data Badge - Prominent */}
+          <div className="header-tag sovereign-prominent">
+            <span style={{ fontSize: 16 }}>🛡️</span>
+            <div>
+              <div style={{ fontWeight: 700, fontSize: 12 }}>{t.sovereignData}</div>
+              <div style={{ fontSize: 10, opacity: 0.8 }}>{t.inKingdom}</div>
+            </div>
           </div>
-          <div className="header-tag" style={{
-            background: 'rgba(74, 124, 89, 0.1)',
-            color: '#4A7C59',
-            border: '1px solid rgba(74, 124, 89, 0.2)',
-          }}>
-            Saudi Sovereignty
-          </div>
-          <div className="header-tag language">
-            عربي | EN
-          </div>
+          {/* Dark Mode Toggle */}
+          <button
+            className="header-tag toggle-btn"
+            onClick={() => setDarkMode(!darkMode)}
+            title={darkMode ? 'Light Mode' : 'Dark Mode'}
+          >
+            {darkMode ? '☀️' : '🌙'}
+          </button>
+          {/* Language Toggle */}
+          <button
+            className="header-tag toggle-btn language"
+            onClick={() => setLanguage(language === 'en' ? 'ar' : 'en')}
+          >
+            {language === 'en' ? 'عربي' : 'EN'}
+          </button>
         </div>
       </header>
 
       {/* Navigation */}
       <nav className="nav">
-        {navItems.map((item) => (
+        {navItemsConfig.map((item) => (
           <button
             key={item.id}
             className={`nav-btn ${currentView === item.id ? 'active' : ''} ${item.highlight ? 'highlight' : ''}`}
             onClick={() => handleViewChange(item.id)}
           >
             <span className="nav-icon">{item.icon}</span>
-            {item.label}
+            {t.nav[item.labelKey]}
             {item.highlight && currentView !== item.id && (
               <span style={{
-                marginLeft: 6,
+                marginLeft: isRTL ? 0 : 6,
+                marginRight: isRTL ? 6 : 0,
                 fontSize: 9,
                 padding: '2px 6px',
                 background: '#C4A77D',
                 color: '#FFFFFF',
                 borderRadius: 4,
                 fontWeight: 600,
-              }}>NEW</span>
+              }}>{language === 'en' ? 'NEW' : 'جديد'}</span>
             )}
           </button>
         ))}
         {(currentView === 'national' || currentView === 'provincial') && (
-          <div style={{ marginLeft: 'auto', display: 'flex', gap: 8 }}>
+          <div style={{ marginLeft: isRTL ? 0 : 'auto', marginRight: isRTL ? 'auto' : 0, display: 'flex', gap: 8 }}>
             <select
               value={mapColorMode}
               onChange={(e) => setMapColorMode(e.target.value as typeof mapColorMode)}
@@ -171,10 +236,10 @@ function App() {
                 cursor: 'pointer',
               }}
             >
-              <option value="tier">Color by: Priority Tier</option>
-              <option value="diabetes">Color by: Diabetes Rate</option>
-              <option value="obesity">Color by: Obesity Rate</option>
-              <option value="infrastructure">Color by: Infrastructure</option>
+              <option value="tier">{t.colorBy.tier}</option>
+              <option value="diabetes">{t.colorBy.diabetes}</option>
+              <option value="obesity">{t.colorBy.obesity}</option>
+              <option value="infrastructure">{t.colorBy.infrastructure}</option>
             </select>
           </div>
         )}
@@ -364,15 +429,13 @@ function App() {
 
       {/* Footer */}
       <footer className="footer">
-        <div>
-          Data: GASTAT Census 2022 | Saudi Health Interview Survey | MOH Statistical Yearbook | IHME GBD
-        </div>
+        <div>{t.footer.data}</div>
         <div className="footer-right">
-          <span>🇨🇭 Swiss Privacy Architecture</span>
+          <span>🛡️ {t.sovereignData}</span>
           <span style={{ margin: '0 8px', opacity: 0.4 }}>|</span>
-          <span>In-Kingdom Data</span>
+          <span>{t.inKingdom}</span>
           <span className="footer-dot pulse">●</span>
-          <span>Last updated: January 2025</span>
+          <span>{t.footer.lastUpdated}</span>
         </div>
       </footer>
     </div>
