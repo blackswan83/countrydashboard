@@ -229,6 +229,7 @@ const InterventionLab: React.FC<InterventionLabProps> = ({ language, darkMode })
           <h1 className="lab-title">
             <span className="lab-icon">🧬</span>
             {t.title}
+            <span className="alpha-badge">ALPHA</span>
           </h1>
           <p className="lab-subtitle">{t.subtitle}</p>
         </div>

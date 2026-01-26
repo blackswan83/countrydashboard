@@ -114,10 +114,11 @@ export const interventions: PolicyIntervention[] = [
     conflicts: [],
     implementationDelay: 1,
     rampUpPeriod: 2,
+    // Evidence: Mexico 10% tax → 6% SSB reduction; UK levy → 10% sugar reduction; ~2-4% obesity impact
     impacts: [
-      { outcome: 'obesity', baseEffect: -0.12, diminishingThreshold: 30, demographicWeights: { '10-19': 1.5, '20-29': 1.3, '30-39': 1.0, '40+': 0.8 } },
-      { outcome: 'diabetes', baseEffect: -0.08, diminishingThreshold: 30, demographicWeights: { '40-49': 1.2, '50-59': 1.3, '60+': 1.0 } },
-      { outcome: 'cvd', baseEffect: -0.05, diminishingThreshold: 35, demographicWeights: { '50+': 1.2 } },
+      { outcome: 'obesity', baseEffect: -0.04, diminishingThreshold: 30, demographicWeights: { '10-19': 1.5, '20-29': 1.3, '30-39': 1.0, '40+': 0.8 } },
+      { outcome: 'diabetes', baseEffect: -0.03, diminishingThreshold: 30, demographicWeights: { '40-49': 1.2, '50-59': 1.3, '60+': 1.0 } },
+      { outcome: 'cvd', baseEffect: -0.02, diminishingThreshold: 35, demographicWeights: { '50+': 1.2 } },
     ],
   },
   {
@@ -233,11 +234,12 @@ export const interventions: PolicyIntervention[] = [
     conflicts: [],
     implementationDelay: 1,
     rampUpPeriod: 3,
+    // Evidence: NHS Health Check program shows 3-5% CVD risk reduction; early detection improves management
     impacts: [
-      { outcome: 'diabetes', baseEffect: -0.15, diminishingThreshold: 75, demographicWeights: { '40-59': 1.4, '60+': 1.2 } },
-      { outcome: 'cvd', baseEffect: -0.12, diminishingThreshold: 75, demographicWeights: { '50+': 1.3 } },
-      { outcome: 'hypertension', baseEffect: -0.10, diminishingThreshold: 75, demographicWeights: { '40+': 1.2 } },
-      { outcome: 'lifeExpectancy', baseEffect: 0.025, diminishingThreshold: 80, demographicWeights: {} },
+      { outcome: 'diabetes', baseEffect: -0.06, diminishingThreshold: 75, demographicWeights: { '40-59': 1.4, '60+': 1.2 } },
+      { outcome: 'cvd', baseEffect: -0.05, diminishingThreshold: 75, demographicWeights: { '50+': 1.3 } },
+      { outcome: 'hypertension', baseEffect: -0.04, diminishingThreshold: 75, demographicWeights: { '40+': 1.2 } },
+      { outcome: 'lifeExpectancy', baseEffect: 0.012, diminishingThreshold: 80, demographicWeights: {} },
     ],
   },
   {
@@ -657,11 +659,12 @@ export const interventions: PolicyIntervention[] = [
     conflicts: [],
     implementationDelay: 2,
     rampUpPeriod: 4,
+    // Note: Digital health AI is emerging technology with limited long-term evidence; estimates are conservative
     impacts: [
-      { outcome: 'diabetes', baseEffect: -0.12, diminishingThreshold: 70, demographicWeights: { '30-59': 1.3 } },
-      { outcome: 'obesity', baseEffect: -0.08, diminishingThreshold: 70, demographicWeights: { '20-49': 1.2 } },
-      { outcome: 'cvd', baseEffect: -0.10, diminishingThreshold: 70, demographicWeights: {} },
-      { outcome: 'lifeExpectancy', baseEffect: 0.03, diminishingThreshold: 80, demographicWeights: {} },
+      { outcome: 'diabetes', baseEffect: -0.05, diminishingThreshold: 70, demographicWeights: { '30-59': 1.3 } },
+      { outcome: 'obesity', baseEffect: -0.04, diminishingThreshold: 70, demographicWeights: { '20-49': 1.2 } },
+      { outcome: 'cvd', baseEffect: -0.04, diminishingThreshold: 70, demographicWeights: {} },
+      { outcome: 'lifeExpectancy', baseEffect: 0.015, diminishingThreshold: 80, demographicWeights: {} },
     ],
   },
   {
@@ -750,11 +753,12 @@ export const interventions: PolicyIntervention[] = [
     conflicts: [],
     implementationDelay: 1,
     rampUpPeriod: 3,
+    // Evidence: Population activity campaigns show 3-8% improvement in activity levels; obesity impact ~2-5%
     impacts: [
-      { outcome: 'obesity', baseEffect: -0.18, diminishingThreshold: 60, demographicWeights: { '20-49': 1.3 } },
-      { outcome: 'cvd', baseEffect: -0.08, diminishingThreshold: 60, demographicWeights: {} },
-      { outcome: 'diabetes', baseEffect: -0.10, diminishingThreshold: 60, demographicWeights: {} },
-      { outcome: 'lifeExpectancy', baseEffect: 0.02, diminishingThreshold: 65, demographicWeights: {} },
+      { outcome: 'obesity', baseEffect: -0.06, diminishingThreshold: 60, demographicWeights: { '20-49': 1.3 } },
+      { outcome: 'cvd', baseEffect: -0.04, diminishingThreshold: 60, demographicWeights: {} },
+      { outcome: 'diabetes', baseEffect: -0.04, diminishingThreshold: 60, demographicWeights: {} },
+      { outcome: 'lifeExpectancy', baseEffect: 0.01, diminishingThreshold: 65, demographicWeights: {} },
     ],
   },
   {
@@ -782,9 +786,10 @@ export const interventions: PolicyIntervention[] = [
     conflicts: [],
     implementationDelay: 1,
     rampUpPeriod: 3,
+    // Evidence: Nutrition education alone has modest effects; synergies with policy measures are key
     impacts: [
-      { outcome: 'obesity', baseEffect: -0.10, diminishingThreshold: 60, demographicWeights: { '20-39': 1.3 } },
-      { outcome: 'diabetes', baseEffect: -0.06, diminishingThreshold: 60, demographicWeights: {} },
+      { outcome: 'obesity', baseEffect: -0.04, diminishingThreshold: 60, demographicWeights: { '20-39': 1.3 } },
+      { outcome: 'diabetes', baseEffect: -0.03, diminishingThreshold: 60, demographicWeights: {} },
     ],
   },
   {
@@ -811,10 +816,11 @@ export const interventions: PolicyIntervention[] = [
     conflicts: [],
     implementationDelay: 1,
     rampUpPeriod: 3,
+    // Evidence: School meal programs show 2-5% BMI reduction in children over 3-5 years
     impacts: [
-      { outcome: 'obesity', baseEffect: -0.15, diminishingThreshold: 80, demographicWeights: { '10-19': 2.0, '0-9': 1.5 } },
-      { outcome: 'diabetes', baseEffect: -0.05, diminishingThreshold: 80, demographicWeights: { '10-19': 1.5 } },
-      { outcome: 'lifeExpectancy', baseEffect: 0.01, diminishingThreshold: 85, demographicWeights: {} },
+      { outcome: 'obesity', baseEffect: -0.06, diminishingThreshold: 80, demographicWeights: { '10-19': 2.0, '0-9': 1.5 } },
+      { outcome: 'diabetes', baseEffect: -0.02, diminishingThreshold: 80, demographicWeights: { '10-19': 1.5 } },
+      { outcome: 'lifeExpectancy', baseEffect: 0.005, diminishingThreshold: 85, demographicWeights: {} },
     ],
   },
 

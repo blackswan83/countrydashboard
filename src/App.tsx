@@ -81,14 +81,18 @@ const AgingCurvePreview: React.FC = () => {
   );
 };
 
-const navItemsConfig: { id: ViewType; labelKey: keyof typeof translations.en.nav; icon: string; highlight?: boolean }[] = [
+// Left nav items (main dashboard views)
+const navItemsLeft: { id: ViewType; labelKey: keyof typeof translations.en.nav; icon: string }[] = [
   { id: 'national', labelKey: 'national', icon: '🏛️' },
   { id: 'provincial', labelKey: 'provincial', icon: '🗺️' },
   { id: 'aging', labelKey: 'aging', icon: '🧬' },
-  { id: 'intervention', labelKey: 'intervention', icon: '🎯', highlight: true },
   { id: 'disease', labelKey: 'disease', icon: '🩺' },
   { id: 'infrastructure', labelKey: 'infrastructure', icon: '🏥' },
 ];
+
+// Right nav item (Intervention Lab - special highlight)
+const navItemRight: { id: ViewType; labelKey: keyof typeof translations.en.nav; icon: string } =
+  { id: 'intervention', labelKey: 'intervention', icon: '🎯' };
 
 // Translations
 const translations = {
@@ -201,30 +205,21 @@ function App() {
 
       {/* Navigation */}
       <nav className="nav">
-        {navItemsConfig.map((item) => (
+        {/* Left nav items */}
+        {navItemsLeft.map((item) => (
           <button
             key={item.id}
-            className={`nav-btn ${currentView === item.id ? 'active' : ''} ${item.highlight ? 'highlight' : ''}`}
+            className={`nav-btn ${currentView === item.id ? 'active' : ''}`}
             onClick={() => handleViewChange(item.id)}
           >
             <span className="nav-icon">{item.icon}</span>
             {t.nav[item.labelKey]}
-            {item.highlight && currentView !== item.id && (
-              <span style={{
-                marginLeft: isRTL ? 0 : 6,
-                marginRight: isRTL ? 6 : 0,
-                fontSize: 9,
-                padding: '2px 6px',
-                background: '#C4A77D',
-                color: '#FFFFFF',
-                borderRadius: 4,
-                fontWeight: 600,
-              }}>{language === 'en' ? 'NEW' : 'جديد'}</span>
-            )}
           </button>
         ))}
+
+        {/* Color mode selector (for map views) */}
         {(currentView === 'national' || currentView === 'provincial') && (
-          <div style={{ marginLeft: isRTL ? 0 : 'auto', marginRight: isRTL ? 'auto' : 0, display: 'flex', gap: 8 }}>
+          <div style={{ display: 'flex', gap: 8 }}>
             <select
               value={mapColorMode}
               onChange={(e) => setMapColorMode(e.target.value as typeof mapColorMode)}
@@ -245,6 +240,37 @@ function App() {
             </select>
           </div>
         )}
+
+        {/* Spacer to push Intervention Lab to the right */}
+        <div style={{ flex: 1 }} />
+
+        {/* Intervention Lab button - special styling on the right */}
+        <button
+          className={`nav-btn highlight ${currentView === navItemRight.id ? 'active' : ''}`}
+          onClick={() => handleViewChange(navItemRight.id)}
+          style={{
+            background: currentView === navItemRight.id
+              ? 'linear-gradient(135deg, #4A7C59 0%, #3d6b4a 100%)'
+              : 'linear-gradient(135deg, rgba(74, 124, 89, 0.15) 0%, rgba(74, 124, 89, 0.08) 100%)',
+            border: '1px solid rgba(74, 124, 89, 0.4)',
+            position: 'relative',
+          }}
+        >
+          <span className="nav-icon">{navItemRight.icon}</span>
+          {t.nav[navItemRight.labelKey]}
+          {/* Alpha badge */}
+          <span style={{
+            marginLeft: isRTL ? 0 : 6,
+            marginRight: isRTL ? 6 : 0,
+            fontSize: 9,
+            padding: '2px 6px',
+            background: currentView === navItemRight.id ? 'rgba(255,255,255,0.25)' : '#F59E0B',
+            color: currentView === navItemRight.id ? '#FFFFFF' : '#FFFFFF',
+            borderRadius: 4,
+            fontWeight: 700,
+            letterSpacing: '0.5px',
+          }}>ALPHA</span>
+        </button>
       </nav>
 
       {/* Main Content */}
