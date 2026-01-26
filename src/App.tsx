@@ -270,9 +270,15 @@ function App() {
           onClick={() => handleViewChange(navItemRight.id)}
           style={{
             background: currentView === navItemRight.id
-              ? 'linear-gradient(135deg, #4A7C59 0%, #3d6b4a 100%)'
-              : 'linear-gradient(135deg, rgba(74, 124, 89, 0.15) 0%, rgba(74, 124, 89, 0.08) 100%)',
-            border: '1px solid rgba(74, 124, 89, 0.4)',
+              ? darkMode
+                ? 'linear-gradient(135deg, #3FB950 0%, #2ea043 100%)'
+                : 'linear-gradient(135deg, #4A7C59 0%, #3d6b4a 100%)'
+              : darkMode
+                ? 'linear-gradient(135deg, rgba(63, 185, 80, 0.15) 0%, rgba(63, 185, 80, 0.08) 100%)'
+                : 'linear-gradient(135deg, rgba(74, 124, 89, 0.15) 0%, rgba(74, 124, 89, 0.08) 100%)',
+            border: darkMode
+              ? '1px solid rgba(63, 185, 80, 0.4)'
+              : '1px solid rgba(74, 124, 89, 0.4)',
             position: 'relative',
           }}
         >
@@ -284,8 +290,10 @@ function App() {
             marginRight: isRTL ? 6 : 0,
             fontSize: 9,
             padding: '2px 6px',
-            background: currentView === navItemRight.id ? 'rgba(255,255,255,0.25)' : '#F59E0B',
-            color: currentView === navItemRight.id ? '#FFFFFF' : '#FFFFFF',
+            background: currentView === navItemRight.id
+              ? 'rgba(255,255,255,0.25)'
+              : darkMode ? '#D29922' : '#F59E0B',
+            color: '#FFFFFF',
             borderRadius: 4,
             fontWeight: 700,
             letterSpacing: '0.5px',

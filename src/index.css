@@ -442,59 +442,79 @@ body {
 [dir="rtl"] .data-table th { text-align: right; }
 
 /* ============================================
-   DARK MODE
+   DARK MODE - Refined Palette
+   GitHub-inspired, high contrast, easy on eyes
    ============================================ */
 
 .dark-mode {
-  /* Background Colors */
-  --bg-primary: #0F1419;
-  --bg-secondary: #1A2332;
-  --bg-tertiary: #1E2A3A;
-  --bg-card: #182230;
+  color-scheme: dark;
 
-  /* Text Colors */
-  --text-primary: #E8E6E3;
-  --text-secondary: #9CA3AF;
-  --text-muted: #6B7280;
+  /* Background Colors - Layered depth */
+  --bg-primary: #0D1117;
+  --bg-secondary: #161B22;
+  --bg-tertiary: #21262D;
+  --bg-card: #1C2128;
+  --bg-elevated: #2D333B;
+
+  /* Text Colors - High contrast hierarchy */
+  --text-primary: #F0F6FC;
+  --text-secondary: #8B949E;
+  --text-muted: #6E7681;
 
   /* Border */
-  --border-color: rgba(255, 255, 255, 0.1);
-  --border-color-light: rgba(255, 255, 255, 0.05);
+  --border-color: rgba(240, 246, 252, 0.1);
+  --border-color-light: rgba(240, 246, 252, 0.05);
 
-  /* Nuraxi Brand - adjusted for dark */
-  --nuraxi-primary: #C4A77D;
-  --nuraxi-accent: #D4B896;
+  /* Nuraxi Brand - brighter gold for dark */
+  --nuraxi-primary: #D4B896;
+  --nuraxi-accent: #E8CCA8;
   --nuraxi-gold: #D4B896;
 
-  /* Shadows */
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+  /* Shadows - Darker for depth */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.6);
 
-  /* Accent Colors - brighter for dark mode */
-  --accent-danger: #E06B6B;
-  --accent-success: #5B9A6E;
-  --accent-warning: #E8B584;
-  --accent-secondary: #00B8C8;
+  /* Semantic Colors - Vibrant but not harsh */
+  --accent-primary: #D4B896;
+  --accent-success: #3FB950;
+  --accent-danger: #F85149;
+  --accent-warning: #D29922;
+  --accent-secondary: #39D0D6;
+  --accent-info: #58A6FF;
 
-  /* Dim Accent Colors (for backgrounds - more visible on dark) */
-  --accent-danger-dim: rgba(224, 107, 107, 0.2);
-  --accent-warning-dim: rgba(232, 181, 132, 0.2);
-  --accent-success-dim: rgba(91, 154, 110, 0.2);
-  --accent-info-dim: rgba(0, 184, 200, 0.2);
+  /* Dim Accent Colors (for backgrounds) */
+  --accent-success-dim: rgba(63, 185, 80, 0.15);
+  --accent-danger-dim: rgba(248, 81, 73, 0.15);
+  --accent-warning-dim: rgba(210, 153, 34, 0.15);
+  --accent-info-dim: rgba(88, 166, 255, 0.15);
 
-  /* Chart Colors */
-  --chart-bg: #1E2A3A;
-  --chart-text: #9CA3AF;
-  --chart-grid: rgba(255, 255, 255, 0.1);
-  --chart-line-danger: #E06B6B;
-  --chart-line-success: #5B9A6E;
-  --chart-line-info: #00B8C8;
-  --chart-line-warning: #E8B584;
+  /* Chart Colors - Distinct and visible */
+  --chart-bg: #21262D;
+  --chart-text: #8B949E;
+  --chart-grid: rgba(240, 246, 252, 0.1);
+  --chart-line-1: #58A6FF;
+  --chart-line-2: #3FB950;
+  --chart-line-3: #F85149;
+  --chart-line-4: #D29922;
+  --chart-line-5: #A371F7;
+  --chart-line-danger: #F85149;
+  --chart-line-success: #3FB950;
+  --chart-line-info: #58A6FF;
+  --chart-line-warning: #D29922;
 }
 
 .dark-mode body {
-  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+  background: linear-gradient(145deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+}
+
+/* Dark mode scrollbar */
+.dark-mode ::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+.dark-mode ::-webkit-scrollbar-thumb {
+  background: var(--nuraxi-primary);
 }
 
 .dark-mode .header {

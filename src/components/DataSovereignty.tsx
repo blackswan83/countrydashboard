@@ -1,4 +1,9 @@
 import { useState } from 'react';
+import { getThemeColors } from '../utils/themeColors';
+
+interface DarkModeProps {
+  darkMode?: boolean;
+}
 
 // Provincial data nodes for the federated diagram
 const provincialNodes = [
@@ -9,8 +14,9 @@ const provincialNodes = [
 ];
 
 // Federated Architecture Diagram
-const FederatedDiagram: React.FC = () => {
+const FederatedDiagram: React.FC<DarkModeProps> = ({ darkMode = false }) => {
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
+  const colors = getThemeColors(darkMode);
 
   return (
     <div style={{ padding: '20px 0' }}>
@@ -64,15 +70,15 @@ const FederatedDiagram: React.FC = () => {
         justifyContent: 'center',
         gap: 12,
         padding: '12px 0',
-        color: '#8B7355',
+        color: colors.primary,
       }}>
-        <div style={{ flex: 1, height: 1, background: 'linear-gradient(90deg, transparent, #C4A77D)' }} />
+        <div style={{ flex: 1, height: 1, background: `linear-gradient(90deg, transparent, ${colors.gold})` }} />
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, fontWeight: 500 }}>
           <span>↑</span>
           <span>Intelligence flows UP</span>
           <span>↑</span>
         </div>
-        <div style={{ flex: 1, height: 1, background: 'linear-gradient(90deg, #C4A77D, transparent)' }} />
+        <div style={{ flex: 1, height: 1, background: `linear-gradient(90deg, ${colors.gold}, transparent)` }} />
       </div>
 
       {/* Provincial Nodes */}
@@ -87,9 +93,9 @@ const FederatedDiagram: React.FC = () => {
             onMouseEnter={() => setHoveredNode(node.id)}
             onMouseLeave={() => setHoveredNode(null)}
             style={{
-              background: hoveredNode === node.id ? '#F5F0EB' : '#FFFFFF',
+              background: hoveredNode === node.id ? colors.bgTertiary : colors.bgCard,
               border: '2px solid',
-              borderColor: hoveredNode === node.id ? '#4A7C59' : 'rgba(139, 115, 85, 0.2)',
+              borderColor: hoveredNode === node.id ? colors.success : colors.border,
               borderRadius: 12,
               padding: 16,
               textAlign: 'center',
@@ -98,14 +104,14 @@ const FederatedDiagram: React.FC = () => {
             }}
           >
             <div style={{ fontSize: 24, marginBottom: 8 }}>🔒</div>
-            <div style={{ fontSize: 13, fontWeight: 600, color: '#3D3D3D' }}>{node.name}</div>
-            <div style={{ fontSize: 11, color: '#6B6B6B', marginTop: 2 }}>{node.twins} twins</div>
+            <div style={{ fontSize: 13, fontWeight: 600, color: colors.textPrimary }}>{node.name}</div>
+            <div style={{ fontSize: 11, color: colors.textSecondary, marginTop: 2 }}>{node.twins} twins</div>
             <div style={{
               marginTop: 8,
               fontSize: 9,
               textTransform: 'uppercase',
               letterSpacing: 0.5,
-              color: '#4A7C59',
+              color: colors.success,
               fontWeight: 600,
             }}>
               LOCAL DATA
@@ -119,11 +125,11 @@ const FederatedDiagram: React.FC = () => {
         textAlign: 'center',
         marginTop: 16,
         padding: '12px 24px',
-        background: 'rgba(74, 124, 89, 0.1)',
+        background: colors.successDim,
         borderRadius: 8,
-        border: '1px solid rgba(74, 124, 89, 0.2)',
+        border: `1px solid ${darkMode ? 'rgba(63, 185, 80, 0.2)' : 'rgba(74, 124, 89, 0.2)'}`,
       }}>
-        <span style={{ fontSize: 12, color: '#4A7C59', fontWeight: 600 }}>
+        <span style={{ fontSize: 12, color: colors.success, fontWeight: 600 }}>
           🛡️ Data remains in-Kingdom under Saudi sovereignty • Never extracted • Never centralized
         </span>
       </div>
@@ -132,7 +138,9 @@ const FederatedDiagram: React.FC = () => {
 };
 
 // Big Tech Comparison Table
-const ComparisonTable: React.FC = () => {
+const ComparisonTable: React.FC<DarkModeProps> = ({ darkMode = false }) => {
+  const colors = getThemeColors(darkMode);
+
   const comparisons = [
     { aspect: 'Data Ownership', bigTech: 'They own your data', nuraxi: 'You own your data' },
     { aspect: 'Data Location', bigTech: 'Centralized in their cloud', nuraxi: 'Stays in-Kingdom' },
@@ -145,7 +153,7 @@ const ComparisonTable: React.FC = () => {
     <div style={{ marginTop: 24 }}>
       <div style={{
         fontSize: 11,
-        color: '#8B8B8B',
+        color: colors.textMuted,
         textTransform: 'uppercase',
         letterSpacing: 1,
         marginBottom: 12,
@@ -153,23 +161,23 @@ const ComparisonTable: React.FC = () => {
         The Difference
       </div>
       <div style={{
-        background: '#FFFFFF',
+        background: colors.bgCard,
         borderRadius: 12,
-        border: '1px solid rgba(139, 115, 85, 0.15)',
+        border: `1px solid ${colors.border}`,
         overflow: 'hidden',
       }}>
         {/* Header */}
         <div style={{
           display: 'grid',
           gridTemplateColumns: '140px 1fr 1fr',
-          background: '#F5F0EB',
-          borderBottom: '1px solid rgba(139, 115, 85, 0.15)',
+          background: colors.bgTertiary,
+          borderBottom: `1px solid ${colors.border}`,
         }}>
-          <div style={{ padding: '12px 16px', fontSize: 11, fontWeight: 600, color: '#6B6B6B' }}></div>
-          <div style={{ padding: '12px 16px', fontSize: 11, fontWeight: 600, color: '#C75B5B', textAlign: 'center' }}>
+          <div style={{ padding: '12px 16px', fontSize: 11, fontWeight: 600, color: colors.textSecondary }}></div>
+          <div style={{ padding: '12px 16px', fontSize: 11, fontWeight: 600, color: colors.danger, textAlign: 'center' }}>
             Big Tech
           </div>
-          <div style={{ padding: '12px 16px', fontSize: 11, fontWeight: 600, color: '#4A7C59', textAlign: 'center' }}>
+          <div style={{ padding: '12px 16px', fontSize: 11, fontWeight: 600, color: colors.success, textAlign: 'center' }}>
             Nuraxi
           </div>
         </div>
@@ -180,34 +188,34 @@ const ComparisonTable: React.FC = () => {
             style={{
               display: 'grid',
               gridTemplateColumns: '140px 1fr 1fr',
-              borderBottom: i < comparisons.length - 1 ? '1px solid rgba(139, 115, 85, 0.1)' : 'none',
+              borderBottom: i < comparisons.length - 1 ? `1px solid ${colors.borderLight}` : 'none',
             }}
           >
             <div style={{
               padding: '12px 16px',
               fontSize: 12,
               fontWeight: 500,
-              color: '#3D3D3D',
-              background: '#F5F0EB',
+              color: colors.textPrimary,
+              background: colors.bgTertiary,
             }}>
               {row.aspect}
             </div>
             <div style={{
               padding: '12px 16px',
               fontSize: 12,
-              color: '#C75B5B',
+              color: colors.danger,
               textAlign: 'center',
-              background: 'rgba(199, 91, 91, 0.03)',
+              background: colors.dangerDim,
             }}>
               {row.bigTech}
             </div>
             <div style={{
               padding: '12px 16px',
               fontSize: 12,
-              color: '#4A7C59',
+              color: colors.success,
               fontWeight: 500,
               textAlign: 'center',
-              background: 'rgba(74, 124, 89, 0.03)',
+              background: colors.successDim,
             }}>
               {row.nuraxi}
             </div>
@@ -219,7 +227,9 @@ const ComparisonTable: React.FC = () => {
 };
 
 // Trust Checkmarks
-const TrustIndicators: React.FC = () => {
+const TrustIndicators: React.FC<DarkModeProps> = ({ darkMode = false }) => {
+  const colors = getThemeColors(darkMode);
+
   const indicators = [
     'Data never leaves the Kingdom',
     'Zero personal data extraction',
@@ -240,11 +250,11 @@ const TrustIndicators: React.FC = () => {
           alignItems: 'center',
           gap: 10,
           padding: '12px 16px',
-          background: '#F5F0EB',
+          background: colors.bgTertiary,
           borderRadius: 8,
         }}>
-          <span style={{ color: '#4A7C59', fontSize: 16 }}>✓</span>
-          <span style={{ fontSize: 12, color: '#3D3D3D' }}>{text}</span>
+          <span style={{ color: colors.success, fontSize: 16 }}>✓</span>
+          <span style={{ fontSize: 12, color: colors.textPrimary }}>{text}</span>
         </div>
       ))}
     </div>
@@ -252,7 +262,9 @@ const TrustIndicators: React.FC = () => {
 };
 
 // Main Export: Data Sovereignty Section
-export const DataSovereigntySection: React.FC = () => {
+export const DataSovereigntySection: React.FC<DarkModeProps> = ({ darkMode = false }) => {
+  const colors = getThemeColors(darkMode);
+
   return (
     <div className="card" style={{ marginTop: 24 }}>
       <div className="card-header">
@@ -272,13 +284,15 @@ export const DataSovereigntySection: React.FC = () => {
         {/* Narrative */}
         <div style={{
           padding: '16px 20px',
-          background: 'linear-gradient(90deg, #F5F0EB, rgba(220, 0, 24, 0.05))',
+          background: darkMode
+            ? 'linear-gradient(90deg, rgba(45, 51, 59, 0.8), rgba(220, 0, 24, 0.08))'
+            : 'linear-gradient(90deg, #F5F0EB, rgba(220, 0, 24, 0.05))',
           borderRadius: 12,
           borderLeft: '4px solid #DC0018',
           marginBottom: 20,
         }}>
-          <div style={{ fontSize: 14, color: '#3D3D3D', lineHeight: 1.7 }}>
-            <strong style={{ color: '#8B7355' }}>Like Swiss banking redefined financial privacy, Nuraxi redefines health data sovereignty.</strong>
+          <div style={{ fontSize: 14, color: colors.textPrimary, lineHeight: 1.7 }}>
+            <strong style={{ color: colors.primary }}>Like Swiss banking redefined financial privacy, Nuraxi redefines health data sovereignty.</strong>
             {' '}We sit underneath your infrastructure, not on top. We don't own your data — we never even see it.
             Only aggregated intelligence flows to our neutral Swiss vault, while every health record remains exactly
             where it belongs: under Saudi sovereignty, free from big tech's reach.
@@ -286,28 +300,28 @@ export const DataSovereigntySection: React.FC = () => {
         </div>
 
         {/* Federated Diagram */}
-        <FederatedDiagram />
+        <FederatedDiagram darkMode={darkMode} />
 
         {/* Comparison Table */}
-        <ComparisonTable />
+        <ComparisonTable darkMode={darkMode} />
 
         {/* Trust Indicators */}
-        <TrustIndicators />
+        <TrustIndicators darkMode={darkMode} />
 
         {/* Swiss Neutrality Quote */}
         <div style={{
           marginTop: 24,
           padding: 20,
-          background: '#FFFFFF',
+          background: colors.bgCard,
           borderRadius: 12,
-          border: '1px solid rgba(139, 115, 85, 0.15)',
+          border: `1px solid ${colors.border}`,
           textAlign: 'center',
         }}>
-          <div style={{ fontSize: 14, color: '#6B6B6B', fontStyle: 'italic', lineHeight: 1.7, maxWidth: 600, margin: '0 auto' }}>
+          <div style={{ fontSize: 14, color: colors.textSecondary, fontStyle: 'italic', lineHeight: 1.7, maxWidth: 600, margin: '0 auto' }}>
             "Switzerland has protected the world's most sensitive assets for centuries through one principle: <strong style={{ color: '#DC0018' }}>neutrality</strong>.
             No allegiance to any power. No agenda beyond privacy. Nuraxi brings this same principle to health intelligence."
           </div>
-          <div style={{ marginTop: 12, fontSize: 12, color: '#8B7355', fontWeight: 600 }}>
+          <div style={{ marginTop: 12, fontSize: 12, color: colors.primary, fontWeight: 600 }}>
             Swiss Neutrality • Saudi Sovereignty
           </div>
         </div>

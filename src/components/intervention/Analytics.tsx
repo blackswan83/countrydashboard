@@ -6,6 +6,7 @@ import { interventions } from '../../data/interventionData';
 import { runSensitivityAnalysis, calculateCostEffectiveness } from '../../utils/simulationEngine';
 import type { SimulationResult } from '../../utils/simulationEngine';
 import type { HealthOutcome } from '../../data/interventionData';
+import { getThemeColors, getCostEffectivenessColor as getThemeCostEffColor } from '../../utils/themeColors';
 
 interface AnalyticsProps {
   language: 'en' | 'ar';
@@ -93,7 +94,8 @@ const TornadoChart: React.FC<{
 const CostEffectivenessTable: React.FC<{
   data: Record<string, { costPerQaly: number; rank: number }>;
   language: 'en' | 'ar';
-}> = ({ data, language }) => {
+  darkMode: boolean;
+}> = ({ data, language, darkMode }) => {
   const sorted = Object.entries(data)
     .map(([id, values]) => {
       const intervention = interventions.find(i => i.id === id);
@@ -109,12 +111,7 @@ const CostEffectivenessTable: React.FC<{
     .sort((a, b) => a.rank - b.rank)
     .slice(0, 15);
 
-  const getCostEffectivenessColor = (costPerQaly: number) => {
-    if (costPerQaly < 20000) return '#4A7C59'; // Very cost-effective
-    if (costPerQaly < 50000) return '#10B981'; // Cost-effective
-    if (costPerQaly < 100000) return '#F59E0B'; // Moderate
-    return '#EF4444'; // Low cost-effectiveness
-  };
+  const getCostEffectivenessColor = (costPerQaly: number) => getThemeCostEffColor(costPerQaly, darkMode);
 
   return (
     <div className="cost-effectiveness">
@@ -168,8 +165,10 @@ const CostEffectivenessTable: React.FC<{
 const EquityAnalysis: React.FC<{
   simulationResult: SimulationResult;
   language: 'en' | 'ar';
-}> = ({ simulationResult, language }) => {
+  darkMode: boolean;
+}> = ({ simulationResult, language, darkMode }) => {
   const { provincialImpacts } = simulationResult;
+  const colors = getThemeColors(darkMode);
 
   // Calculate variance in outcomes across provinces
   const provinces = Object.keys(provincialImpacts);
@@ -227,7 +226,7 @@ const EquityAnalysis: React.FC<{
             <path
               d="M 10 70 A 50 50 0 0 1 110 70"
               fill="none"
-              stroke={giniCoefficient < 0.3 ? '#4A7C59' : giniCoefficient < 0.5 ? '#F59E0B' : '#EF4444'}
+              stroke={giniCoefficient < 0.3 ? colors.success : giniCoefficient < 0.5 ? colors.warning : colors.danger}
               strokeWidth="8"
               strokeDasharray={`${(1 - giniCoefficient) * 157} 157`}
             />
@@ -307,8 +306,10 @@ const EquityAnalysis: React.FC<{
 const ParetoFrontier: React.FC<{
   simulationResult: SimulationResult;
   language: 'en' | 'ar';
-}> = ({ simulationResult, language }) => {
+  darkMode: boolean;
+}> = ({ simulationResult, language, darkMode }) => {
   const { economicImpact, outcomeDeltas } = simulationResult;
+  const colors = getThemeColors(darkMode);
 
   // Generate some hypothetical Pareto points for visualization
   const paretoPoints = [
@@ -377,7 +378,7 @@ const ParetoFrontier: React.FC<{
               return `${i === 0 ? 'M' : 'L'} ${x} ${y}`;
             }).join(' ')}
             fill="none"
-            stroke="#4A7C59"
+            stroke={colors.success}
             strokeWidth="2"
           />
 
@@ -387,8 +388,8 @@ const ParetoFrontier: React.FC<{
             const y = 250 - (p.health / maxHealth) * 200;
             return (
               <g key={i}>
-                <circle cx={x} cy={y} r={6} fill="#4A7C59" />
-                <text x={x} y={y - 12} textAnchor="middle" fontSize="9" fill="var(--text-secondary)">
+                <circle cx={x} cy={y} r={6} fill={colors.success} />
+                <text x={x} y={y - 12} textAnchor="middle" fontSize="9" fill={colors.textSecondary}>
                   {p.label}
                 </text>
               </g>
@@ -400,8 +401,8 @@ const ParetoFrontier: React.FC<{
             cx={50 + (currentPoint.cost / maxCost) * 330}
             cy={250 - (currentPoint.health / maxHealth) * 200}
             r={8}
-            fill="#EF4444"
-            stroke="#FFF"
+            fill={colors.danger}
+            stroke={colors.bgCard}
             strokeWidth="2"
           />
           <text
@@ -409,7 +410,7 @@ const ParetoFrontier: React.FC<{
             y={250 - (currentPoint.health / maxHealth) * 200 - 15}
             textAnchor="middle"
             fontSize="10"
-            fill="#EF4444"
+            fill={colors.danger}
             fontWeight="bold"
           >
             {language === 'ar' ? 'أنت هنا' : 'You are here'}
@@ -446,12 +447,11 @@ const ParetoFrontier: React.FC<{
 
 const Analytics: React.FC<AnalyticsProps> = ({
   language,
-  darkMode: _darkMode,
+  darkMode,
   interventionValues,
   simulationResult,
   timeHorizon,
 }) => {
-  void _darkMode; // Reserved for dark mode styling
   const [analysisType, setAnalysisType] = useState<AnalysisType>('sensitivity');
   const [selectedOutcome, setSelectedOutcome] = useState<HealthOutcome>('diabetes');
 
@@ -528,15 +528,15 @@ const Analytics: React.FC<AnalyticsProps> = ({
         )}
 
         {analysisType === 'costEffectiveness' && (
-          <CostEffectivenessTable data={costEffectivenessData} language={language} />
+          <CostEffectivenessTable data={costEffectivenessData} language={language} darkMode={darkMode} />
         )}
 
         {analysisType === 'equity' && (
-          <EquityAnalysis simulationResult={simulationResult} language={language} />
+          <EquityAnalysis simulationResult={simulationResult} language={language} darkMode={darkMode} />
         )}
 
         {analysisType === 'pareto' && (
-          <ParetoFrontier simulationResult={simulationResult} language={language} />
+          <ParetoFrontier simulationResult={simulationResult} language={language} darkMode={darkMode} />
         )}
       </div>
     </div>

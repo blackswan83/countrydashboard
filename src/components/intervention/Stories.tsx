@@ -4,6 +4,7 @@
 import React, { useState } from 'react';
 import { interventions } from '../../data/interventionData';
 import type { SimulationResult } from '../../utils/simulationEngine';
+import { getStatusColor as getThemeStatusColor, getThemeColors } from '../../utils/themeColors';
 
 interface StoriesProps {
   language: 'en' | 'ar';
@@ -196,23 +197,16 @@ const JourneyTimeline: React.FC<{
   interventionValues: Record<string, number>;
   language: 'en' | 'ar';
   timeHorizon: number;
-}> = ({ archetype, interventionValues, language, timeHorizon }) => {
+  darkMode: boolean;
+}> = ({ archetype, interventionValues, language, timeHorizon, darkMode }) => {
   const currentYear = 2025;
   const endYear = currentYear + timeHorizon;
+  const colors = getThemeColors(darkMode);
 
   // Filter milestones within time horizon
   const visibleMilestones = archetype.journeyMilestones.filter(m => m.year <= endYear);
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'healthy': return '#4A7C59';
-      case 'improved': return '#10B981';
-      case 'managed': return '#00A0B0';
-      case 'at-risk': return '#F59E0B';
-      case 'diagnosed': return '#EF4444';
-      default: return '#8B8B8B';
-    }
-  };
+  const getStatusColor = (status: string) => getThemeStatusColor(status, darkMode);
 
   const isInterventionActive = (interventionId?: string) => {
     if (!interventionId) return true;
@@ -269,7 +263,7 @@ const JourneyTimeline: React.FC<{
               <div className="milestone-year">{milestone.year}</div>
               <div
                 className="milestone-dot"
-                style={{ backgroundColor: active ? getStatusColor(milestone.status) : '#9CA3AF' }}
+                style={{ backgroundColor: active ? getStatusColor(milestone.status) : colors.textMuted }}
               />
               <div className="milestone-content">
                 <p className="milestone-event">
@@ -424,12 +418,11 @@ const MinistryPerspective: React.FC<{
 
 const Stories: React.FC<StoriesProps> = ({
   language,
-  darkMode: _darkMode,
+  darkMode,
   interventionValues,
   simulationResult,
   timeHorizon,
 }) => {
-  void _darkMode; // Available for dark mode specific styling
   const [storyMode, setStoryMode] = useState<StoryMode>('individual');
   const [selectedArchetype, setSelectedArchetype] = useState<string>('fatima');
   const [ministryView, setMinistryView] = useState<MinistryView>('health');
@@ -492,6 +485,7 @@ const Stories: React.FC<StoriesProps> = ({
             interventionValues={interventionValues}
             language={language}
             timeHorizon={timeHorizon}
+            darkMode={darkMode}
           />
         </div>
       )}

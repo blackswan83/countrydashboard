@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 // baselineStats available if needed for future enhancements
 import type { SimulationResult, ProjectedOutcome } from '../../utils/simulationEngine';
 import type { HealthOutcome } from '../../data/interventionData';
+import { getThemeColors, getDeltaColor } from '../../utils/themeColors';
 
 interface ImpactAnalysisProps {
   language: 'en' | 'ar';
@@ -23,7 +24,8 @@ const TrajectoryChart: React.FC<{
   isPositiveMetric: boolean;
   color: string;
   language: 'en' | 'ar';
-}> = ({ data, title, unit, isPositiveMetric, color, language }) => {
+  darkMode: boolean;
+}> = ({ data, title, unit, isPositiveMetric, color, language, darkMode }) => {
   const width = 400;
   const height = 200;
   const padding = { top: 20, right: 60, bottom: 35, left: 50 };
@@ -58,7 +60,8 @@ const TrajectoryChart: React.FC<{
   const endInterv = data[data.length - 1].intervention;
   const endBase = data[data.length - 1].baseline;
   const improvement = ((endInterv - endBase) / Math.abs(startVal)) * 100;
-  const improvementColor = (isPositiveMetric && improvement > 0) || (!isPositiveMetric && improvement < 0) ? '#4A7C59' : '#EF4444';
+  const colors = getThemeColors(darkMode);
+  const improvementColor = getDeltaColor(improvement, isPositiveMetric, darkMode);
 
   return (
     <div className="trajectory-chart">
@@ -87,22 +90,22 @@ const TrajectoryChart: React.FC<{
         <path d={confidenceArea} fill={color} opacity={0.15} />
 
         {/* Baseline path */}
-        <path d={baselinePath} fill="none" stroke="#EF4444" strokeWidth="2" strokeDasharray="5,5" />
+        <path d={baselinePath} fill="none" stroke={colors.danger} strokeWidth="2" strokeDasharray="5,5" />
 
         {/* Super-ager path */}
-        <path d={superAgerPath} fill="none" stroke="#C4A77D" strokeWidth="2" strokeDasharray="3,3" />
+        <path d={superAgerPath} fill="none" stroke={colors.gold} strokeWidth="2" strokeDasharray="3,3" />
 
         {/* Intervention path */}
         <path d={interventionPath} fill="none" stroke={color} strokeWidth="3" />
 
         {/* End labels */}
-        <text x={width - padding.right + 5} y={yScale(data[data.length - 1].baseline)} fontSize="9" fill="#EF4444">
+        <text x={width - padding.right + 5} y={yScale(data[data.length - 1].baseline)} fontSize="9" fill={colors.danger}>
           {language === 'ar' ? 'أساس' : 'Base'}
         </text>
         <text x={width - padding.right + 5} y={yScale(data[data.length - 1].intervention)} fontSize="9" fill={color}>
           {language === 'ar' ? 'تدخل' : 'Interv.'}
         </text>
-        <text x={width - padding.right + 5} y={yScale(data[data.length - 1].superAger)} fontSize="9" fill="#C4A77D">
+        <text x={width - padding.right + 5} y={yScale(data[data.length - 1].superAger)} fontSize="9" fill={colors.gold}>
           {language === 'ar' ? 'مثالي' : 'Optimal'}
         </text>
 
@@ -129,22 +132,24 @@ const TrajectoryChart: React.FC<{
 const SankeyDiagram: React.FC<{
   simulationResult: SimulationResult;
   language: 'en' | 'ar';
-}> = ({ simulationResult, language }) => {
+  darkMode: boolean;
+}> = ({ simulationResult, language, darkMode }) => {
   const { outcomeDeltas, activeSynergies } = simulationResult;
+  const colors = getThemeColors(darkMode);
 
   // Simplified Sankey visualization
   const interventionGroups = [
-    { id: 'prevention', label: language === 'ar' ? 'الوقاية' : 'Prevention', color: '#4A7C59' },
-    { id: 'screening', label: language === 'ar' ? 'الفحص' : 'Screening', color: '#00A0B0' },
-    { id: 'treatment', label: language === 'ar' ? 'العلاج' : 'Treatment', color: '#8B7355' },
-    { id: 'digital', label: language === 'ar' ? 'رقمي' : 'Digital', color: '#10B981' },
+    { id: 'prevention', label: language === 'ar' ? 'الوقاية' : 'Prevention', color: colors.success },
+    { id: 'screening', label: language === 'ar' ? 'الفحص' : 'Screening', color: colors.info },
+    { id: 'treatment', label: language === 'ar' ? 'العلاج' : 'Treatment', color: colors.primary },
+    { id: 'digital', label: language === 'ar' ? 'رقمي' : 'Digital', color: colors.successLight },
   ];
 
   const outcomes = [
-    { id: 'diabetes', label: language === 'ar' ? 'السكري' : 'Diabetes', value: outcomeDeltas.diabetes, color: '#EF4444' },
-    { id: 'obesity', label: language === 'ar' ? 'السمنة' : 'Obesity', value: outcomeDeltas.obesity, color: '#F59E0B' },
-    { id: 'cvd', label: language === 'ar' ? 'القلب' : 'CVD', value: outcomeDeltas.cvd, color: '#8B7355' },
-    { id: 'lifeExpectancy', label: language === 'ar' ? 'العمر' : 'Life Exp', value: outcomeDeltas.lifeExpectancy, color: '#4A7C59' },
+    { id: 'diabetes', label: language === 'ar' ? 'السكري' : 'Diabetes', value: outcomeDeltas.diabetes, color: colors.danger },
+    { id: 'obesity', label: language === 'ar' ? 'السمنة' : 'Obesity', value: outcomeDeltas.obesity, color: colors.warning },
+    { id: 'cvd', label: language === 'ar' ? 'القلب' : 'CVD', value: outcomeDeltas.cvd, color: colors.primary },
+    { id: 'lifeExpectancy', label: language === 'ar' ? 'العمر' : 'Life Exp', value: outcomeDeltas.lifeExpectancy, color: colors.success },
   ];
 
   return (
@@ -192,7 +197,7 @@ const SankeyDiagram: React.FC<{
               style={{ borderColor: outcome.color }}
             >
               <span className="outcome-label">{outcome.label}</span>
-              <span className="outcome-value" style={{ color: outcome.value < 0 ? '#4A7C59' : '#EF4444' }}>
+              <span className="outcome-value" style={{ color: outcome.value < 0 ? colors.success : colors.danger }}>
                 {outcome.value > 0 ? '+' : ''}{outcome.value.toFixed(1)}%
               </span>
             </div>
@@ -293,7 +298,8 @@ const ProvincialHeatmap: React.FC<{
   simulationResult: SimulationResult;
   outcome: HealthOutcome;
   language: 'en' | 'ar';
-}> = ({ simulationResult, outcome, language }) => {
+  darkMode: boolean;
+}> = ({ simulationResult, outcome, language, darkMode }) => {
   const { provincialImpacts } = simulationResult;
 
   const provinces = [
@@ -319,9 +325,9 @@ const ProvincialHeatmap: React.FC<{
 
     const intensity = Math.min(1, Math.abs(value) / 20);
     if (isGood) {
-      return `rgba(74, 124, 89, ${intensity})`; // Green
+      return darkMode ? `rgba(63, 185, 80, ${intensity})` : `rgba(74, 124, 89, ${intensity})`; // Green
     }
-    return `rgba(239, 68, 68, ${intensity})`; // Red
+    return darkMode ? `rgba(248, 81, 73, ${intensity})` : `rgba(239, 68, 68, ${intensity})`; // Red
   };
 
   return (
@@ -348,12 +354,12 @@ const ProvincialHeatmap: React.FC<{
 
 const ImpactAnalysis: React.FC<ImpactAnalysisProps> = ({
   language,
-  darkMode: _darkMode,
+  darkMode,
   simulationResult,
   timeHorizon: _timeHorizon,
 }) => {
-  void _darkMode; // Reserved for dark mode styling
   void _timeHorizon; // Available for time-based filtering
+  const colors = getThemeColors(darkMode);
 
   const [viewMode, setViewMode] = useState<ViewMode>('national');
   const [selectedOutcome, setSelectedOutcome] = useState<HealthOutcome>('diabetes');
@@ -408,32 +414,36 @@ const ImpactAnalysis: React.FC<ImpactAnalysisProps> = ({
                 title={language === 'ar' ? 'انتشار السكري' : 'Diabetes Prevalence'}
                 unit="%"
                 isPositiveMetric={false}
-                color="#EF4444"
+                color={colors.danger}
                 language={language}
+                darkMode={darkMode}
               />
               <TrajectoryChart
                 data={trajectories.lifeExpectancy}
                 title={language === 'ar' ? 'متوسط العمر المتوقع' : 'Life Expectancy'}
                 unit={language === 'ar' ? 'سنوات' : 'years'}
                 isPositiveMetric={true}
-                color="#4A7C59"
+                color={colors.success}
                 language={language}
+                darkMode={darkMode}
               />
               <TrajectoryChart
                 data={trajectories.obesity}
                 title={language === 'ar' ? 'معدل السمنة' : 'Obesity Rate'}
                 unit="%"
                 isPositiveMetric={false}
-                color="#F59E0B"
+                color={colors.warning}
                 language={language}
+                darkMode={darkMode}
               />
               <TrajectoryChart
                 data={trajectories.cvd}
                 title={language === 'ar' ? 'انتشار أمراض القلب' : 'CVD Prevalence'}
                 unit="%"
                 isPositiveMetric={false}
-                color="#8B7355"
+                color={colors.primary}
                 language={language}
+                darkMode={darkMode}
               />
             </div>
           </div>
@@ -441,7 +451,7 @@ const ImpactAnalysis: React.FC<ImpactAnalysisProps> = ({
           {/* Sankey Diagram */}
           <div className="section">
             <h3>{t.flowDiagram}</h3>
-            <SankeyDiagram simulationResult={simulationResult} language={language} />
+            <SankeyDiagram simulationResult={simulationResult} language={language} darkMode={darkMode} />
           </div>
 
           {/* Population Pyramid */}
@@ -471,6 +481,7 @@ const ImpactAnalysis: React.FC<ImpactAnalysisProps> = ({
             simulationResult={simulationResult}
             outcome={selectedOutcome}
             language={language}
+            darkMode={darkMode}
           />
         </div>
       )}

@@ -3,6 +3,7 @@
 
 import React, { useState, useMemo } from 'react';
 import type { SimulationResult } from '../../utils/simulationEngine';
+import { getThemeColors, getDifficultyColor, getGradeColor } from '../../utils/themeColors';
 
 interface ChallengeModeProps {
   language: 'en' | 'ar';
@@ -151,13 +152,9 @@ const ChallengeCard: React.FC<{
   progress: number;
   onStart: () => void;
   language: 'en' | 'ar';
-}> = ({ challenge, isActive, progress, onStart, language }) => {
-  const difficultyColors: Record<Difficulty, string> = {
-    beginner: '#4A7C59',
-    intermediate: '#F59E0B',
-    expert: '#EF4444',
-    master: '#8B5CF6',
-  };
+  darkMode: boolean;
+}> = ({ challenge, isActive, progress, onStart, language, darkMode }) => {
+  const getDiffColor = (difficulty: Difficulty) => getDifficultyColor(difficulty, darkMode);
 
   const difficultyLabels: Record<Difficulty, { en: string; ar: string }> = {
     beginner: { en: 'Beginner', ar: 'مبتدئ' },
@@ -176,7 +173,7 @@ const ChallengeCard: React.FC<{
           <h4>{language === 'ar' ? challenge.titleAr : challenge.title}</h4>
           <span
             className="difficulty-badge"
-            style={{ backgroundColor: difficultyColors[challenge.difficulty] }}
+            style={{ backgroundColor: getDiffColor(challenge.difficulty) }}
           >
             {language === 'ar' ? difficultyLabels[challenge.difficulty].ar : difficultyLabels[challenge.difficulty].en}
           </span>
@@ -286,9 +283,11 @@ const ScoreCard: React.FC<{
   budget: number;
   budgetUsage: number;
   language: 'en' | 'ar';
-}> = ({ simulationResult, budget: _budget, language }) => {
+  darkMode: boolean;
+}> = ({ simulationResult, budget: _budget, language, darkMode }) => {
   void _budget; // Available for budget comparison features
   const { economicImpact, outcomeDeltas, activeSynergies } = simulationResult;
+  const colors = getThemeColors(darkMode);
 
   // Calculate score based on multiple factors
   const healthScore = Math.abs(outcomeDeltas.diabetes) + Math.abs(outcomeDeltas.obesity) + outcomeDeltas.lifeExpectancy;
@@ -297,12 +296,13 @@ const ScoreCard: React.FC<{
   const totalScore = Math.round(healthScore + efficiencyScore + synergyScore);
 
   const getGrade = (score: number): { letter: string; color: string } => {
-    if (score >= 80) return { letter: 'A+', color: '#4A7C59' };
-    if (score >= 70) return { letter: 'A', color: '#4A7C59' };
-    if (score >= 60) return { letter: 'B', color: '#10B981' };
-    if (score >= 50) return { letter: 'C', color: '#F59E0B' };
-    if (score >= 40) return { letter: 'D', color: '#EF4444' };
-    return { letter: 'F', color: '#991B1B' };
+    const gradeColor = getGradeColor(score, darkMode);
+    if (score >= 80) return { letter: 'A+', color: gradeColor };
+    if (score >= 70) return { letter: 'A', color: gradeColor };
+    if (score >= 60) return { letter: 'B', color: gradeColor };
+    if (score >= 50) return { letter: 'C', color: gradeColor };
+    if (score >= 40) return { letter: 'D', color: gradeColor };
+    return { letter: 'F', color: gradeColor };
   };
 
   const grade = getGrade(totalScore);
@@ -321,7 +321,7 @@ const ScoreCard: React.FC<{
         <div className="score-item">
           <span className="item-label">{language === 'ar' ? 'تأثير صحي' : 'Health Impact'}</span>
           <div className="item-bar">
-            <div className="item-fill" style={{ width: `${Math.min(100, healthScore)}%`, backgroundColor: '#4A7C59' }} />
+            <div className="item-fill" style={{ width: `${Math.min(100, healthScore)}%`, backgroundColor: colors.success }} />
           </div>
           <span className="item-value">{healthScore.toFixed(0)}</span>
         </div>
@@ -329,7 +329,7 @@ const ScoreCard: React.FC<{
         <div className="score-item">
           <span className="item-label">{language === 'ar' ? 'كفاءة الميزانية' : 'Budget Efficiency'}</span>
           <div className="item-bar">
-            <div className="item-fill" style={{ width: `${Math.min(100, efficiencyScore * 2)}%`, backgroundColor: '#00A0B0' }} />
+            <div className="item-fill" style={{ width: `${Math.min(100, efficiencyScore * 2)}%`, backgroundColor: colors.info }} />
           </div>
           <span className="item-value">{efficiencyScore.toFixed(0)}</span>
         </div>
@@ -337,7 +337,7 @@ const ScoreCard: React.FC<{
         <div className="score-item">
           <span className="item-label">{language === 'ar' ? 'تآزرات نشطة' : 'Synergies Active'}</span>
           <div className="item-bar">
-            <div className="item-fill" style={{ width: `${Math.min(100, synergyScore * 4)}%`, backgroundColor: '#8B5CF6' }} />
+            <div className="item-fill" style={{ width: `${Math.min(100, synergyScore * 4)}%`, backgroundColor: colors.chartLine5 }} />
           </div>
           <span className="item-value">{synergyScore}</span>
         </div>
@@ -353,12 +353,11 @@ const ScoreCard: React.FC<{
 
 const ChallengeMode: React.FC<ChallengeModeProps> = ({
   language,
-  darkMode: _darkMode,
+  darkMode,
   simulationResult,
   budget,
   timeHorizon,
 }) => {
-  void _darkMode; // Available for dark mode specific styling
   const [activeChallenge, setActiveChallenge] = useState<string | null>(null);
   const [earnedAchievements] = useState<Set<string>>(new Set(['explorer'])); // Mock some earned
 
@@ -438,6 +437,7 @@ const ChallengeMode: React.FC<ChallengeModeProps> = ({
                 progress={getProgress(challenge)}
                 onStart={() => setActiveChallenge(challenge.id)}
                 language={language}
+                darkMode={darkMode}
               />
             ))}
           </div>
@@ -451,6 +451,7 @@ const ChallengeMode: React.FC<ChallengeModeProps> = ({
             budget={budget}
             budgetUsage={economicImpact.totalCost}
             language={language}
+            darkMode={darkMode}
           />
 
           {/* Achievements */}

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { getThemeColors } from '../utils/themeColors';
 
 type ViewType = 'national' | 'provincial' | 'aging' | 'intervention' | 'disease' | 'infrastructure';
 
@@ -163,18 +164,8 @@ export const IntroPresentation: React.FC<IntroPresentationProps> = ({
 
   const slide = slides[currentSlide] as any;
 
-  // Theme colors
-  const colors = {
-    primary: darkMode ? '#C4A77D' : '#8B7355',
-    gold: darkMode ? '#D4B896' : '#C4A77D',
-    success: darkMode ? '#5B9A6E' : '#4A7C59',
-    textPrimary: darkMode ? '#E8E6E3' : '#3D3D3D',
-    textSecondary: darkMode ? '#9CA3AF' : '#6B6B6B',
-    textMuted: darkMode ? '#6B7280' : '#8B8B8B',
-    bgCard: darkMode ? '#182230' : '#FFFFFF',
-    bgTertiary: darkMode ? '#1E2A3A' : '#F5F0EB',
-    border: darkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(139, 115, 85, 0.2)',
-  };
+  // Theme colors from centralized utility
+  const colors = getThemeColors(darkMode);
 
   return (
     <div
@@ -434,7 +425,7 @@ export const IntroPresentation: React.FC<IntroPresentationProps> = ({
                         top: 8,
                         right: isRTL ? 'auto' : 8,
                         left: isRTL ? 8 : 'auto',
-                        background: '#F59E0B',
+                        background: colors.warning,
                         color: '#FFFFFF',
                         fontSize: 8,
                         padding: '2px 6px',

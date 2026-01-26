@@ -4,6 +4,7 @@
 import React from 'react';
 import { interventions, baselineStats } from '../../data/interventionData';
 import type { SimulationResult } from '../../utils/simulationEngine';
+import { getThemeColors, getBudgetColor, getDeltaColor } from '../../utils/themeColors';
 
 interface CommandCenterProps {
   language: 'en' | 'ar';
@@ -17,16 +18,15 @@ interface CommandCenterProps {
 }
 
 // Budget Gauge Component
-const BudgetGauge: React.FC<{ used: number; total: number; language: 'en' | 'ar' }> = ({ used, total, language }) => {
+const BudgetGauge: React.FC<{ used: number; total: number; language: 'en' | 'ar'; darkMode: boolean }> = ({ used, total, language, darkMode }) => {
   const percentage = Math.min(100, (used / total) * 100);
   const isOver = used > total;
-  const isWarning = percentage > 85 && !isOver;
 
   const radius = 70;
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference - (Math.min(percentage, 100) / 100) * circumference;
 
-  const color = isOver ? '#EF4444' : isWarning ? '#F59E0B' : '#4A7C59';
+  const color = getBudgetColor(percentage, darkMode);
 
   return (
     <div className="budget-gauge">
@@ -101,7 +101,8 @@ const MetricCard: React.FC<{
   isPositive: boolean;
   color: string;
   trajectory: { year: number; intervention: number }[];
-}> = ({ title, value, unit, delta, isPositive, color, trajectory }) => {
+  darkMode: boolean;
+}> = ({ title, value, unit, delta, isPositive, color, trajectory, darkMode }) => {
   // Simple sparkline
   const sparklinePoints = trajectory.slice(0, 8).map((point, i) => {
     const values = trajectory.map(p => p.intervention);
@@ -113,7 +114,7 @@ const MetricCard: React.FC<{
     return `${x},${y}`;
   }).join(' ');
 
-  const deltaColor = (isPositive && delta > 0) || (!isPositive && delta < 0) ? '#4A7C59' : '#EF4444';
+  const deltaColor = getDeltaColor(delta, isPositive, darkMode);
   const deltaSign = delta > 0 ? '+' : '';
 
   return (
@@ -148,15 +149,17 @@ const QuickLever: React.FC<{
   value: number;
   onChange: (value: number) => void;
   language: 'en' | 'ar';
-}> = ({ intervention, value, onChange, language }) => {
+  darkMode: boolean;
+}> = ({ intervention, value, onChange, language, darkMode }) => {
   const isChanged = value !== intervention.baseline;
+  const colors = getThemeColors(darkMode);
 
   return (
     <div className={`quick-lever ${isChanged ? 'changed' : ''}`}>
       <div className="lever-header">
         <span className="lever-icon">{intervention.icon}</span>
         <span className="lever-name">{language === 'ar' ? intervention.nameAr : intervention.name}</span>
-        <span className="lever-value" style={{ color: isChanged ? '#4A7C59' : 'var(--text-secondary)' }}>
+        <span className="lever-value" style={{ color: isChanged ? colors.success : colors.textSecondary }}>
           {value}{intervention.unit}
         </span>
       </div>
@@ -175,7 +178,7 @@ const QuickLever: React.FC<{
 
 const CommandCenter: React.FC<CommandCenterProps> = ({
   language,
-  darkMode: _darkMode,
+  darkMode,
   interventionValues,
   simulationResult,
   timeHorizon,
@@ -183,7 +186,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({
   budgetUsage,
   onInterventionChange,
 }) => {
-  void _darkMode; // Reserved for dark mode styling
+  const colors = getThemeColors(darkMode);
   const t = {
     overview: language === 'ar' ? 'نظرة عامة' : 'Overview',
     keyOutcomes: language === 'ar' ? 'النتائج الرئيسية' : 'Key Outcomes',
@@ -211,7 +214,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({
         {/* Budget Gauge */}
         <div className="budget-section">
           <h3>{t.budgetAllocation}</h3>
-          <BudgetGauge used={budgetUsage} total={budget} language={language} />
+          <BudgetGauge used={budgetUsage} total={budget} language={language} darkMode={darkMode} />
           <div className="budget-details">
             <div className="budget-stat">
               <span className="stat-label">{t.healthcareSavings}</span>
@@ -236,8 +239,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({
               unit="%"
               delta={outcomeDeltas.diabetes}
               isPositive={false}
-              color="#EF4444"
+              color={colors.danger}
               trajectory={trajectories.diabetes}
+              darkMode={darkMode}
             />
             <MetricCard
               title={t.lifeExpectancy}
@@ -245,8 +249,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({
               unit=" yrs"
               delta={outcomeDeltas.lifeExpectancy}
               isPositive={true}
-              color="#4A7C59"
+              color={colors.success}
               trajectory={trajectories.lifeExpectancy}
+              darkMode={darkMode}
             />
             <MetricCard
               title={language === 'ar' ? 'السمنة' : 'Obesity Rate'}
@@ -254,8 +259,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({
               unit="%"
               delta={outcomeDeltas.obesity}
               isPositive={false}
-              color="#F59E0B"
+              color={colors.warning}
               trajectory={trajectories.obesity}
+              darkMode={darkMode}
             />
             <MetricCard
               title={language === 'ar' ? 'أمراض القلب' : 'CVD Prevalence'}
@@ -263,8 +269,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({
               unit="%"
               delta={outcomeDeltas.cvd}
               isPositive={false}
-              color="#8B7355"
+              color={colors.primary}
               trajectory={trajectories.cvd}
+              darkMode={darkMode}
             />
           </div>
         </div>
@@ -283,6 +290,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({
                 value={interventionValues[intervention.id] ?? intervention.baseline}
                 onChange={value => onInterventionChange(intervention.id, value)}
                 language={language}
+                darkMode={darkMode}
               />
             ))}
           </div>
