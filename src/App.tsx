@@ -11,6 +11,7 @@ import { PopulationPyramid } from './components/PopulationPyramid';
 // InterventionSimulator kept for reference - new InterventionLab replaces it
 // import { InterventionSimulator } from './components/InterventionSimulator';
 import InterventionLab from './components/intervention/InterventionLab';
+import { IntroPresentation } from './components/IntroPresentation';
 import { nationalStats, provinces } from './data/ksaData';
 
 type ViewType = 'national' | 'provincial' | 'aging' | 'intervention' | 'disease' | 'infrastructure';
@@ -159,6 +160,9 @@ function App() {
   const [mapColorMode, setMapColorMode] = useState<'tier' | 'diabetes' | 'obesity' | 'infrastructure'>('tier');
   const [language, setLanguage] = useState<'en' | 'ar'>('en');
   const [darkMode, setDarkMode] = useState(false);
+  const [showIntro, setShowIntro] = useState(() => {
+    return localStorage.getItem('ksa-dashboard-intro-seen') !== 'true';
+  });
 
   const t = translations[language];
   const isRTL = language === 'ar';
@@ -192,6 +196,15 @@ function App() {
               <div style={{ fontSize: 10, opacity: 0.8 }}>{t.inKingdom}</div>
             </div>
           </div>
+          {/* About/Help Button */}
+          <button
+            className="header-tag toggle-btn"
+            onClick={() => setShowIntro(true)}
+            title={language === 'en' ? 'About this dashboard' : 'حول هذه اللوحة'}
+            style={{ fontSize: 16, fontWeight: 700 }}
+          >
+            ?
+          </button>
           {/* Dark Mode Toggle */}
           <button
             className="header-tag toggle-btn"
@@ -476,6 +489,23 @@ function App() {
           <span>{t.footer.lastUpdated}</span>
         </div>
       </footer>
+
+      {/* Intro Presentation Modal */}
+      {showIntro && (
+        <IntroPresentation
+          language={language}
+          darkMode={darkMode}
+          onComplete={(view) => {
+            setShowIntro(false);
+            localStorage.setItem('ksa-dashboard-intro-seen', 'true');
+            if (view) handleViewChange(view);
+          }}
+          onDismiss={() => {
+            setShowIntro(false);
+            localStorage.setItem('ksa-dashboard-intro-seen', 'true');
+          }}
+        />
+      )}
     </div>
   );
 }
