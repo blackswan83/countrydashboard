@@ -1,5 +1,22 @@
 import { useState } from 'react';
 
+// Theme colors for dark mode support
+const getThemeColors = (darkMode: boolean) => ({
+  chartBg: darkMode ? '#1E2A3A' : '#F5F0EB',
+  chartGrid: darkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(139, 115, 85, 0.15)',
+  textPrimary: darkMode ? '#E8E6E3' : '#3D3D3D',
+  textSecondary: darkMode ? '#9CA3AF' : '#6B6B6B',
+  textMuted: darkMode ? '#6B7280' : '#8B8B8B',
+  gold: darkMode ? '#D4B896' : '#C4A77D',
+  primary: darkMode ? '#C4A77D' : '#8B7355',
+  danger: darkMode ? '#E06B6B' : '#C75B5B',
+  success: darkMode ? '#5B9A6E' : '#4A7C59',
+  info: darkMode ? '#00B8C8' : '#00A0B0',
+  bannerBg: darkMode ? 'linear-gradient(90deg, #1E2A3A, rgba(196, 167, 125, 0.15))' : 'linear-gradient(90deg, #F5F0EB, rgba(139, 115, 85, 0.1))',
+  insightBg: darkMode ? 'linear-gradient(90deg, #1E2A3A, rgba(196, 167, 125, 0.15))' : 'linear-gradient(90deg, #F5F0EB, rgba(196, 167, 125, 0.1))',
+  border: darkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(139, 115, 85, 0.15)',
+});
+
 // Domain data for aging trajectories
 const generateCurve = (startValue: number, endValue: number, curveType: string) => {
   const points: { age: number; value: number }[] = [];
@@ -70,10 +87,12 @@ interface TrajectoryChartProps {
   domain: string;
   showGap: boolean;
   selectedAge: number;
+  darkMode?: boolean;
 }
 
-const TrajectoryChart: React.FC<TrajectoryChartProps> = ({ domain, showGap, selectedAge }) => {
+const TrajectoryChart: React.FC<TrajectoryChartProps> = ({ domain, showGap, selectedAge, darkMode = false }) => {
   const { population, superager, unit } = domains[domain];
+  const colors = getThemeColors(darkMode);
 
   const width = 600;
   const height = 320;
@@ -104,7 +123,7 @@ const TrajectoryChart: React.FC<TrajectoryChartProps> = ({ domain, showGap, sele
     <svg width={width} height={height} style={{ width: '100%', height: 'auto', maxHeight: 320 }}>
       {/* Background */}
       <rect x={padding.left} y={padding.top} width={chartWidth} height={chartHeight}
-            fill="#F5F0EB" rx="8" />
+            fill={colors.chartBg} rx="8" />
 
       {/* Grid lines */}
       {[0, 25, 50, 75, 100].map(v => (
@@ -112,10 +131,10 @@ const TrajectoryChart: React.FC<TrajectoryChartProps> = ({ domain, showGap, sele
           <line
             x1={padding.left} y1={yScale(v)}
             x2={width - padding.right} y2={yScale(v)}
-            stroke="rgba(139, 115, 85, 0.15)" strokeDasharray="3,6"
+            stroke={colors.chartGrid} strokeDasharray="3,6"
           />
           <text x={padding.left - 10} y={yScale(v) + 4}
-                fill="#8B8B8B" fontSize="11" textAnchor="end">
+                fill={colors.textMuted} fontSize="11" textAnchor="end">
             {v}
           </text>
         </g>
@@ -124,21 +143,21 @@ const TrajectoryChart: React.FC<TrajectoryChartProps> = ({ domain, showGap, sele
       {/* X-axis labels */}
       {[30, 45, 60, 75, 90, 100].map(age => (
         <text key={age} x={xScale(age)} y={height - 15}
-              fill="#8B8B8B" fontSize="11" textAnchor="middle">
+              fill={colors.textMuted} fontSize="11" textAnchor="middle">
           {age}
         </text>
       ))}
 
       {/* Gap area */}
       {showGap && (
-        <path d={createGapArea()} fill="#4A7C59" opacity="0.15" />
+        <path d={createGapArea()} fill={colors.success} opacity="0.15" />
       )}
 
       {/* Population curve */}
       <path
         d={createPath(population)}
         fill="none"
-        stroke="#C75B5B"
+        stroke={colors.danger}
         strokeWidth="3"
         strokeLinecap="round"
       />
@@ -147,7 +166,7 @@ const TrajectoryChart: React.FC<TrajectoryChartProps> = ({ domain, showGap, sele
       <path
         d={createPath(superager)}
         fill="none"
-        stroke="#4A7C59"
+        stroke={colors.success}
         strokeWidth="3"
         strokeLinecap="round"
       />
@@ -156,14 +175,14 @@ const TrajectoryChart: React.FC<TrajectoryChartProps> = ({ domain, showGap, sele
       <line
         x1={xScale(selectedAge)} y1={padding.top}
         x2={xScale(selectedAge)} y2={height - padding.bottom}
-        stroke="#C4A77D" strokeWidth="2" strokeDasharray="5,5"
+        stroke={colors.gold} strokeWidth="2" strokeDasharray="5,5"
       />
 
       {/* Data points at selected age */}
       <circle cx={xScale(selectedAge)} cy={yScale(popValue)} r="7"
-              fill="#C75B5B" stroke="#FFFFFF" strokeWidth="2" />
+              fill={colors.danger} stroke={darkMode ? colors.chartBg : '#FFFFFF'} strokeWidth="2" />
       <circle cx={xScale(selectedAge)} cy={yScale(saValue)} r="7"
-              fill="#4A7C59" stroke="#FFFFFF" strokeWidth="2" />
+              fill={colors.success} stroke={darkMode ? colors.chartBg : '#FFFFFF'} strokeWidth="2" />
 
       {/* Gap annotation */}
       {showGap && gap > 5 && (
@@ -171,12 +190,12 @@ const TrajectoryChart: React.FC<TrajectoryChartProps> = ({ domain, showGap, sele
           <line
             x1={xScale(selectedAge) + 20} y1={yScale(popValue)}
             x2={xScale(selectedAge) + 20} y2={yScale(saValue)}
-            stroke="#8B7355" strokeWidth="2"
+            stroke={colors.primary} strokeWidth="2"
           />
           <rect
             x={xScale(selectedAge) + 28}
             y={(yScale(popValue) + yScale(saValue)) / 2 - 14}
-            width="55" height="28" rx="6" fill="#8B7355"
+            width="55" height="28" rx="6" fill={colors.primary}
           />
           <text
             x={xScale(selectedAge) + 55}
@@ -189,12 +208,12 @@ const TrajectoryChart: React.FC<TrajectoryChartProps> = ({ domain, showGap, sele
       )}
 
       {/* Axis labels */}
-      <text x={width / 2} y={height - 2} fill="#6B6B6B" fontSize="12" textAnchor="middle">
+      <text x={width / 2} y={height - 2} fill={colors.textSecondary} fontSize="12" textAnchor="middle">
         Age (years)
       </text>
       <text
         transform={`translate(16, ${height / 2}) rotate(-90)`}
-        fill="#6B6B6B" fontSize="12" textAnchor="middle"
+        fill={colors.textSecondary} fontSize="12" textAnchor="middle"
       >
         {unit}
       </text>
@@ -202,10 +221,15 @@ const TrajectoryChart: React.FC<TrajectoryChartProps> = ({ domain, showGap, sele
   );
 };
 
-export const AgingTrajectory: React.FC = () => {
+interface AgingTrajectoryProps {
+  darkMode?: boolean;
+}
+
+export const AgingTrajectory: React.FC<AgingTrajectoryProps> = ({ darkMode = false }) => {
   const [selectedDomain, setSelectedDomain] = useState('cardiovascular');
   const [selectedAge, setSelectedAge] = useState(65);
   const [showGap, setShowGap] = useState(true);
+  const colors = getThemeColors(darkMode);
 
   const domain = domains[selectedDomain];
   const popValue = domain.population.find(p => p.age === selectedAge)?.value || 0;
@@ -224,33 +248,33 @@ export const AgingTrajectory: React.FC = () => {
       {/* Stats Row */}
       <div className="stats-grid stats-grid-4" style={{ marginBottom: 24 }}>
         <div className="stat-card">
-          <div className="stat-card-accent" style={{ backgroundColor: '#C4A77D' }} />
+          <div className="stat-card-accent" style={{ backgroundColor: colors.gold }} />
           <div className="stat-card-label">Intervention Potential</div>
-          <div className="stat-card-value" style={{ color: '#8B7355' }}>
+          <div className="stat-card-value" style={{ color: colors.primary }}>
             +{avgGap.toFixed(0)}%
           </div>
           <div className="stat-card-subtext">Avg function gain at age {selectedAge}</div>
         </div>
         <div className="stat-card">
-          <div className="stat-card-accent" style={{ backgroundColor: '#4A7C59' }} />
+          <div className="stat-card-accent" style={{ backgroundColor: colors.success }} />
           <div className="stat-card-label">KSA Target Population</div>
-          <div className="stat-card-value" style={{ color: '#4A7C59' }}>
+          <div className="stat-card-value" style={{ color: colors.success }}>
             34.1M
           </div>
           <div className="stat-card-subtext">Eligible for intervention</div>
         </div>
         <div className="stat-card">
-          <div className="stat-card-accent" style={{ backgroundColor: '#00A0B0' }} />
+          <div className="stat-card-accent" style={{ backgroundColor: colors.info }} />
           <div className="stat-card-label">Reference Cohort</div>
-          <div className="stat-card-value" style={{ color: '#00A0B0' }}>
+          <div className="stat-card-value" style={{ color: colors.info }}>
             44.6K
           </div>
           <div className="stat-card-subtext">AMORIS Study subjects</div>
         </div>
         <div className="stat-card">
-          <div className="stat-card-accent" style={{ backgroundColor: '#C75B5B' }} />
+          <div className="stat-card-accent" style={{ backgroundColor: colors.danger }} />
           <div className="stat-card-label">Biological Age Gap</div>
-          <div className="stat-card-value" style={{ color: '#C75B5B' }}>
+          <div className="stat-card-value" style={{ color: colors.danger }}>
             {Math.round((100 - popValue) / 10 * 1.5)} yrs
           </div>
           <div className="stat-card-subtext">vs chronological at age {selectedAge}</div>
@@ -285,13 +309,14 @@ export const AgingTrajectory: React.FC = () => {
               domain={selectedDomain}
               showGap={showGap}
               selectedAge={selectedAge}
+              darkMode={darkMode}
             />
 
             {/* Age Slider */}
             <div style={{ marginTop: 24, padding: '0 20px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-                <span style={{ color: '#6B6B6B', fontSize: 12 }}>Selected Age</span>
-                <span style={{ color: '#8B7355', fontSize: 14, fontWeight: 600 }}>{selectedAge} years</span>
+                <span style={{ color: colors.textSecondary, fontSize: 12 }}>Selected Age</span>
+                <span style={{ color: colors.primary, fontSize: 14, fontWeight: 600 }}>{selectedAge} years</span>
               </div>
               <input
                 type="range"
@@ -300,13 +325,13 @@ export const AgingTrajectory: React.FC = () => {
                 onChange={(e) => setSelectedAge(Number(e.target.value))}
                 style={{
                   width: '100%',
-                  accentColor: '#8B7355',
+                  accentColor: colors.primary,
                   height: 6,
                 }}
               />
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ color: '#8B8B8B', fontSize: 10 }}>30</span>
-                <span style={{ color: '#8B8B8B', fontSize: 10 }}>100</span>
+                <span style={{ color: colors.textMuted, fontSize: 10 }}>30</span>
+                <span style={{ color: colors.textMuted, fontSize: 10 }}>100</span>
               </div>
             </div>
 
@@ -316,26 +341,26 @@ export const AgingTrajectory: React.FC = () => {
               gap: 24,
               marginTop: 20,
               paddingTop: 16,
-              borderTop: '1px solid rgba(139, 115, 85, 0.1)',
+              borderTop: `1px solid ${colors.border}`,
               flexWrap: 'wrap',
               alignItems: 'center',
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <div style={{ width: 24, height: 3, background: '#C75B5B', borderRadius: 2 }} />
-                <span style={{ fontSize: 12, color: '#6B6B6B' }}>KSA Population Average</span>
+                <div style={{ width: 24, height: 3, background: colors.danger, borderRadius: 2 }} />
+                <span style={{ fontSize: 12, color: colors.textSecondary }}>KSA Population Average</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <div style={{ width: 24, height: 3, background: '#4A7C59', borderRadius: 2 }} />
-                <span style={{ fontSize: 12, color: '#6B6B6B' }}>Super Ager Reference</span>
+                <div style={{ width: 24, height: 3, background: colors.success, borderRadius: 2 }} />
+                <span style={{ fontSize: 12, color: colors.textSecondary }}>Super Ager Reference</span>
               </div>
               <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', marginLeft: 'auto' }}>
                 <input
                   type="checkbox"
                   checked={showGap}
                   onChange={(e) => setShowGap(e.target.checked)}
-                  style={{ accentColor: '#8B7355' }}
+                  style={{ accentColor: colors.primary }}
                 />
-                <span style={{ fontSize: 12, color: '#6B6B6B' }}>Show Opportunity Gap</span>
+                <span style={{ fontSize: 12, color: colors.textSecondary }}>Show Opportunity Gap</span>
               </label>
             </div>
           </div>
@@ -348,7 +373,7 @@ export const AgingTrajectory: React.FC = () => {
             <div className="province-panel-header">
               <div style={{ fontSize: 28, marginBottom: 8 }}>{domain.icon}</div>
               <div className="province-name">{domain.name}</div>
-              <p style={{ color: '#6B6B6B', fontSize: 13, lineHeight: 1.5, marginTop: 8 }}>
+              <p style={{ color: colors.textSecondary, fontSize: 13, lineHeight: 1.5, marginTop: 8 }}>
                 {domain.description}
               </p>
             </div>
@@ -356,26 +381,26 @@ export const AgingTrajectory: React.FC = () => {
               <div className="metrics-grid" style={{ gridTemplateColumns: '1fr 1fr' }}>
                 <div className="metric-item">
                   <div className="metric-label">Population</div>
-                  <div className="metric-value" style={{ color: '#C75B5B' }}>{popValue.toFixed(0)}%</div>
+                  <div className="metric-value" style={{ color: colors.danger }}>{popValue.toFixed(0)}%</div>
                 </div>
                 <div className="metric-item">
                   <div className="metric-label">Super Ager</div>
-                  <div className="metric-value" style={{ color: '#4A7C59' }}>{saValue.toFixed(0)}%</div>
+                  <div className="metric-value" style={{ color: colors.success }}>{saValue.toFixed(0)}%</div>
                 </div>
               </div>
 
               <div style={{
                 marginTop: 20,
                 padding: 16,
-                background: 'linear-gradient(90deg, #F5F0EB, rgba(196, 167, 125, 0.1))',
+                background: colors.insightBg,
                 borderRadius: 12,
-                borderLeft: '4px solid #C4A77D',
+                borderLeft: `4px solid ${colors.gold}`,
               }}>
-                <div style={{ fontSize: 10, color: '#8B7355', marginBottom: 4, textTransform: 'uppercase', fontWeight: 600 }}>
+                <div style={{ fontSize: 10, color: colors.primary, marginBottom: 4, textTransform: 'uppercase', fontWeight: 600 }}>
                   Intervention Opportunity
                 </div>
-                <div style={{ fontSize: 28, fontWeight: 700, color: '#8B7355' }}>+{gap.toFixed(0)} points</div>
-                <div style={{ fontSize: 12, color: '#6B6B6B', marginTop: 4 }}>
+                <div style={{ fontSize: 28, fontWeight: 700, color: colors.primary }}>+{gap.toFixed(0)} points</div>
+                <div style={{ fontSize: 12, color: colors.textSecondary, marginTop: 4 }}>
                   {gap > 30 ? 'High potential for improvement' : gap > 15 ? 'Moderate intervention benefit' : 'Closer to optimal trajectory'}
                 </div>
               </div>
@@ -389,17 +414,17 @@ export const AgingTrajectory: React.FC = () => {
             </div>
             <div className="card-body">
               <div className="kpi-list" style={{ gap: 12 }}>
-                <div style={{ fontSize: 13, color: '#6B6B6B', lineHeight: 1.6 }}>
-                  <span style={{ color: '#4A7C59', marginRight: 8 }}>●</span>
-                  Super agers show <strong style={{ color: '#3D3D3D' }}>homogeneous biomarker profiles</strong> from age 65 onwards
+                <div style={{ fontSize: 13, color: colors.textSecondary, lineHeight: 1.6 }}>
+                  <span style={{ color: colors.success, marginRight: 8 }}>●</span>
+                  Super agers show <strong style={{ color: colors.textPrimary }}>homogeneous biomarker profiles</strong> from age 65 onwards
                 </div>
-                <div style={{ fontSize: 13, color: '#6B6B6B', lineHeight: 1.6 }}>
-                  <span style={{ color: '#4A7C59', marginRight: 8 }}>●</span>
-                  Centenarians spend only <strong style={{ color: '#3D3D3D' }}>5.2-9.4%</strong> of life with age-related diseases
+                <div style={{ fontSize: 13, color: colors.textSecondary, lineHeight: 1.6 }}>
+                  <span style={{ color: colors.success, marginRight: 8 }}>●</span>
+                  Centenarians spend only <strong style={{ color: colors.textPrimary }}>5.2-9.4%</strong> of life with age-related diseases
                 </div>
-                <div style={{ fontSize: 13, color: '#6B6B6B', lineHeight: 1.6 }}>
-                  <span style={{ color: '#4A7C59', marginRight: 8 }}>●</span>
-                  The gap represents <strong style={{ color: '#3D3D3D' }}>modifiable factors</strong> through personalized interventions
+                <div style={{ fontSize: 13, color: colors.textSecondary, lineHeight: 1.6 }}>
+                  <span style={{ color: colors.success, marginRight: 8 }}>●</span>
+                  The gap represents <strong style={{ color: colors.textPrimary }}>modifiable factors</strong> through personalized interventions
                 </div>
               </div>
             </div>
@@ -410,11 +435,11 @@ export const AgingTrajectory: React.FC = () => {
             <div className="card-header">
               <span className="card-title">Reference Data</span>
             </div>
-            <div className="card-body" style={{ fontSize: 12, color: '#6B6B6B' }}>
+            <div className="card-body" style={{ fontSize: 12, color: colors.textSecondary }}>
               <div style={{ marginBottom: 6 }}>SardiNIA/ProgeNIA (n=6,148)</div>
               <div style={{ marginBottom: 6 }}>Swedish AMORIS Centenarian Study (n=44,636)</div>
               <div style={{ marginBottom: 6 }}>New England Centenarian Study (n=5,500+)</div>
-              <div style={{ marginTop: 12, color: '#4A7C59', fontWeight: 600 }}>
+              <div style={{ marginTop: 12, color: colors.success, fontWeight: 600 }}>
                 SABA Sardinia Super Ager Cohort (n=1,600+)
               </div>
             </div>
@@ -425,24 +450,24 @@ export const AgingTrajectory: React.FC = () => {
       {/* Bottom Banner */}
       <div style={{
         marginTop: 24,
-        background: 'linear-gradient(90deg, #F5F0EB, rgba(139, 115, 85, 0.1))',
+        background: colors.bannerBg,
         borderRadius: 16,
         padding: '20px 24px',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        border: '1px solid rgba(139, 115, 85, 0.15)',
+        border: `1px solid ${colors.border}`,
       }}>
         <div>
-          <div style={{ fontSize: 15, fontWeight: 600, color: '#3D3D3D', marginBottom: 4 }}>
+          <div style={{ fontSize: 15, fontWeight: 600, color: colors.textPrimary, marginBottom: 4 }}>
             Vitruvia World Model: Predictive Aging Trajectories
           </div>
-          <div style={{ fontSize: 13, color: '#6B6B6B' }}>
+          <div style={{ fontSize: 13, color: colors.textSecondary }}>
             Trained on 25+ years of longitudinal biological data from exceptional agers
           </div>
         </div>
         <div style={{
-          background: '#8B7355',
+          background: colors.primary,
           color: '#FFFFFF',
           padding: '12px 24px',
           borderRadius: 8,

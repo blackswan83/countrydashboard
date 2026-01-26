@@ -4,6 +4,7 @@
   --nuraxi-primary: #8B7355;
   --nuraxi-secondary: #6B5B4F;
   --nuraxi-accent: #C4A77D;
+  --nuraxi-gold: #C4A77D;
   --nuraxi-logo-dark: #524532;
   --nuraxi-logo-gold: #9E8363;
 
@@ -38,6 +39,21 @@
   --swiss-red: #DC0018;
   --swiss-red-dark: #B80014;
   --swiss-red-light: rgba(220, 0, 24, 0.1);
+
+  /* Dim Accent Colors (for backgrounds) */
+  --accent-danger-dim: rgba(199, 91, 91, 0.15);
+  --accent-warning-dim: rgba(212, 165, 116, 0.15);
+  --accent-success-dim: rgba(74, 124, 89, 0.15);
+  --accent-info-dim: rgba(0, 160, 176, 0.15);
+
+  /* Chart Colors */
+  --chart-bg: #F5F0EB;
+  --chart-text: #8B8B8B;
+  --chart-grid: rgba(0, 0, 0, 0.1);
+  --chart-line-danger: #C75B5B;
+  --chart-line-success: #4A7C59;
+  --chart-line-info: #00A0B0;
+  --chart-line-warning: #D4A574;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -448,11 +464,33 @@ body {
   /* Nuraxi Brand - adjusted for dark */
   --nuraxi-primary: #C4A77D;
   --nuraxi-accent: #D4B896;
+  --nuraxi-gold: #D4B896;
 
   /* Shadows */
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
   --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+
+  /* Accent Colors - brighter for dark mode */
+  --accent-danger: #E06B6B;
+  --accent-success: #5B9A6E;
+  --accent-warning: #E8B584;
+  --accent-secondary: #00B8C8;
+
+  /* Dim Accent Colors (for backgrounds - more visible on dark) */
+  --accent-danger-dim: rgba(224, 107, 107, 0.2);
+  --accent-warning-dim: rgba(232, 181, 132, 0.2);
+  --accent-success-dim: rgba(91, 154, 110, 0.2);
+  --accent-info-dim: rgba(0, 184, 200, 0.2);
+
+  /* Chart Colors */
+  --chart-bg: #1E2A3A;
+  --chart-text: #9CA3AF;
+  --chart-grid: rgba(255, 255, 255, 0.1);
+  --chart-line-danger: #E06B6B;
+  --chart-line-success: #5B9A6E;
+  --chart-line-info: #00B8C8;
+  --chart-line-warning: #E8B584;
 }
 
 .dark-mode body {
