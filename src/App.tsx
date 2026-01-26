@@ -8,7 +8,9 @@ import { DiseaseAnalysis } from './components/DiseaseAnalysis';
 import { HealthcareInfrastructure } from './components/HealthcareInfrastructure';
 import { AgingTrajectory } from './components/AgingTrajectory';
 import { PopulationPyramid } from './components/PopulationPyramid';
-import { InterventionSimulator } from './components/InterventionSimulator';
+// InterventionSimulator kept for reference - new InterventionLab replaces it
+// import { InterventionSimulator } from './components/InterventionSimulator';
+import InterventionLab from './components/intervention/InterventionLab';
 import { nationalStats, provinces } from './data/ksaData';
 
 type ViewType = 'national' | 'provincial' | 'aging' | 'intervention' | 'disease' | 'infrastructure';
@@ -411,9 +413,9 @@ function App() {
           <AgingTrajectory />
         )}
 
-        {/* Intervention Lab - Country Health Twin */}
+        {/* Intervention Lab - Country Agentic Health Twin */}
         {currentView === 'intervention' && (
-          <InterventionSimulator />
+          <InterventionLab language={language} darkMode={darkMode} />
         )}
 
         {/* Disease Deep-Dive */}
