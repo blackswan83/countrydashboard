@@ -7,7 +7,20 @@ interface KSAMapProps {
   selectedProvince: string | null;
   onProvinceSelect: (provinceId: string | null) => void;
   colorMode?: 'tier' | 'diabetes' | 'obesity' | 'infrastructure';
+  darkMode?: boolean;
 }
+
+// Theme-aware colors
+const getThemeColors = (darkMode: boolean) => ({
+  textPrimary: darkMode ? '#E8E6E3' : '#3D3D3D',
+  textSecondary: darkMode ? '#9CA3AF' : '#6B6B6B',
+  textMuted: darkMode ? '#6B7280' : '#8B8B8B',
+  gold: darkMode ? '#D4B896' : '#C4A77D',
+  danger: darkMode ? '#E06B6B' : '#C75B5B',
+  success: darkMode ? '#5B9A6E' : '#4A7C59',
+  warning: darkMode ? '#E8B584' : '#D4A574',
+  popupBg: darkMode ? '#1E2A3A' : '#FFFFFF',
+});
 
 const getRegionColor = (province: ProvinceData, colorMode: string): string => {
   if (colorMode === 'tier') {
@@ -51,8 +64,10 @@ export const KSAMap: React.FC<KSAMapProps> = ({
   selectedProvince,
   onProvinceSelect,
   colorMode = 'tier',
+  darkMode = false,
 }) => {
   const [hoveredProvince, setHoveredProvince] = useState<string | null>(null);
+  const colors = getThemeColors(darkMode);
 
   const selectedProvinceData = selectedProvince ? provinces[selectedProvince] : null;
 
@@ -105,35 +120,35 @@ export const KSAMap: React.FC<KSAMapProps> = ({
                 }}
               >
                 <Popup>
-                  <div style={{ minWidth: 180 }}>
+                  <div style={{ minWidth: 180, background: colors.popupBg, margin: -13, padding: 13, borderRadius: 4 }}>
                     <div style={{ marginBottom: 8 }}>
-                      <div style={{ fontSize: 11, color: '#C4A77D' }}>{province.nameAr}</div>
-                      <div style={{ fontSize: 16, fontWeight: 600, color: '#3D3D3D' }}>{province.name}</div>
-                      <div style={{ fontSize: 12, color: '#6B6B6B' }}>
+                      <div style={{ fontSize: 11, color: colors.gold }}>{province.nameAr}</div>
+                      <div style={{ fontSize: 16, fontWeight: 600, color: colors.textPrimary }}>{province.name}</div>
+                      <div style={{ fontSize: 12, color: colors.textSecondary }}>
                         Capital: {province.capital} | {(province.population / 1000000).toFixed(1)}M
                       </div>
                     </div>
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
                       <div>
-                        <div style={{ fontSize: 10, color: '#8B8B8B' }}>Diabetes</div>
-                        <div style={{ fontSize: 14, fontWeight: 600, color: province.diabetes > 8 ? '#C75B5B' : '#3D3D3D' }}>
+                        <div style={{ fontSize: 10, color: colors.textMuted }}>Diabetes</div>
+                        <div style={{ fontSize: 14, fontWeight: 600, color: province.diabetes > 8 ? colors.danger : colors.textPrimary }}>
                           {province.diabetes}%
                         </div>
                       </div>
                       <div>
-                        <div style={{ fontSize: 10, color: '#8B8B8B' }}>Obesity</div>
-                        <div style={{ fontSize: 14, fontWeight: 600, color: province.obesity > 29 ? '#C75B5B' : '#3D3D3D' }}>
+                        <div style={{ fontSize: 10, color: colors.textMuted }}>Obesity</div>
+                        <div style={{ fontSize: 14, fontWeight: 600, color: province.obesity > 29 ? colors.danger : colors.textPrimary }}>
                           {province.obesity}%
                         </div>
                       </div>
                       <div>
-                        <div style={{ fontSize: 10, color: '#8B8B8B' }}>Beds/10K</div>
-                        <div style={{ fontSize: 14, fontWeight: 600, color: province.bedsPerCapita < 23 ? '#C75B5B' : '#4A7C59' }}>
+                        <div style={{ fontSize: 10, color: colors.textMuted }}>Beds/10K</div>
+                        <div style={{ fontSize: 14, fontWeight: 600, color: province.bedsPerCapita < 23 ? colors.danger : colors.success }}>
                           {province.bedsPerCapita}
                         </div>
                       </div>
                       <div>
-                        <div style={{ fontSize: 10, color: '#8B8B8B' }}>Priority</div>
+                        <div style={{ fontSize: 10, color: colors.textMuted }}>Priority</div>
                         <div style={{
                           fontSize: 10,
                           fontWeight: 600,
@@ -192,10 +207,10 @@ export const KSAMap: React.FC<KSAMapProps> = ({
         {selectedProvince && (
           <div className="map-overlay top-right">
             <div className="map-legend" style={{ textAlign: 'right' }}>
-              <div style={{ fontSize: 12, color: '#C4A77D' }}>
+              <div style={{ fontSize: 12, color: colors.gold }}>
                 {provinces[selectedProvince].nameAr}
               </div>
-              <div style={{ fontSize: 16, fontWeight: 600, color: '#3D3D3D' }}>
+              <div style={{ fontSize: 16, fontWeight: 600, color: colors.textPrimary }}>
                 {provinces[selectedProvince].name}
               </div>
             </div>

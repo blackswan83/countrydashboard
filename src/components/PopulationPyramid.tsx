@@ -5,6 +5,22 @@ interface AgeGroup {
   ncd: number;
 }
 
+// Theme colors for dark mode support
+const getThemeColors = (darkMode: boolean) => ({
+  chartBg: darkMode ? '#1E2A3A' : '#F5F0EB',
+  textSecondary: darkMode ? '#9CA3AF' : '#6B6B6B',
+  textMuted: darkMode ? '#6B7280' : '#8B8B8B',
+  primary: darkMode ? '#C4A77D' : '#8B7355',
+  danger: darkMode ? '#E06B6B' : '#C75B5B',
+  success: darkMode ? '#5B9A6E' : '#4A7C59',
+  warning: darkMode ? '#E8B584' : '#D4A574',
+  border: darkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(139, 115, 85, 0.1)',
+});
+
+interface PopulationPyramidProps {
+  darkMode?: boolean;
+}
+
 // Age distribution based on GASTAT Census 2022 (total 35.3M)
 // Health status based on NCD prevalence data (16.4% diabetes, 58% undiagnosed)
 const ageGroups: AgeGroup[] = [
@@ -19,14 +35,15 @@ const ageGroups: AgeGroup[] = [
   { label: '0-9', healthy: 4.90, atRisk: 0.15, ncd: 0.05 },    // 5.1M total
 ];
 
-export const PopulationPyramid: React.FC = () => {
+export const PopulationPyramid: React.FC<PopulationPyramidProps> = ({ darkMode = false }) => {
   const maxWidth = 7; // Max bar width based on largest age group (~6.7M)
+  const colors = getThemeColors(darkMode);
 
   return (
     <div className="card">
       <div className="card-header">
         <span className="card-title">Population by Age & Health Status</span>
-        <span className="card-badge" style={{ background: 'rgba(139, 115, 85, 0.1)', color: '#8B7355' }}>
+        <span className="card-badge" style={{ background: `${colors.primary}15`, color: colors.primary }}>
           35.3M TOTAL
         </span>
       </div>
@@ -39,7 +56,7 @@ export const PopulationPyramid: React.FC = () => {
                 <div style={{
                   width: 50,
                   fontSize: 12,
-                  color: '#6B6B6B',
+                  color: colors.textSecondary,
                   textAlign: 'right',
                   fontWeight: 500,
                 }}>
@@ -51,28 +68,28 @@ export const PopulationPyramid: React.FC = () => {
                   display: 'flex',
                   borderRadius: 6,
                   overflow: 'hidden',
-                  background: '#F5F0EB',
+                  background: colors.chartBg,
                 }}>
                   <div style={{
                     width: `${(group.healthy / maxWidth) * 100}%`,
-                    background: '#4A7C59',
+                    background: colors.success,
                     transition: 'width 0.5s ease',
                   }} />
                   <div style={{
                     width: `${(group.atRisk / maxWidth) * 100}%`,
-                    background: '#D4A574',
+                    background: colors.warning,
                     transition: 'width 0.5s ease',
                   }} />
                   <div style={{
                     width: `${(group.ncd / maxWidth) * 100}%`,
-                    background: '#C75B5B',
+                    background: colors.danger,
                     transition: 'width 0.5s ease',
                   }} />
                 </div>
                 <div style={{
                   width: 45,
                   fontSize: 12,
-                  color: '#8B8B8B',
+                  color: colors.textMuted,
                   fontWeight: 500,
                 }}>
                   {total.toFixed(1)}M
@@ -87,20 +104,20 @@ export const PopulationPyramid: React.FC = () => {
           gap: 24,
           marginTop: 20,
           paddingTop: 16,
-          borderTop: '1px solid rgba(139, 115, 85, 0.1)',
+          borderTop: `1px solid ${colors.border}`,
           fontSize: 12,
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <div style={{ width: 14, height: 14, borderRadius: 4, background: '#4A7C59' }} />
-            <span style={{ color: '#6B6B6B' }}>Healthy</span>
+            <div style={{ width: 14, height: 14, borderRadius: 4, background: colors.success }} />
+            <span style={{ color: colors.textSecondary }}>Healthy</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <div style={{ width: 14, height: 14, borderRadius: 4, background: '#D4A574' }} />
-            <span style={{ color: '#6B6B6B' }}>At Risk</span>
+            <div style={{ width: 14, height: 14, borderRadius: 4, background: colors.warning }} />
+            <span style={{ color: colors.textSecondary }}>At Risk</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <div style={{ width: 14, height: 14, borderRadius: 4, background: '#C75B5B' }} />
-            <span style={{ color: '#6B6B6B' }}>Diagnosed NCD</span>
+            <div style={{ width: 14, height: 14, borderRadius: 4, background: colors.danger }} />
+            <span style={{ color: colors.textSecondary }}>Diagnosed NCD</span>
           </div>
         </div>
 
@@ -111,30 +128,30 @@ export const PopulationPyramid: React.FC = () => {
           gap: 12,
           marginTop: 20,
           padding: 16,
-          background: '#F5F0EB',
+          background: colors.chartBg,
           borderRadius: 12,
         }}>
           <div style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: 10, color: '#8B8B8B', textTransform: 'uppercase', marginBottom: 4 }}>
+            <div style={{ fontSize: 10, color: colors.textMuted, textTransform: 'uppercase', marginBottom: 4 }}>
               Healthy Pop
             </div>
-            <div style={{ fontSize: 18, fontWeight: 700, color: '#4A7C59' }}>
+            <div style={{ fontSize: 18, fontWeight: 700, color: colors.success }}>
               28.0M
             </div>
           </div>
           <div style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: 10, color: '#8B8B8B', textTransform: 'uppercase', marginBottom: 4 }}>
+            <div style={{ fontSize: 10, color: colors.textMuted, textTransform: 'uppercase', marginBottom: 4 }}>
               At Risk
             </div>
-            <div style={{ fontSize: 18, fontWeight: 700, color: '#D4A574' }}>
+            <div style={{ fontSize: 18, fontWeight: 700, color: colors.warning }}>
               4.5M
             </div>
           </div>
           <div style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: 10, color: '#8B8B8B', textTransform: 'uppercase', marginBottom: 4 }}>
+            <div style={{ fontSize: 10, color: colors.textMuted, textTransform: 'uppercase', marginBottom: 4 }}>
               NCD Diagnosed
             </div>
-            <div style={{ fontSize: 18, fontWeight: 700, color: '#C75B5B' }}>
+            <div style={{ fontSize: 18, fontWeight: 700, color: colors.danger }}>
               2.8M
             </div>
           </div>
