@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { KSAMap } from './components/KSAMap';
+import { ZambiaMap } from './components/ZambiaMap';
 import { StatCard } from './components/StatCard';
 import { Vision2030Tracker } from './components/Vision2030Tracker';
 import { ProvinceDetail } from './components/ProvinceDetail';
@@ -8,16 +8,14 @@ import { DiseaseAnalysis } from './components/DiseaseAnalysis';
 import { HealthcareInfrastructure } from './components/HealthcareInfrastructure';
 import { AgingTrajectory } from './components/AgingTrajectory';
 import { PopulationPyramid } from './components/PopulationPyramid';
-// InterventionSimulator kept for reference - new InterventionLab replaces it
-// import { InterventionSimulator } from './components/InterventionSimulator';
 import InterventionLab from './components/intervention/InterventionLab';
 import { IntroPresentation } from './components/IntroPresentation';
-import { nationalStats, provinces } from './data/ksaData';
+import { nationalStats, provinces } from './data/zambiaData';
 
 type ViewType = 'national' | 'provincial' | 'aging' | 'intervention' | 'disease' | 'infrastructure';
 
-// Simple Aging Curve Preview SVG for National Overview
-const AgingCurvePreview: React.FC<{ darkMode?: boolean }> = ({ darkMode = false }) => {
+// Simple Health Trajectory Preview SVG for National Overview
+const HealthTrajectoryPreview: React.FC<{ darkMode?: boolean }> = ({ darkMode = false }) => {
   const width = 400;
   const height = 180;
   const padding = { top: 15, right: 20, bottom: 30, left: 40 };
@@ -42,8 +40,8 @@ const AgingCurvePreview: React.FC<{ darkMode?: boolean }> = ({ darkMode = false 
     return points;
   };
 
-  const populationCurve = generateCurve(95, 35, 1.4);
-  const superAgerCurve = generateCurve(95, 72, 0.8);
+  const populationCurve = generateCurve(90, 25, 1.6);
+  const targetCurve = generateCurve(95, 65, 0.9);
 
   const xScale = (age: number) => padding.left + ((age - 30) / 60) * chartWidth;
   const yScale = (val: number) => padding.top + (1 - val / 100) * chartHeight;
@@ -52,7 +50,7 @@ const AgingCurvePreview: React.FC<{ darkMode?: boolean }> = ({ darkMode = false 
     points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${xScale(p.age)} ${yScale(p.value)}`).join(' ');
 
   const areaD = () => {
-    const top = superAgerCurve.map(p => `${xScale(p.age)},${yScale(p.value)}`).join(' ');
+    const top = targetCurve.map(p => `${xScale(p.age)},${yScale(p.value)}`).join(' ');
     const bottom = [...populationCurve].reverse().map(p => `${xScale(p.age)},${yScale(p.value)}`).join(' ');
     return `M ${top} L ${bottom} Z`;
   };
@@ -73,7 +71,7 @@ const AgingCurvePreview: React.FC<{ darkMode?: boolean }> = ({ darkMode = false 
 
       {/* Curves */}
       <path d={pathD(populationCurve)} fill="none" stroke={danger} strokeWidth="2.5" />
-      <path d={pathD(superAgerCurve)} fill="none" stroke={success} strokeWidth="2.5" />
+      <path d={pathD(targetCurve)} fill="none" stroke={success} strokeWidth="2.5" />
 
       {/* X axis labels */}
       {[30, 50, 70, 90].map(age => (
@@ -83,89 +81,41 @@ const AgingCurvePreview: React.FC<{ darkMode?: boolean }> = ({ darkMode = false 
       ))}
 
       {/* Legend */}
-      <text x={width - 20} y={yScale(72) - 8} fill={success} fontSize="9" textAnchor="end">Super Ager</text>
-      <text x={width - 20} y={yScale(35) + 14} fill={danger} fontSize="9" textAnchor="end">KSA Pop</text>
+      <text x={width - 20} y={yScale(65) - 8} fill={success} fontSize="9" textAnchor="end">Target</text>
+      <text x={width - 20} y={yScale(25) + 14} fill={danger} fontSize="9" textAnchor="end">Zambia</text>
     </svg>
   );
 };
 
 // Left nav items (main dashboard views)
-const navItemsLeft: { id: ViewType; labelKey: keyof typeof translations.en.nav; icon: string }[] = [
-  { id: 'national', labelKey: 'national', icon: '🏛️' },
-  { id: 'provincial', labelKey: 'provincial', icon: '🗺️' },
-  { id: 'aging', labelKey: 'aging', icon: '🧬' },
-  { id: 'disease', labelKey: 'disease', icon: '🩺' },
-  { id: 'infrastructure', labelKey: 'infrastructure', icon: '🏥' },
+const navItemsLeft: { id: ViewType; label: string; icon: string }[] = [
+  { id: 'national', label: 'National Overview', icon: '🏛️' },
+  { id: 'provincial', label: 'Regional Analysis', icon: '🗺️' },
+  { id: 'aging', label: 'Aging & Longevity', icon: '🧬' },
+  { id: 'disease', label: 'Disease Deep-Dive', icon: '🩺' },
+  { id: 'infrastructure', label: 'Healthcare Infrastructure', icon: '🏥' },
 ];
 
 // Right nav item (Intervention Lab - special highlight)
-const navItemRight: { id: ViewType; labelKey: keyof typeof translations.en.nav; icon: string } =
-  { id: 'intervention', labelKey: 'intervention', icon: '🎯' };
+const navItemRight: { id: ViewType; label: string; icon: string } =
+  { id: 'intervention', label: 'Intervention Lab', icon: '🎯' };
 
-// Translations
-const translations = {
-  en: {
-    title: 'Kingdom of Saudi Arabia',
-    subtitle: 'National Health Intelligence Dashboard | Vision 2030',
-    sovereignData: 'Sovereign Data',
-    inKingdom: 'In-Kingdom Processing',
-    nav: {
-      national: 'National Overview',
-      provincial: 'Regional Analysis',
-      aging: 'Aging & Longevity',
-      intervention: 'Intervention Lab',
-      disease: 'Disease Deep-Dive',
-      infrastructure: 'Healthcare Infrastructure',
-    },
-    colorBy: {
-      tier: 'Color by: Priority Tier',
-      diabetes: 'Color by: Diabetes Rate',
-      obesity: 'Color by: Obesity Rate',
-      infrastructure: 'Color by: Infrastructure',
-    },
-    footer: {
-      data: 'Data: GASTAT Census 2022 | Saudi Health Interview Survey | MOH Statistical Yearbook | IHME GBD',
-      lastUpdated: 'Last updated: January 2025',
-    },
-  },
-  ar: {
-    title: 'المملكة العربية السعودية',
-    subtitle: 'لوحة معلومات الصحة الوطنية | رؤية 2030',
-    sovereignData: 'بيانات سيادية',
-    inKingdom: 'معالجة داخل المملكة',
-    nav: {
-      national: 'نظرة عامة وطنية',
-      provincial: 'التحليل الإقليمي',
-      aging: 'الشيخوخة وطول العمر',
-      intervention: 'مختبر التدخل',
-      disease: 'تحليل الأمراض',
-      infrastructure: 'البنية التحتية الصحية',
-    },
-    colorBy: {
-      tier: 'تلوين حسب: مستوى الأولوية',
-      diabetes: 'تلوين حسب: معدل السكري',
-      obesity: 'تلوين حسب: معدل السمنة',
-      infrastructure: 'تلوين حسب: البنية التحتية',
-    },
-    footer: {
-      data: 'البيانات: تعداد الهيئة العامة للإحصاء 2022 | مسح المقابلات الصحية السعودية | الكتاب الإحصائي لوزارة الصحة',
-      lastUpdated: 'آخر تحديث: يناير 2025',
-    },
-  },
+// Color mode options for Zambia (HIV and Malaria are key metrics)
+const colorByOptions = {
+  tier: 'Color by: Priority Tier',
+  hiv: 'Color by: HIV Prevalence',
+  malaria: 'Color by: Malaria Incidence',
+  infrastructure: 'Color by: Infrastructure',
 };
 
 function App() {
   const [currentView, setCurrentView] = useState<ViewType>('national');
   const [selectedProvince, setSelectedProvince] = useState<string | null>(null);
-  const [mapColorMode, setMapColorMode] = useState<'tier' | 'diabetes' | 'obesity' | 'infrastructure'>('tier');
-  const [language, setLanguage] = useState<'en' | 'ar'>('en');
+  const [mapColorMode, setMapColorMode] = useState<'tier' | 'hiv' | 'malaria' | 'infrastructure'>('tier');
   const [darkMode, setDarkMode] = useState(false);
   const [showIntro, setShowIntro] = useState(() => {
-    return localStorage.getItem('ksa-dashboard-intro-seen') !== 'true';
+    return localStorage.getItem('zambia-dashboard-intro-seen') !== 'true';
   });
-
-  const t = translations[language];
-  const isRTL = language === 'ar';
 
   const handleViewChange = (view: ViewType) => {
     setCurrentView(view);
@@ -177,14 +127,14 @@ function App() {
   const highPriorityProvinces = Object.values(provinces).filter(p => p.tier === 2).length;
 
   return (
-    <div className={`app-container ${darkMode ? 'dark-mode' : ''}`} dir={isRTL ? 'rtl' : 'ltr'}>
+    <div className={`app-container ${darkMode ? 'dark-mode' : ''}`}>
       {/* Header */}
       <header className="header">
         <div className="header-brand">
           <img src="/nuraxi_horizontal_rgb.svg" alt="Nuraxi" className="brand-logo" />
           <div className="header-title">
-            <h1>{t.title}</h1>
-            <p className="header-subtitle">{t.subtitle}</p>
+            <h1>Republic of Zambia</h1>
+            <p className="header-subtitle">National Health Intelligence Dashboard | NHSP 2022-2026</p>
           </div>
         </div>
         <div className="header-actions">
@@ -192,15 +142,15 @@ function App() {
           <div className="header-tag sovereign-prominent">
             <span style={{ fontSize: 16 }}>🛡️</span>
             <div>
-              <div style={{ fontWeight: 700, fontSize: 12 }}>{t.sovereignData}</div>
-              <div style={{ fontSize: 10, opacity: 0.8 }}>{t.inKingdom}</div>
+              <div style={{ fontWeight: 700, fontSize: 12 }}>Sovereign Data</div>
+              <div style={{ fontSize: 10, opacity: 0.8 }}>In-Country Processing</div>
             </div>
           </div>
           {/* About/Help Button */}
           <button
             className="header-tag toggle-btn"
             onClick={() => setShowIntro(true)}
-            title={language === 'en' ? 'About this dashboard' : 'حول هذه اللوحة'}
+            title="About this dashboard"
             style={{ fontSize: 16, fontWeight: 700 }}
           >
             ?
@@ -212,13 +162,6 @@ function App() {
             title={darkMode ? 'Light Mode' : 'Dark Mode'}
           >
             {darkMode ? '☀️' : '🌙'}
-          </button>
-          {/* Language Toggle */}
-          <button
-            className="header-tag toggle-btn language"
-            onClick={() => setLanguage(language === 'en' ? 'ar' : 'en')}
-          >
-            {language === 'en' ? 'عربي' : 'EN'}
           </button>
         </div>
       </header>
@@ -233,7 +176,7 @@ function App() {
             onClick={() => handleViewChange(item.id)}
           >
             <span className="nav-icon">{item.icon}</span>
-            {t.nav[item.labelKey]}
+            {item.label}
           </button>
         ))}
 
@@ -253,10 +196,10 @@ function App() {
                 cursor: 'pointer',
               }}
             >
-              <option value="tier">{t.colorBy.tier}</option>
-              <option value="diabetes">{t.colorBy.diabetes}</option>
-              <option value="obesity">{t.colorBy.obesity}</option>
-              <option value="infrastructure">{t.colorBy.infrastructure}</option>
+              <option value="tier">{colorByOptions.tier}</option>
+              <option value="hiv">{colorByOptions.hiv}</option>
+              <option value="malaria">{colorByOptions.malaria}</option>
+              <option value="infrastructure">{colorByOptions.infrastructure}</option>
             </select>
           </div>
         )}
@@ -283,11 +226,10 @@ function App() {
           }}
         >
           <span className="nav-icon">{navItemRight.icon}</span>
-          {t.nav[navItemRight.labelKey]}
+          {navItemRight.label}
           {/* Alpha badge */}
           <span style={{
-            marginLeft: isRTL ? 0 : 6,
-            marginRight: isRTL ? 6 : 0,
+            marginLeft: 6,
             fontSize: 9,
             padding: '2px 6px',
             background: currentView === navItemRight.id
@@ -315,23 +257,23 @@ function App() {
                 color="var(--accent-primary)"
               />
               <StatCard
-                label="Diabetes Prevalence"
-                value={`${nationalStats.diabetesPrevalence}%`}
-                subtext="~5.8M affected"
+                label="HIV Prevalence"
+                value={`${nationalStats.hivPrevalence}%`}
+                subtext="~1.4M affected"
                 color="var(--accent-danger)"
               />
               <StatCard
-                label="Undiagnosed NCDs"
-                value={`${nationalStats.undiagnosedDiabetes}%`}
-                subtext="Hidden burden"
+                label="Malaria Incidence"
+                value={`${nationalStats.malariaIncidence}/1K`}
+                subtext="Endemic nationwide"
                 color="var(--accent-warning)"
               />
               <StatCard
                 label="Life Expectancy"
                 value={`${nationalStats.lifeExpectancy}yr`}
-                subtext="Target: 80yr"
+                subtext="Target: 72yr"
                 color="var(--accent-success)"
-                trend={3}
+                trend={4}
               />
               <StatCard
                 label="Healthy Life Years"
@@ -343,7 +285,7 @@ function App() {
 
             {/* Map + Sidebar */}
             <div className="content-grid content-grid-2">
-              <KSAMap
+              <ZambiaMap
                 selectedProvince={selectedProvince}
                 onProvinceSelect={setSelectedProvince}
                 colorMode={mapColorMode}
@@ -371,7 +313,7 @@ function App() {
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 16 }}>
                     <div>
                       <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 4 }}>
-                        Population trajectory vs optimal aging
+                        Population trajectory vs optimal health
                       </div>
                     </div>
                     <div style={{
@@ -382,10 +324,10 @@ function App() {
                       borderColor: darkMode ? 'rgba(91, 154, 110, 0.3)' : 'rgba(74, 124, 89, 0.2)',
                     }}>
                       <div style={{ fontSize: 10, color: 'var(--accent-success)' }}>GAP AT AGE 65</div>
-                      <div style={{ fontSize: 22, fontWeight: 700, color: 'var(--accent-success)' }}>+37%</div>
+                      <div style={{ fontSize: 22, fontWeight: 700, color: 'var(--accent-success)' }}>+40%</div>
                     </div>
                   </div>
-                  <AgingCurvePreview darkMode={darkMode} />
+                  <HealthTrajectoryPreview darkMode={darkMode} />
                   <div style={{
                     marginTop: 16,
                     padding: '12px 16px',
@@ -395,7 +337,7 @@ function App() {
                     color: 'var(--text-secondary)',
                     lineHeight: 1.6,
                   }}>
-                    <strong style={{ color: 'var(--accent-success)' }}>The shaded area represents addressable health optimization.</strong> Closing this gap through predictive intervention could add 10+ healthy life years for millions of Saudis.
+                    <strong style={{ color: 'var(--accent-success)' }}>The shaded area represents addressable health optimization.</strong> Closing this gap through HIV/malaria control and NCD prevention could add 8+ healthy life years for millions of Zambians.
                   </div>
                 </div>
               </div>
@@ -429,22 +371,22 @@ function App() {
               />
               <StatCard
                 label="Infrastructure Gap"
-                value="17K"
+                value="12K"
                 subtext="Additional beds needed"
                 color="var(--accent-secondary)"
                 small
               />
               <StatCard
                 label="Model Province"
-                value="Najran"
-                subtext="Lowest NCD burden"
+                value="Lusaka"
+                subtext="Best infrastructure"
                 color="var(--accent-success)"
                 small
               />
             </div>
 
             <div className="content-grid content-grid-sidebar">
-              <KSAMap
+              <ZambiaMap
                 selectedProvince={selectedProvince}
                 onProvinceSelect={setSelectedProvince}
                 colorMode={mapColorMode}
@@ -472,7 +414,7 @@ function App() {
 
         {/* Intervention Lab - Country Agentic Health Twin */}
         {currentView === 'intervention' && (
-          <InterventionLab language={language} darkMode={darkMode} />
+          <InterventionLab language="en" darkMode={darkMode} />
         )}
 
         {/* Disease Deep-Dive */}
@@ -488,29 +430,29 @@ function App() {
 
       {/* Footer */}
       <footer className="footer">
-        <div>{t.footer.data}</div>
+        <div>Data: Zambia DHS 2018 | MOH Health Statistics | WHO Country Profile | IHME GBD</div>
         <div className="footer-right">
-          <span>🛡️ {t.sovereignData}</span>
+          <span>🛡️ Sovereign Data</span>
           <span style={{ margin: '0 8px', opacity: 0.4 }}>|</span>
-          <span>{t.inKingdom}</span>
+          <span>In-Country Processing</span>
           <span className="footer-dot pulse">●</span>
-          <span>{t.footer.lastUpdated}</span>
+          <span>Last updated: January 2025</span>
         </div>
       </footer>
 
       {/* Intro Presentation Modal */}
       {showIntro && (
         <IntroPresentation
-          language={language}
+          language="en"
           darkMode={darkMode}
           onComplete={(view) => {
             setShowIntro(false);
-            localStorage.setItem('ksa-dashboard-intro-seen', 'true');
+            localStorage.setItem('zambia-dashboard-intro-seen', 'true');
             if (view) handleViewChange(view);
           }}
           onDismiss={() => {
             setShowIntro(false);
-            localStorage.setItem('ksa-dashboard-intro-seen', 'true');
+            localStorage.setItem('zambia-dashboard-intro-seen', 'true');
           }}
         />
       )}

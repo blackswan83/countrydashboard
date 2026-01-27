@@ -1,12 +1,12 @@
 import React, { useState, useMemo } from 'react';
-import { provinces, tierDefinitions, type ProvinceData } from '../data/ksaData';
+import { provinces, tierDefinitions, type ProvinceData } from '../data/zambiaData';
 
 interface ProvinceTableProps {
   selectedProvince: string | null;
   onProvinceSelect: (provinceId: string | null) => void;
 }
 
-type SortKey = keyof ProvinceData | 'name' | 'population' | 'diabetes' | 'hypertension' | 'obesity' | 'bedsPerCapita' | 'inactivity' | 'tier' | 'trend';
+type SortKey = keyof ProvinceData | 'name' | 'population' | 'hiv' | 'malaria' | 'diabetes' | 'bedsPerCapita' | 'tier' | 'trend';
 
 export const ProvinceTable: React.FC<ProvinceTableProps> = ({
   selectedProvince,
@@ -44,11 +44,10 @@ export const ProvinceTable: React.FC<ProvinceTableProps> = ({
   const columns: { key: SortKey; label: string }[] = [
     { key: 'name', label: 'Province' },
     { key: 'population', label: 'Population' },
+    { key: 'hiv', label: 'HIV %' },
+    { key: 'malaria', label: 'Malaria/1K' },
     { key: 'diabetes', label: 'Diabetes %' },
-    { key: 'hypertension', label: 'HTN %' },
-    { key: 'obesity', label: 'Obesity %' },
     { key: 'bedsPerCapita', label: 'Beds/10K' },
-    { key: 'inactivity', label: 'Inactive %' },
     { key: 'tier', label: 'Priority' },
     { key: 'trend', label: 'Trend' },
   ];
@@ -97,7 +96,6 @@ export const ProvinceTable: React.FC<ProvinceTableProps> = ({
                       />
                       <div className="province-info">
                         <span className="province-info-name">{p.name}</span>
-                        <span className="province-info-ar">{p.nameAr}</span>
                       </div>
                     </div>
                   </td>
@@ -106,35 +104,40 @@ export const ProvinceTable: React.FC<ProvinceTableProps> = ({
                   </td>
                   <td>
                     <span style={{
-                      color: p.diabetes > 8 ? 'var(--accent-danger)' :
-                             p.diabetes > 7 ? 'var(--accent-warning)' :
+                      color: p.hiv > 13 ? 'var(--accent-danger)' :
+                             p.hiv > 10 ? 'var(--accent-warning)' :
                              'var(--text-secondary)',
-                      fontWeight: p.diabetes > 8 ? 600 : 400,
+                      fontWeight: p.hiv > 13 ? 600 : 400,
+                    }}>
+                      {p.hiv}%
+                    </span>
+                  </td>
+                  <td>
+                    <span style={{
+                      color: p.malaria > 350 ? 'var(--accent-danger)' :
+                             p.malaria > 250 ? 'var(--accent-warning)' :
+                             'var(--text-secondary)',
+                      fontWeight: p.malaria > 350 ? 600 : 400,
+                    }}>
+                      {p.malaria}
+                    </span>
+                  </td>
+                  <td>
+                    <span style={{
+                      color: p.diabetes > 4 ? 'var(--accent-warning)' :
+                             'var(--text-secondary)',
                     }}>
                       {p.diabetes}%
                     </span>
                   </td>
                   <td>
                     <span style={{
-                      color: p.hypertension > 8 ? 'var(--accent-danger)' :
-                             'var(--text-secondary)',
-                    }}>
-                      {p.hypertension}%
-                    </span>
-                  </td>
-                  <td style={{ color: 'var(--text-secondary)' }}>
-                    {p.obesity}%
-                  </td>
-                  <td>
-                    <span style={{
-                      color: p.bedsPerCapita < 23 ? 'var(--accent-danger)' :
+                      color: p.bedsPerCapita < 8 ? 'var(--accent-danger)' :
+                             p.bedsPerCapita < 12 ? 'var(--accent-warning)' :
                              'var(--accent-success)',
                     }}>
                       {p.bedsPerCapita}
                     </span>
-                  </td>
-                  <td style={{ color: 'var(--text-muted)' }}>
-                    {p.inactivity}%
                   </td>
                   <td>
                     <span style={{

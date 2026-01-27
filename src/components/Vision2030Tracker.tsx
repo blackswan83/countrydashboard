@@ -1,5 +1,5 @@
 import React from 'react';
-import { vision2030KPIs } from '../data/ksaData';
+import { nhspKPIs as vision2030KPIs } from '../data/zambiaData';
 
 const statusColors = {
   'on-track': 'var(--accent-success)',

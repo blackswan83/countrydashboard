@@ -1,5 +1,5 @@
 import React from 'react';
-import { provinces, tierDefinitions } from '../data/ksaData';
+import { provinces, tierDefinitions } from '../data/zambiaData';
 
 interface ProvinceDetailProps {
   provinceId: string;
@@ -12,19 +12,19 @@ export const ProvinceDetail: React.FC<ProvinceDetailProps> = ({ provinceId, onCl
   if (!province) return null;
 
   const metrics = [
-    { label: 'Diabetes', value: province.diabetes, unit: '%', danger: 8 },
-    { label: 'Hypertension', value: province.hypertension, unit: '%', danger: 8 },
-    { label: 'CVD', value: province.cvd, unit: '%', danger: 1.8 },
-    { label: 'Obesity', value: province.obesity, unit: '%', danger: 29 },
-    { label: 'Inactivity', value: province.inactivity, unit: '%', danger: 96 },
-    { label: 'Smoking', value: province.smoking, unit: '%', danger: 14 },
+    { label: 'HIV', value: province.hiv, unit: '%', danger: 12 },
+    { label: 'Malaria', value: province.malaria, unit: '/1K', danger: 300 },
+    { label: 'Diabetes', value: province.diabetes, unit: '%', danger: 4 },
+    { label: 'CVD', value: province.cvd, unit: '%', danger: 6 },
+    { label: 'Obesity', value: province.obesity, unit: '%', danger: 15 },
+    { label: 'Hypertension', value: province.hypertension, unit: '%', danger: 25 },
   ];
 
   const infrastructure = [
-    { label: 'Hospital Beds', value: province.bedsPerCapita, unit: '/10K', good: 25 },
-    { label: 'Primary Care', value: province.phcPerCapita, unit: '/10K', good: 2.5 },
-    { label: 'Physicians', value: province.physicians, unit: '/10K', good: 25 },
-    { label: 'Hospitals', value: province.hospitals, unit: '', good: 20 },
+    { label: 'Hospital Beds', value: province.bedsPerCapita, unit: '/10K', good: 12 },
+    { label: 'Primary Care', value: province.phcPerCapita, unit: '/10K', good: 1.5 },
+    { label: 'Physicians', value: province.physicians, unit: '/10K', good: 0.8 },
+    { label: 'Hospitals', value: province.hospitals, unit: '', good: 10 },
   ];
 
   const tierColor = tierDefinitions[province.tier].color;
@@ -43,7 +43,6 @@ export const ProvinceDetail: React.FC<ProvinceDetailProps> = ({ provinceId, onCl
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <div>
-            <div className="province-name-ar">{province.nameAr}</div>
             <h2 className="province-name">{province.name}</h2>
             <div className="province-meta">
               Capital: {province.capital} | {(province.population / 1000000).toFixed(2)}M population
@@ -146,26 +145,42 @@ export const ProvinceDetail: React.FC<ProvinceDetailProps> = ({ provinceId, onCl
           }}>
             Annual Mortality per 100,000
           </div>
-          <div style={{ display: 'flex', gap: 24 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 16 }}>
             <div>
               <span style={{
-                fontSize: 22,
+                fontSize: 20,
                 fontWeight: 700,
                 color: 'var(--text-primary)',
               }}>
-                {province.diabetesMortality.toLocaleString()}
+                {province.hivMortality.toLocaleString()}
               </span>
               <span style={{
                 fontSize: 12,
                 color: 'var(--text-muted)',
                 marginLeft: 6,
               }}>
-                Diabetes
+                HIV
               </span>
             </div>
             <div>
               <span style={{
-                fontSize: 22,
+                fontSize: 20,
+                fontWeight: 700,
+                color: 'var(--text-primary)',
+              }}>
+                {province.malariaMortality.toLocaleString()}
+              </span>
+              <span style={{
+                fontSize: 12,
+                color: 'var(--text-muted)',
+                marginLeft: 6,
+              }}>
+                Malaria
+              </span>
+            </div>
+            <div>
+              <span style={{
+                fontSize: 20,
                 fontWeight: 700,
                 color: 'var(--text-primary)',
               }}>
@@ -177,6 +192,22 @@ export const ProvinceDetail: React.FC<ProvinceDetailProps> = ({ provinceId, onCl
                 marginLeft: 6,
               }}>
                 CVD
+              </span>
+            </div>
+            <div>
+              <span style={{
+                fontSize: 20,
+                fontWeight: 700,
+                color: 'var(--text-primary)',
+              }}>
+                {province.diabetesMortality.toLocaleString()}
+              </span>
+              <span style={{
+                fontSize: 12,
+                color: 'var(--text-muted)',
+                marginLeft: 6,
+              }}>
+                Diabetes
               </span>
             </div>
           </div>

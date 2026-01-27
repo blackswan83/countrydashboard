@@ -1,5 +1,5 @@
 import React from 'react';
-import { provinces, nationalStats } from '../data/ksaData';
+import { provinces, nationalStats } from '../data/zambiaData';
 
 export const HealthcareInfrastructure: React.FC = () => {
   // Sort provinces by beds per capita

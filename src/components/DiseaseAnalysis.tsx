@@ -1,34 +1,36 @@
 import React, { useState } from 'react';
-import { provinces, diseaseburden } from '../data/ksaData';
+import { provinces, diseaseburden } from '../data/zambiaData';
 
-type DiseaseKey = 'diabetes' | 'obesity' | 'cvd' | 'hypertension';
+type DiseaseKey = 'hiv' | 'malaria' | 'diabetes' | 'cvd';
 
 export const DiseaseAnalysis: React.FC = () => {
-  const [selectedDisease, setSelectedDisease] = useState<DiseaseKey>('diabetes');
+  const [selectedDisease, setSelectedDisease] = useState<DiseaseKey>('hiv');
 
-  const disease = diseaseburden[selectedDisease];
+  // Use type assertion since different diseases have different structures
+  const disease = diseaseburden[selectedDisease] as any;
 
   // Calculate province rankings for selected disease
   const provinceRankings = Object.entries(provinces)
     .map(([id, p]) => ({
       id,
       name: p.name,
-      nameAr: p.nameAr,
-      value: selectedDisease === 'diabetes' ? p.diabetes :
-             selectedDisease === 'obesity' ? p.obesity :
-             selectedDisease === 'cvd' ? p.cvd : p.hypertension,
+      value: selectedDisease === 'hiv' ? p.hiv :
+             selectedDisease === 'malaria' ? p.malaria :
+             selectedDisease === 'diabetes' ? p.diabetes : p.cvd,
       population: p.population,
     }))
     .sort((a, b) => b.value - a.value);
 
   const diseaseOptions = [
+    { key: 'hiv' as const, label: 'HIV/AIDS', icon: '🎗️' },
+    { key: 'malaria' as const, label: 'Malaria', icon: '🦟' },
     { key: 'diabetes' as const, label: 'Diabetes', icon: '🩸' },
-    { key: 'obesity' as const, label: 'Obesity', icon: '⚖️' },
     { key: 'cvd' as const, label: 'Cardiovascular', icon: '❤️' },
-    { key: 'hypertension' as const, label: 'Hypertension', icon: '💉' },
   ];
 
   const maxValue = Math.max(...provinceRankings.map(p => p.value));
+  const isPerThousand = selectedDisease === 'malaria';
+  const unit = isPerThousand ? '/1K' : '%';
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
@@ -52,25 +54,29 @@ export const DiseaseAnalysis: React.FC = () => {
           <div className="stat-card-accent" style={{ backgroundColor: 'var(--accent-danger)' }} />
           <div className="stat-card-label">National Prevalence</div>
           <div className="stat-card-value" style={{ color: 'var(--accent-danger)' }}>
-            {disease.prevalence}%
+            {disease.prevalence}{unit}
           </div>
-          <div className="stat-card-subtext">Adult population</div>
+          <div className="stat-card-subtext">{isPerThousand ? 'Per 1,000 population' : 'Adult population'}</div>
         </div>
         <div className="stat-card">
           <div className="stat-card-accent" style={{ backgroundColor: 'var(--accent-warning)' }} />
-          <div className="stat-card-label">Affected Population</div>
+          <div className="stat-card-label">{selectedDisease === 'malaria' ? 'Annual Cases' : 'Affected Population'}</div>
           <div className="stat-card-value" style={{ color: 'var(--accent-warning)' }}>
-            {(disease.affected / 1000000).toFixed(1)}M
+            {selectedDisease === 'malaria'
+              ? `${(disease.cases / 1000000).toFixed(1)}M`
+              : `${(disease.affected / 1000000).toFixed(1)}M`}
           </div>
-          <div className="stat-card-subtext">Estimated cases</div>
+          <div className="stat-card-subtext">{selectedDisease === 'malaria' ? 'Estimated annually' : 'Estimated cases'}</div>
         </div>
         <div className="stat-card">
           <div className="stat-card-accent" style={{ backgroundColor: 'var(--accent-secondary)' }} />
-          <div className="stat-card-label">Annual Increase</div>
+          <div className="stat-card-label">{selectedDisease === 'hiv' ? 'On Treatment' : selectedDisease === 'malaria' ? 'Mortality Rate' : 'Annual Increase'}</div>
           <div className="stat-card-value" style={{ color: 'var(--accent-secondary)' }}>
-            +{disease.yearlyIncrease}%
+            {selectedDisease === 'hiv' ? `${disease.onTreatment}%` :
+             selectedDisease === 'malaria' ? `${disease.mortality}/100K` :
+             `+${disease.yearlyIncrease}%`}
           </div>
-          <div className="stat-card-subtext">Year over year</div>
+          <div className="stat-card-subtext">{selectedDisease === 'hiv' ? 'ART coverage' : selectedDisease === 'malaria' ? 'Per 100,000' : 'Year over year'}</div>
         </div>
         <div className="stat-card">
           <div className="stat-card-accent" style={{ backgroundColor: 'var(--nuraxi-gold)' }} />
@@ -87,9 +93,9 @@ export const DiseaseAnalysis: React.FC = () => {
         {/* Province Ranking */}
         <div className="card">
           <div className="card-header">
-            <span className="card-title">Provincial {disease.name} Prevalence</span>
+            <span className="card-title">Provincial {disease.name} {isPerThousand ? 'Incidence' : 'Prevalence'}</span>
             <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>
-              Ranked by prevalence rate
+              Ranked by {isPerThousand ? 'incidence' : 'prevalence'} rate
             </span>
           </div>
           <div className="card-body">
@@ -124,7 +130,7 @@ export const DiseaseAnalysis: React.FC = () => {
                         fontWeight: 600,
                         color: idx < 3 ? 'var(--accent-danger)' : 'var(--text-primary)',
                       }}>
-                        {p.value}%
+                        {p.value}{unit}
                       </span>
                     </div>
                     <div style={{
@@ -158,55 +164,55 @@ export const DiseaseAnalysis: React.FC = () => {
             </div>
             <div className="card-body">
               <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                {selectedDisease === 'diabetes' && (
+                {selectedDisease === 'hiv' && (
                   <>
                     <div style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-                      <span style={{ color: 'var(--accent-primary)' }}>58%</span> of diabetes cases remain undiagnosed in KSA
+                      <span style={{ color: 'var(--accent-success)' }}>82%</span> of diagnosed HIV cases are on antiretroviral treatment
                     </div>
                     <div style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-                      KSA ranks <span style={{ color: 'var(--accent-warning)' }}>7th globally</span> in diabetes prevalence
+                      Lusaka and Southern provinces show highest prevalence rates
                     </div>
                     <div style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-                      Makkah & Eastern Province show highest prevalence rates
+                      Mother-to-child transmission reduced to <span style={{ color: 'var(--accent-success)' }}>4.8%</span>
                     </div>
                   </>
                 )}
-                {selectedDisease === 'obesity' && (
+                {selectedDisease === 'malaria' && (
                   <>
                     <div style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-                      <span style={{ color: 'var(--accent-danger)' }}>78.6%</span> of adults are overweight or obese
+                      <span style={{ color: 'var(--accent-danger)' }}>Endemic</span> in all 10 provinces year-round
                     </div>
                     <div style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-                      Child obesity rate: <span style={{ color: 'var(--accent-warning)' }}>19.5%</span>
+                      Luapula & Northern provinces show highest incidence rates
                     </div>
                     <div style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-                      Strong correlation with urbanization levels
+                      ITN coverage: <span style={{ color: 'var(--accent-warning)' }}>68%</span> of households
+                    </div>
+                  </>
+                )}
+                {selectedDisease === 'diabetes' && (
+                  <>
+                    <div style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+                      <span style={{ color: 'var(--accent-danger)' }}>58%</span> of diabetes cases remain undiagnosed
+                    </div>
+                    <div style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+                      Urban provinces (Lusaka, Copperbelt) show highest rates
+                    </div>
+                    <div style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+                      Prevalence increasing <span style={{ color: 'var(--accent-warning)' }}>4.2% annually</span>
                     </div>
                   </>
                 )}
                 {selectedDisease === 'cvd' && (
                   <>
                     <div style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-                      Cardiovascular disease causes <span style={{ color: 'var(--accent-danger)' }}>42%</span> of all deaths
+                      Cardiovascular disease causes <span style={{ color: 'var(--accent-danger)' }}>18%</span> of all deaths
                     </div>
                     <div style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-                      Mortality rate: <span style={{ color: 'var(--accent-warning)' }}>158 per 100,000</span>
+                      Rising burden linked to urbanization and diet changes
                     </div>
                     <div style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-                      Makkah shows highest CVD burden
-                    </div>
-                  </>
-                )}
-                {selectedDisease === 'hypertension' && (
-                  <>
-                    <div style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-                      Only <span style={{ color: 'var(--accent-danger)' }}>32%</span> of diagnosed cases are controlled
-                    </div>
-                    <div style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-                      Strong link with diabetes comorbidity
-                    </div>
-                    <div style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-                      Makkah & Al-Bahah provinces highest risk
+                      Limited cardiac care facilities outside Lusaka
                     </div>
                   </>
                 )}
@@ -230,7 +236,10 @@ export const DiseaseAnalysis: React.FC = () => {
                     IMMEDIATE
                   </div>
                   <div style={{ fontSize: 13, color: 'var(--text-primary)' }}>
-                    Mass screening programs in Makkah, Eastern, Jazan
+                    {selectedDisease === 'hiv' ? 'Expand ART access in rural Northern & Luapula' :
+                     selectedDisease === 'malaria' ? 'IRS campaigns in Luapula, Northern provinces' :
+                     selectedDisease === 'diabetes' ? 'Mass screening programs in Lusaka, Copperbelt' :
+                     'Establish cardiac units in provincial hospitals'}
                   </div>
                 </div>
                 <div style={{
@@ -243,7 +252,10 @@ export const DiseaseAnalysis: React.FC = () => {
                     SHORT-TERM
                   </div>
                   <div style={{ fontSize: 13, color: 'var(--text-primary)' }}>
-                    Digital health monitoring expansion
+                    {selectedDisease === 'hiv' ? 'Youth-focused prevention programs' :
+                     selectedDisease === 'malaria' ? 'Increase ITN distribution to 80% coverage' :
+                     selectedDisease === 'diabetes' ? 'Primary care NCD training expansion' :
+                     'Risk factor screening at primary care level'}
                   </div>
                 </div>
                 <div style={{
@@ -256,7 +268,10 @@ export const DiseaseAnalysis: React.FC = () => {
                     LONG-TERM
                   </div>
                   <div style={{ fontSize: 13, color: 'var(--text-primary)' }}>
-                    Lifestyle intervention at community level
+                    {selectedDisease === 'hiv' ? 'Vaccine research and trials partnership' :
+                     selectedDisease === 'malaria' ? 'Elimination target in low-burden provinces' :
+                     selectedDisease === 'diabetes' ? 'Lifestyle intervention at community level' :
+                     'Cardiovascular disease registry implementation'}
                   </div>
                 </div>
               </div>
