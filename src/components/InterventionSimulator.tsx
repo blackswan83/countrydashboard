@@ -10,7 +10,7 @@ interface PolicyLever {
   min: number;
   max: number;
   baseline: number;
-  costPerUnit: number; // SAR billions per unit
+  costPerUnit: number; // ZMW billions per unit
   icon: string;
 }
 
@@ -93,15 +93,15 @@ const impactCoefficients: Record<string, Record<string, number>> = {
   schoolNutrition: { diabetes: -0.05, obesity: -0.15, cvd: -0.03, lifeYears: 0.010 },
 };
 
-// Baseline national stats
+// Baseline national stats (Zambia)
 const baselineStats = {
-  diabetesPrevalence: 16.4,
-  obesityRate: 30.5, // Adult obesity specifically
-  cvdPrevalence: 8.2,
-  lifeExpectancy: 78.8,
-  healthyLifeYears: 65,
-  healthcareCostBn: 125, // SAR billions annually
-  productivityLossBn: 45, // SAR billions annually
+  diabetesPrevalence: 3.5,
+  obesityRate: 8.5, // Adult obesity
+  cvdPrevalence: 5.8,
+  lifeExpectancy: 64,
+  healthyLifeYears: 55,
+  healthcareCostBn: 4, // ZMW billions annually
+  productivityLossBn: 1.5, // ZMW billions annually
 };
 
 interface ProjectedOutcome {
@@ -316,9 +316,9 @@ export const InterventionSimulator: React.FC = () => {
 
   // Calculate economic impact
   const economicImpact = useMemo(() => {
-    const healthcareSavings = effects.diabetesEffect * -150 + effects.cvdEffect * -120; // Billions SAR
-    const productivityGains = effects.lifeYearsEffect * 80;
-    const qalyGains = effects.lifeYearsEffect * 35.3 * 1000000 * 0.1; // QALYs gained
+    const healthcareSavings = effects.diabetesEffect * -5 + effects.cvdEffect * -4; // Billions ZMW
+    const productivityGains = effects.lifeYearsEffect * 3;
+    const qalyGains = effects.lifeYearsEffect * 19.6 * 1000000 * 0.1; // QALYs gained
     const roi = (healthcareSavings + productivityGains - effects.totalCost) / Math.max(effects.totalCost, 1);
 
     return {
@@ -361,7 +361,7 @@ export const InterventionSimulator: React.FC = () => {
             <span style={{ fontSize: 32 }}>🧬</span>
             <div>
               <h2 style={{ margin: 0, fontSize: 24, fontWeight: 700 }}>
-                KSA Agentic Health Twin
+                Zambia Agentic Health Twin
               </h2>
               <p style={{ margin: '4px 0 0', opacity: 0.9, fontSize: 14 }}>
                 Simulate policy interventions. See population health trajectories transform in real-time.
@@ -377,11 +377,11 @@ export const InterventionSimulator: React.FC = () => {
           }}>
             <div>
               <div style={{ fontSize: 11, opacity: 0.7, marginBottom: 2 }}>POPULATION MODELED</div>
-              <div style={{ fontSize: 22, fontWeight: 700 }}>35.3M</div>
+              <div style={{ fontSize: 22, fontWeight: 700 }}>19.6M</div>
             </div>
             <div>
               <div style={{ fontSize: 11, opacity: 0.7, marginBottom: 2 }}>INDIVIDUAL TWINS</div>
-              <div style={{ fontSize: 22, fontWeight: 700 }}>35.3M</div>
+              <div style={{ fontSize: 22, fontWeight: 700 }}>19.6M</div>
             </div>
             <div>
               <div style={{ fontSize: 11, opacity: 0.7, marginBottom: 2 }}>SIMULATION HORIZON</div>
@@ -500,7 +500,7 @@ export const InterventionSimulator: React.FC = () => {
                 fontWeight: 700,
                 color: effects.totalCost > 0 ? '#C75B5B' : '#4A7C59',
               }}>
-                {effects.totalCost > 0 ? '' : '+'}{effects.totalCost.toFixed(1)} SAR Bn
+                {effects.totalCost > 0 ? '' : '+'}{effects.totalCost.toFixed(1)} ZMW Bn
               </div>
               <div style={{ fontSize: 11, color: '#6B6B6B', marginTop: 4 }}>
                 {effects.totalCost < 0 ? 'Net revenue from sugar tax' : 'Additional budget allocation'}
@@ -539,7 +539,7 @@ export const InterventionSimulator: React.FC = () => {
               <div className="stat-card-value" style={{ color: '#4A7C59' }}>
                 {economicImpact.healthcareSavings.toFixed(0)} Bn
               </div>
-              <div className="stat-card-subtext">SAR over {timeHorizon} years</div>
+              <div className="stat-card-subtext">ZMW Bn over {timeHorizon} years</div>
             </div>
             <div className="stat-card">
               <div className="stat-card-accent" style={{ backgroundColor: '#00A0B0' }} />
@@ -547,7 +547,7 @@ export const InterventionSimulator: React.FC = () => {
               <div className="stat-card-value" style={{ color: '#00A0B0' }}>
                 {economicImpact.productivityGains.toFixed(0)} Bn
               </div>
-              <div className="stat-card-subtext">SAR economic output</div>
+              <div className="stat-card-subtext">ZMW Bn economic output</div>
             </div>
             <div className="stat-card">
               <div className="stat-card-accent" style={{ backgroundColor: '#C4A77D' }} />
@@ -563,7 +563,7 @@ export const InterventionSimulator: React.FC = () => {
               <div className="stat-card-value" style={{ color: economicImpact.roi > 2 ? '#4A7C59' : '#D4A574' }}>
                 {economicImpact.roi.toFixed(1)}x
               </div>
-              <div className="stat-card-subtext">Per SAR invested</div>
+              <div className="stat-card-subtext">Per ZMW invested</div>
             </div>
           </div>
 
@@ -618,7 +618,7 @@ export const InterventionSimulator: React.FC = () => {
                     Cohort Aggregation
                   </div>
                   <div style={{ fontSize: 12, color: '#6B6B6B', lineHeight: 1.5 }}>
-                    35.3M individual twins aggregate into provincial and national health models
+                    19.6M individual twins aggregate into provincial and national health models
                   </div>
                 </div>
                 <div>

@@ -20,8 +20,8 @@ const introTranslations = {
     jumpToLab: 'Jump to Intervention Lab',
     slides: [
       {
-        title: 'KSA National Health Intelligence Dashboard',
-        subtitle: 'Powered by Nuraxi AI • Aligned with Vision 2030',
+        title: 'Zambia National Health Intelligence Dashboard',
+        subtitle: 'Powered by Nuraxi AI • Aligned with NHSP 2022-2026',
         features: [
           { icon: '📍', title: 'Real-time Health Mapping', desc: 'Provincial health metrics at your fingertips' },
           { icon: '📈', title: 'Predictive Analytics', desc: 'NCD trajectories and risk projections' },
@@ -35,7 +35,7 @@ const introTranslations = {
           { icon: '🏥', title: 'Regional Directors', desc: 'Provincial intervention priorities' },
           { icon: '📊', title: 'Health Economists', desc: 'Cost-effectiveness & budget modeling' },
           { icon: '🔬', title: 'Researchers', desc: 'Epidemiological trends & population data' },
-          { icon: '🌍', title: 'Vision 2030 Planners', desc: 'Progress tracking toward health KPIs' },
+          { icon: '🌍', title: 'NHSP Planners', desc: 'Progress tracking toward health KPIs' },
         ],
       },
       {
@@ -82,8 +82,8 @@ const introTranslations = {
     jumpToLab: 'انتقل إلى مختبر التدخل',
     slides: [
       {
-        title: 'لوحة معلومات الصحة الوطنية السعودية',
-        subtitle: 'مدعوم بالذكاء الاصطناعي من نوراكسي • متوافق مع رؤية 2030',
+        title: 'Zambia National Health Intelligence Dashboard',
+        subtitle: 'Powered by Nuraxi AI • Aligned with NHSP 2022-2026',
         features: [
           { icon: '📍', title: 'خرائط صحية فورية', desc: 'مقاييس صحية إقليمية في متناول يدك' },
           { icon: '📈', title: 'تحليلات تنبؤية', desc: 'مسارات الأمراض غير المعدية وتوقعات المخاطر' },
@@ -97,7 +97,7 @@ const introTranslations = {
           { icon: '🏥', title: 'المديرين الإقليميين', desc: 'أولويات التدخل الإقليمي' },
           { icon: '📊', title: 'اقتصاديي الصحة', desc: 'فعالية التكلفة ونمذجة الميزانية' },
           { icon: '🔬', title: 'الباحثين', desc: 'الاتجاهات الوبائية وبيانات السكان' },
-          { icon: '🌍', title: 'مخططي رؤية 2030', desc: 'تتبع التقدم نحو مؤشرات الأداء الصحية' },
+          { icon: '🌍', title: 'NHSP Planners', desc: 'Progress tracking toward health KPIs' },
         ],
       },
       {
@@ -237,7 +237,7 @@ export const IntroPresentation: React.FC<IntroPresentationProps> = ({
           {/* Slide 1: Welcome */}
           {currentSlide === 0 && (
             <div style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: 48, marginBottom: 16 }}>🇸🇦</div>
+              <div style={{ fontSize: 48, marginBottom: 16 }}>🇿🇲</div>
               <h2 style={{ fontSize: 28, fontWeight: 700, color: colors.primary, marginBottom: 12 }}>
                 {slide.title}
               </h2>
@@ -273,7 +273,7 @@ export const IntroPresentation: React.FC<IntroPresentationProps> = ({
                 {slide.title}
               </h2>
               <p style={{ fontSize: 14, color: colors.textSecondary, marginBottom: 28, textAlign: 'center' }}>
-                {language === 'en' ? 'Designed for health leaders across the Kingdom' : 'مصمم لقادة الصحة في جميع أنحاء المملكة'}
+                {language === 'en' ? 'Designed for health leaders across Zambia' : 'Designed for health leaders across Zambia'}
               </p>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 16 }}>
                 {slide.audiences?.map((a: any, i: number) => (
@@ -455,8 +455,8 @@ export const IntroPresentation: React.FC<IntroPresentationProps> = ({
               </h2>
               <p style={{ fontSize: 16, color: colors.textSecondary, marginBottom: 40, maxWidth: 500, margin: '0 auto 40px' }}>
                 {language === 'en'
-                  ? 'Explore the dashboard to discover insights that can transform health outcomes for millions of Saudis.'
-                  : 'استكشف لوحة المعلومات لاكتشاف رؤى يمكن أن تغير النتائج الصحية لملايين السعوديين.'}
+                  ? 'Explore the dashboard to discover insights that can transform health outcomes for millions of Zambians.'
+                  : 'Explore the dashboard to discover insights that can transform health outcomes for millions of Zambians.'}
               </p>
               <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
                 <button

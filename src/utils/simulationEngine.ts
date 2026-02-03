@@ -321,14 +321,14 @@ export function calculateEconomicImpact(
   const costEffect = calculateOutcomeEffect('healthcareCosts', values, activeSynergies, timeHorizon);
 
   // Healthcare savings from reduced disease burden
-  // Annual disease costs in SAR billions (conservative estimates):
-  // - Diabetes: ~25B SAR/yr (direct medical costs)
-  // - CVD: ~18B SAR/yr
-  // - Obesity-related: ~12B SAR/yr
+  // Annual disease costs in ZMW billions (Zambia estimates):
+  // - Diabetes: ~0.8B ZMW/yr (direct medical costs)
+  // - CVD: ~0.6B ZMW/yr
+  // - Obesity-related: ~0.4B ZMW/yr
   // Effect is negative (e.g., -0.05 for 5% reduction), so we use Math.abs for savings
-  const annualDiabetesSavings = Math.abs(diabetesEffect) * 25;
-  const annualCvdSavings = Math.abs(cvdEffect) * 18;
-  const annualObesitySavings = Math.abs(obesityEffect) * 12;
+  const annualDiabetesSavings = Math.abs(diabetesEffect) * 0.8;
+  const annualCvdSavings = Math.abs(cvdEffect) * 0.6;
+  const annualObesitySavings = Math.abs(obesityEffect) * 0.4;
   const annualDirectSavings = Math.abs(costEffect) * baselineStats.healthcareCostsBn;
 
   // Cumulative savings over time horizon (with discounting - assume 3% discount rate, simplified)
@@ -337,14 +337,14 @@ export function calculateEconomicImpact(
     * timeHorizon * discountFactor;
 
   // Productivity gains from healthier population (more conservative)
-  // Assume productivity loss is 45B SAR/yr, and health improvements recover portion of this
+  // Assume productivity loss is 1.5B ZMW/yr, and health improvements recover portion of this
   const productivityGains = Math.abs(lifeYearsEffect) * baselineStats.productivityLossBn * timeHorizon * 0.5 * discountFactor;
 
   // QALYs gained (Quality-Adjusted Life Years) - more realistic calculation
-  // Life expectancy effect of 1% = 0.78 years gained per person reaching that age
+  // Life expectancy effect of 1% = 0.64 years gained per person reaching that age
   // Assume 30% of population benefits * 0.7 QALY quality weight
   const yearsGainedPerPerson = Math.abs(lifeYearsEffect) * baselineStats.lifeExpectancy;
-  const affectedPopulationM = baselineStats.population * 0.3; // 30% of 35.3M
+  const affectedPopulationM = baselineStats.population * 0.3; // 30% of 19.6M
   const qalyGained = yearsGainedPerPerson * affectedPopulationM * 1000000 * 0.7;
 
   // ROI calculation

@@ -11,7 +11,7 @@ export const Vision2030Tracker: React.FC = () => {
   return (
     <div className="card">
       <div className="card-header">
-        <span className="card-title">Vision 2030 Health KPIs</span>
+        <span className="card-title">NHSP 2022-2026 Health KPIs</span>
         <span className="card-badge live">LIVE TRACKING</span>
       </div>
       <div className="card-body">

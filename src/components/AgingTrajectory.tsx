@@ -257,9 +257,9 @@ export const AgingTrajectory: React.FC<AgingTrajectoryProps> = ({ darkMode = fal
         </div>
         <div className="stat-card">
           <div className="stat-card-accent" style={{ backgroundColor: colors.success }} />
-          <div className="stat-card-label">KSA Target Population</div>
+          <div className="stat-card-label">Zambia Target Population</div>
           <div className="stat-card-value" style={{ color: colors.success }}>
-            34.1M
+            19.6M
           </div>
           <div className="stat-card-subtext">Eligible for intervention</div>
         </div>
@@ -347,7 +347,7 @@ export const AgingTrajectory: React.FC<AgingTrajectoryProps> = ({ darkMode = fal
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <div style={{ width: 24, height: 3, background: colors.danger, borderRadius: 2 }} />
-                <span style={{ fontSize: 12, color: colors.textSecondary }}>KSA Population Average</span>
+                <span style={{ fontSize: 12, color: colors.textSecondary }}>Zambia Population Average</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <div style={{ width: 24, height: 3, background: colors.success, borderRadius: 2 }} />
@@ -474,7 +474,7 @@ export const AgingTrajectory: React.FC<AgingTrajectoryProps> = ({ darkMode = fal
           fontSize: 13,
           fontWeight: 600,
         }}>
-          Deploy for KSA Vision 2030
+          Deploy for NHSP 2022-2026
         </div>
       </div>
     </div>

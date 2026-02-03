@@ -136,7 +136,7 @@ const CostEffectivenessTable: React.FC<{
             </span>
             <span className="ce-cost">
               {item.costPerQaly < Infinity
-                ? `${(item.costPerQaly / 1000).toFixed(0)}K SAR`
+                ? `${(item.costPerQaly / 1000).toFixed(0)}K ZMW`
                 : '∞'}
             </span>
             <span
@@ -154,7 +154,7 @@ const CostEffectivenessTable: React.FC<{
 
       <div className="ce-legend">
         <span className="ce-threshold">
-          {language === 'ar' ? 'عتبة فعالية التكلفة:' : 'Cost-effectiveness threshold:'} 50,000 SAR/QALY
+          {language === 'ar' ? 'Cost-effectiveness threshold:' : 'Cost-effectiveness threshold:'} 2,000 ZMW/QALY
         </span>
       </div>
     </div>
@@ -283,8 +283,8 @@ const EquityAnalysis: React.FC<{
         <ul>
           <li>
             {language === 'ar'
-              ? 'زيادة الاستثمار في المناطق الريفية (جازان، نجران، الجوف)'
-              : 'Increase investment in rural provinces (Jazan, Najran, Al-Jawf)'}
+              ? 'Increase investment in rural provinces (Luapula, Northern, Western)'
+              : 'Increase investment in rural provinces (Luapula, Northern, Western)'}
           </li>
           <li>
             {language === 'ar'
@@ -418,7 +418,7 @@ const ParetoFrontier: React.FC<{
 
           {/* Axis labels */}
           <text x={215} y={295} textAnchor="middle" fontSize="11" fill="var(--text-primary)">
-            {language === 'ar' ? 'التكلفة (مليار ريال)' : 'Cost (SAR Bn)'}
+            {language === 'ar' ? 'Cost (ZMW Bn)' : 'Cost (ZMW Bn)'}
           </text>
           <text
             x={15}

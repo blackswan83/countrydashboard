@@ -20,21 +20,18 @@ interface PolicyStudioProps {
   onProvincialOverride: (provinceId: string, interventionId: string, value: number) => void;
 }
 
-// Province list for overrides
+// Province list for overrides (Zambia)
 const provinces = [
-  { id: 'riyadh', name: 'Riyadh', nameAr: 'الرياض' },
-  { id: 'makkah', name: 'Makkah', nameAr: 'مكة المكرمة' },
-  { id: 'eastern', name: 'Eastern', nameAr: 'الشرقية' },
-  { id: 'madinah', name: 'Madinah', nameAr: 'المدينة المنورة' },
-  { id: 'asir', name: 'Asir', nameAr: 'عسير' },
-  { id: 'jazan', name: 'Jazan', nameAr: 'جازان' },
-  { id: 'qassim', name: 'Qassim', nameAr: 'القصيم' },
-  { id: 'tabuk', name: 'Tabuk', nameAr: 'تبوك' },
-  { id: 'hail', name: 'Hail', nameAr: 'حائل' },
-  { id: 'najran', name: 'Najran', nameAr: 'نجران' },
-  { id: 'aljawf', name: 'Al-Jawf', nameAr: 'الجوف' },
-  { id: 'northernBorders', name: 'Northern Borders', nameAr: 'الحدود الشمالية' },
-  { id: 'albahah', name: 'Al-Bahah', nameAr: 'الباحة' },
+  { id: 'lusaka', name: 'Lusaka', nameAr: 'Lusaka' },
+  { id: 'copperbelt', name: 'Copperbelt', nameAr: 'Copperbelt' },
+  { id: 'southern', name: 'Southern', nameAr: 'Southern' },
+  { id: 'eastern', name: 'Eastern', nameAr: 'Eastern' },
+  { id: 'central', name: 'Central', nameAr: 'Central' },
+  { id: 'northern', name: 'Northern', nameAr: 'Northern' },
+  { id: 'luapula', name: 'Luapula', nameAr: 'Luapula' },
+  { id: 'northwestern', name: 'North-Western', nameAr: 'North-Western' },
+  { id: 'western', name: 'Western', nameAr: 'Western' },
+  { id: 'muchinga', name: 'Muchinga', nameAr: 'Muchinga' },
 ];
 
 // Policy Card Component
@@ -117,7 +114,7 @@ const PolicyCard: React.FC<{
       <div className={`policy-cost ${isRevenue ? 'revenue' : ''}`}>
         <span className="cost-label">{isRevenue ? (language === 'ar' ? 'الإيرادات' : 'Revenue') : (language === 'ar' ? 'التكلفة' : 'Cost')}</span>
         <span className="cost-value">
-          {isRevenue ? '+' : ''}{Math.abs(costTotal).toFixed(2)} {language === 'ar' ? 'مليار ريال/سنة' : 'SAR Bn/yr'}
+          {isRevenue ? '+' : ''}{Math.abs(costTotal).toFixed(2)} {language === 'ar' ? 'ZMW Bn/yr' : 'ZMW Bn/yr'}
         </span>
       </div>
 

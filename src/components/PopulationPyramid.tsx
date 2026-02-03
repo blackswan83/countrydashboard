@@ -21,22 +21,22 @@ interface PopulationPyramidProps {
   darkMode?: boolean;
 }
 
-// Age distribution based on GASTAT Census 2022 (total 35.3M)
-// Health status based on NCD prevalence data (16.4% diabetes, 58% undiagnosed)
+// Age distribution based on Zambia CSO 2022 estimates (total 19.6M)
+// Health status based on NCD prevalence data (3.5% diabetes, HIV 11.1%)
 const ageGroups: AgeGroup[] = [
-  { label: '80+', healthy: 0.08, atRisk: 0.10, ncd: 0.12 },    // 0.3M total
-  { label: '70-79', healthy: 0.27, atRisk: 0.32, ncd: 0.31 },  // 0.9M total
-  { label: '60-69', healthy: 0.84, atRisk: 0.63, ncd: 0.63 },  // 2.1M total
-  { label: '50-59', healthy: 2.26, atRisk: 1.03, ncd: 0.82 },  // 4.1M total
-  { label: '40-49', healthy: 3.71, atRisk: 1.06, ncd: 0.53 },  // 5.3M total
-  { label: '30-39', healthy: 5.70, atRisk: 0.80, ncd: 0.20 },  // 6.7M total
-  { label: '20-29', healthy: 5.70, atRisk: 0.24, ncd: 0.06 },  // 6.0M total
-  { label: '10-19', healthy: 4.56, atRisk: 0.19, ncd: 0.05 },  // 4.8M total
-  { label: '0-9', healthy: 4.90, atRisk: 0.15, ncd: 0.05 },    // 5.1M total
+  { label: '80+', healthy: 0.04, atRisk: 0.03, ncd: 0.03 },    // 0.1M total
+  { label: '70-79', healthy: 0.12, atRisk: 0.10, ncd: 0.08 },  // 0.3M total
+  { label: '60-69', healthy: 0.28, atRisk: 0.18, ncd: 0.14 },  // 0.6M total
+  { label: '50-59', healthy: 0.70, atRisk: 0.35, ncd: 0.25 },  // 1.3M total
+  { label: '40-49', healthy: 1.20, atRisk: 0.45, ncd: 0.35 },  // 2.0M total
+  { label: '30-39', healthy: 1.80, atRisk: 0.50, ncd: 0.30 },  // 2.6M total
+  { label: '20-29', healthy: 2.40, atRisk: 0.40, ncd: 0.20 },  // 3.0M total
+  { label: '10-19', healthy: 3.20, atRisk: 0.30, ncd: 0.10 },  // 3.6M total
+  { label: '0-9', healthy: 5.50, atRisk: 0.30, ncd: 0.10 },    // 5.9M total
 ];
 
 export const PopulationPyramid: React.FC<PopulationPyramidProps> = ({ darkMode = false }) => {
-  const maxWidth = 7; // Max bar width based on largest age group (~6.7M)
+  const maxWidth = 6; // Max bar width based on largest age group (~5.9M)
   const colors = getThemeColors(darkMode);
 
   return (
@@ -44,7 +44,7 @@ export const PopulationPyramid: React.FC<PopulationPyramidProps> = ({ darkMode =
       <div className="card-header">
         <span className="card-title">Population by Age & Health Status</span>
         <span className="card-badge" style={{ background: `${colors.primary}15`, color: colors.primary }}>
-          35.3M TOTAL
+          19.6M TOTAL
         </span>
       </div>
       <div className="card-body">
@@ -121,7 +121,7 @@ export const PopulationPyramid: React.FC<PopulationPyramidProps> = ({ darkMode =
           </div>
         </div>
 
-        {/* Summary Stats - Totals: 28.0M healthy + 4.5M at risk + 2.8M NCD = 35.3M */}
+        {/* Summary Stats - Totals: 15.2M healthy + 2.6M at risk + 1.6M NCD = 19.6M */}
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(3, 1fr)',
@@ -136,7 +136,7 @@ export const PopulationPyramid: React.FC<PopulationPyramidProps> = ({ darkMode =
               Healthy Pop
             </div>
             <div style={{ fontSize: 18, fontWeight: 700, color: colors.success }}>
-              28.0M
+              15.2M
             </div>
           </div>
           <div style={{ textAlign: 'center' }}>
@@ -144,7 +144,7 @@ export const PopulationPyramid: React.FC<PopulationPyramidProps> = ({ darkMode =
               At Risk
             </div>
             <div style={{ fontSize: 18, fontWeight: 700, color: colors.warning }}>
-              4.5M
+              2.6M
             </div>
           </div>
           <div style={{ textAlign: 'center' }}>
@@ -152,7 +152,7 @@ export const PopulationPyramid: React.FC<PopulationPyramidProps> = ({ darkMode =
               NCD Diagnosed
             </div>
             <div style={{ fontSize: 18, fontWeight: 700, color: colors.danger }}>
-              2.8M
+              1.6M
             </div>
           </div>
         </div>

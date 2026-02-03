@@ -303,19 +303,16 @@ const ProvincialHeatmap: React.FC<{
   const { provincialImpacts } = simulationResult;
 
   const provinces = [
-    { id: 'riyadh', name: 'Riyadh', nameAr: 'الرياض' },
-    { id: 'makkah', name: 'Makkah', nameAr: 'مكة' },
-    { id: 'eastern', name: 'Eastern', nameAr: 'الشرقية' },
-    { id: 'madinah', name: 'Madinah', nameAr: 'المدينة' },
-    { id: 'asir', name: 'Asir', nameAr: 'عسير' },
-    { id: 'jazan', name: 'Jazan', nameAr: 'جازان' },
-    { id: 'qassim', name: 'Qassim', nameAr: 'القصيم' },
-    { id: 'tabuk', name: 'Tabuk', nameAr: 'تبوك' },
-    { id: 'hail', name: 'Hail', nameAr: 'حائل' },
-    { id: 'najran', name: 'Najran', nameAr: 'نجران' },
-    { id: 'aljawf', name: 'Al-Jawf', nameAr: 'الجوف' },
-    { id: 'northernBorders', name: 'N. Borders', nameAr: 'الحدود' },
-    { id: 'albahah', name: 'Al-Bahah', nameAr: 'الباحة' },
+    { id: 'lusaka', name: 'Lusaka', nameAr: 'Lusaka' },
+    { id: 'copperbelt', name: 'Copperbelt', nameAr: 'Copperbelt' },
+    { id: 'southern', name: 'Southern', nameAr: 'Southern' },
+    { id: 'eastern', name: 'Eastern', nameAr: 'Eastern' },
+    { id: 'central', name: 'Central', nameAr: 'Central' },
+    { id: 'northern', name: 'Northern', nameAr: 'Northern' },
+    { id: 'luapula', name: 'Luapula', nameAr: 'Luapula' },
+    { id: 'northwestern', name: 'North-Western', nameAr: 'North-Western' },
+    { id: 'western', name: 'Western', nameAr: 'Western' },
+    { id: 'muchinga', name: 'Muchinga', nameAr: 'Muchinga' },
   ];
 
   // Get color based on impact value

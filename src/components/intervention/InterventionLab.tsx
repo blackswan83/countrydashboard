@@ -28,12 +28,12 @@ interface InterventionLabProps {
 
 // Tab definitions
 const tabs: Tab[] = [
-  { id: 'command', name: 'Command Center', nameAr: 'مركز القيادة', icon: '🎯' },
-  { id: 'policy', name: 'Policy Studio', nameAr: 'استوديو السياسات', icon: '🎛️' },
-  { id: 'impact', name: 'Impact Analysis', nameAr: 'تحليل الأثر', icon: '📊' },
-  { id: 'stories', name: 'Stories', nameAr: 'قصص', icon: '👤' },
-  { id: 'challenge', name: 'Challenge Mode', nameAr: 'وضع التحدي', icon: '🏆' },
-  { id: 'analytics', name: 'Analytics', nameAr: 'التحليلات', icon: '🔬' },
+  { id: 'command', name: 'Command Center', nameAr: 'Command Center', icon: '🎯' },
+  { id: 'policy', name: 'Policy Studio', nameAr: 'Policy Studio', icon: '🎛️' },
+  { id: 'impact', name: 'Impact Analysis', nameAr: 'Impact Analysis', icon: '📊' },
+  { id: 'stories', name: 'Stories', nameAr: 'Stories', icon: '👤' },
+  { id: 'challenge', name: 'Challenge Mode', nameAr: 'Challenge Mode', icon: '🏆' },
+  { id: 'analytics', name: 'Analytics', nameAr: 'Analytics', icon: '🔬' },
 ];
 
 // Preset scenarios
@@ -80,7 +80,7 @@ const presetScenarios = {
     ehrIntegration: 90,
     medicationAccess: 90,
   },
-  vision2030: {
+  nhsp2026: {
     sugarTax: 20,
     ncdScreening: 75,
     physicalActivity: 65,
@@ -113,7 +113,7 @@ const InterventionLab: React.FC<InterventionLabProps> = ({ language, darkMode })
   const [provincialOverrides, setProvincialOverrides] = useState<Record<string, Record<string, number>>>({});
   const [timeHorizon, setTimeHorizon] = useState(15);
   const [activeScenario, setActiveScenario] = useState<string>('custom');
-  const [budget, setBudget] = useState(25); // SAR Billions per year
+  const [budget, setBudget] = useState(5); // ZMW Billions per year
 
   const isRTL = language === 'ar';
 
@@ -177,12 +177,12 @@ const InterventionLab: React.FC<InterventionLabProps> = ({ language, darkMode })
     conservative: language === 'ar' ? 'محافظ' : 'Conservative',
     moderate: language === 'ar' ? 'معتدل' : 'Moderate',
     aggressive: language === 'ar' ? 'طموح' : 'Aggressive',
-    vision2030: language === 'ar' ? 'رؤية 2030' : 'Vision 2030',
+    nhsp2026: language === 'ar' ? 'NHSP 2026' : 'NHSP 2026',
     custom: language === 'ar' ? 'مخصص' : 'Custom',
     timeHorizon: language === 'ar' ? 'الأفق الزمني' : 'Time Horizon',
     years: language === 'ar' ? 'سنوات' : 'years',
     budget: language === 'ar' ? 'الميزانية السنوية' : 'Annual Budget',
-    billion: language === 'ar' ? 'مليار ريال' : 'SAR Bn',
+    billion: language === 'ar' ? 'ZMW Bn' : 'ZMW Bn',
     budgetUsed: language === 'ar' ? 'الميزانية المستخدمة' : 'Budget Used',
     overBudget: language === 'ar' ? 'تجاوز الميزانية' : 'Over Budget',
     synergiesActive: language === 'ar' ? 'تآزرات نشطة' : 'Active Synergies',
@@ -239,7 +239,7 @@ const InterventionLab: React.FC<InterventionLabProps> = ({ language, darkMode })
           <div className="control-group">
             <label>{t.scenario}</label>
             <div className="scenario-buttons">
-              {(['baseline', 'conservative', 'moderate', 'aggressive', 'vision2030'] as const).map(scenario => (
+              {(['baseline', 'conservative', 'moderate', 'aggressive', 'nhsp2026'] as const).map(scenario => (
                 <button
                   key={scenario}
                   className={`scenario-btn ${activeScenario === scenario ? 'active' : ''}`}
@@ -277,12 +277,12 @@ const InterventionLab: React.FC<InterventionLabProps> = ({ language, darkMode })
               onChange={e => setBudget(Number(e.target.value))}
               className="budget-select"
             >
+              <option value={2}>2 {t.billion}</option>
+              <option value={3}>3 {t.billion}</option>
+              <option value={5}>5 {t.billion}</option>
+              <option value={8}>8 {t.billion}</option>
               <option value={10}>10 {t.billion}</option>
               <option value={15}>15 {t.billion}</option>
-              <option value={20}>20 {t.billion}</option>
-              <option value={25}>25 {t.billion}</option>
-              <option value={35}>35 {t.billion}</option>
-              <option value={50}>50 {t.billion}</option>
             </select>
           </div>
 

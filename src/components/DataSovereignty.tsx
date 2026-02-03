@@ -5,12 +5,12 @@ interface DarkModeProps {
   darkMode?: boolean;
 }
 
-// Provincial data nodes for the federated diagram
+// Provincial data nodes for the federated diagram (Zambia)
 const provincialNodes = [
-  { id: 'riyadh', name: 'Riyadh', twins: '8.6M' },
-  { id: 'makkah', name: 'Makkah', twins: '8.0M' },
-  { id: 'eastern', name: 'Eastern', twins: '5.1M' },
-  { id: 'other', name: '10 Others', twins: '13.6M' },
+  { id: 'lusaka', name: 'Lusaka', twins: '3.4M' },
+  { id: 'copperbelt', name: 'Copperbelt', twins: '2.6M' },
+  { id: 'southern', name: 'Southern', twins: '2.0M' },
+  { id: 'other', name: '7 Others', twins: '11.6M' },
 ];
 
 // Federated Architecture Diagram
@@ -130,7 +130,7 @@ const FederatedDiagram: React.FC<DarkModeProps> = ({ darkMode = false }) => {
         border: `1px solid ${darkMode ? 'rgba(63, 185, 80, 0.2)' : 'rgba(74, 124, 89, 0.2)'}`,
       }}>
         <span style={{ fontSize: 12, color: colors.success, fontWeight: 600 }}>
-          🛡️ Data remains in-Kingdom under Saudi sovereignty • Never extracted • Never centralized
+          🛡️ Data remains in Zambia under Zambian sovereignty • Never extracted • Never centralized
         </span>
       </div>
     </div>
@@ -143,7 +143,7 @@ const ComparisonTable: React.FC<DarkModeProps> = ({ darkMode = false }) => {
 
   const comparisons = [
     { aspect: 'Data Ownership', bigTech: 'They own your data', nuraxi: 'You own your data' },
-    { aspect: 'Data Location', bigTech: 'Centralized in their cloud', nuraxi: 'Stays in-Kingdom' },
+    { aspect: 'Data Location', bigTech: 'Centralized in their cloud', nuraxi: 'Stays in Zambia' },
     { aspect: 'Architecture', bigTech: 'Extract everything', nuraxi: 'Federated learning' },
     { aspect: 'Alignment', bigTech: 'Shareholder interests', nuraxi: 'Swiss neutrality' },
     { aspect: 'Profit Model', bigTech: 'Your information', nuraxi: 'Aggregated insights only' },
@@ -231,7 +231,7 @@ const TrustIndicators: React.FC<DarkModeProps> = ({ darkMode = false }) => {
   const colors = getThemeColors(darkMode);
 
   const indicators = [
-    'Data never leaves the Kingdom',
+    'Data never leaves Zambia',
     'Zero personal data extraction',
     'Swiss-grade privacy architecture',
     'Neutral, non-aligned governance',
@@ -295,7 +295,7 @@ export const DataSovereigntySection: React.FC<DarkModeProps> = ({ darkMode = fal
             <strong style={{ color: colors.primary }}>Like Swiss banking redefined financial privacy, Nuraxi redefines health data sovereignty.</strong>
             {' '}We sit underneath your infrastructure, not on top. We don't own your data — we never even see it.
             Only aggregated intelligence flows to our neutral Swiss vault, while every health record remains exactly
-            where it belongs: under Saudi sovereignty, free from big tech's reach.
+            where it belongs: under Zambian sovereignty, free from big tech's reach.
           </div>
         </div>
 
@@ -322,7 +322,7 @@ export const DataSovereigntySection: React.FC<DarkModeProps> = ({ darkMode = fal
             No allegiance to any power. No agenda beyond privacy. Nuraxi brings this same principle to health intelligence."
           </div>
           <div style={{ marginTop: 12, fontSize: 12, color: colors.primary, fontWeight: 600 }}>
-            Swiss Neutrality • Saudi Sovereignty
+            Swiss Neutrality • Zambian Sovereignty
           </div>
         </div>
       </div>

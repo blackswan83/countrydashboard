@@ -59,27 +59,27 @@ const challenges: Challenge[] = [
     ],
   },
   {
-    id: 'vision2030',
-    title: 'Vision 2030 Aligned',
-    titleAr: 'متوافق مع رؤية 2030',
-    description: 'Meet 3 or more Vision 2030 health KPIs within budget',
-    descriptionAr: 'تحقيق 3 أو أكثر من مؤشرات رؤية 2030 الصحية ضمن الميزانية',
+    id: 'nhsp2026',
+    title: 'NHSP 2026 Aligned',
+    titleAr: 'NHSP 2026 Aligned',
+    description: 'Meet 3 or more National Health Strategic Plan KPIs within budget',
+    descriptionAr: 'Meet 3 or more National Health Strategic Plan KPIs within budget',
     difficulty: 'intermediate',
     targetMetric: 'kpis',
     targetValue: 3,
-    budgetLimit: 15,
+    budgetLimit: 5,
     timeLimit: 5,
     icon: '🏆',
     rewards: [
-      { id: 'visionChampion', name: 'Vision Champion', nameAr: 'بطل الرؤية', icon: '🥈', description: 'Align policies with Vision 2030', descriptionAr: 'مواءمة السياسات مع رؤية 2030', tier: 'silver', points: 300 },
+      { id: 'nhspChampion', name: 'NHSP Champion', nameAr: 'NHSP Champion', icon: '🥈', description: 'Align policies with NHSP 2026', descriptionAr: 'Align policies with NHSP 2026', tier: 'silver', points: 300 },
     ],
   },
   {
     id: 'efficiencyMaster',
     title: 'Efficiency Master',
     titleAr: 'سيد الكفاءة',
-    description: 'Increase life expectancy by 5% with only 8B SAR/year budget',
-    descriptionAr: 'زيادة متوسط العمر بنسبة 5٪ بميزانية 8 مليار ريال/سنة فقط',
+    description: 'Increase life expectancy by 5% with only 3B ZMW/year budget',
+    descriptionAr: 'Increase life expectancy by 5% with only 3B ZMW/year budget',
     difficulty: 'expert',
     targetMetric: 'lifeExpectancy',
     targetValue: 5,
@@ -119,7 +119,7 @@ const challenges: Challenge[] = [
     timeLimit: 25,
     icon: '🦸',
     rewards: [
-      { id: 'longevityLegend', name: 'Longevity Legend', nameAr: 'أسطورة طول العمر', icon: '💫', description: 'Transform Saudi Arabia into a longevity leader', descriptionAr: 'تحويل المملكة إلى رائدة في طول العمر', tier: 'platinum', points: 1000 },
+      { id: 'longevityLegend', name: 'Longevity Legend', nameAr: 'Longevity Legend', icon: '💫', description: 'Transform Zambia into a longevity leader', descriptionAr: 'Transform Zambia into a longevity leader', tier: 'platinum', points: 1000 },
     ],
   },
 ];
@@ -130,7 +130,7 @@ const allAchievements: Achievement[] = [
   { id: 'explorer', name: 'Explorer', nameAr: 'مستكشف', icon: '🔍', description: 'Try all intervention categories', descriptionAr: 'جرب جميع فئات التدخل', tier: 'bronze', points: 100 },
 
   // Silver tier
-  { id: 'visionChampion', name: 'Vision Champion', nameAr: 'بطل الرؤية', icon: '🥈', description: 'Align with Vision 2030', descriptionAr: 'التوافق مع رؤية 2030', tier: 'silver', points: 300 },
+  { id: 'nhspChampion', name: 'NHSP Champion', nameAr: 'NHSP Champion', icon: '🥈', description: 'Align with NHSP 2026', descriptionAr: 'Align with NHSP 2026', tier: 'silver', points: 300 },
   { id: 'synergySeeker', name: 'Synergy Seeker', nameAr: 'باحث التآزر', icon: '✨', description: 'Activate 3+ synergies', descriptionAr: 'تفعيل 3+ تآزرات', tier: 'silver', points: 300 },
 
   // Gold tier
@@ -186,7 +186,7 @@ const ChallengeCard: React.FC<{
 
       <div className="challenge-constraints">
         <span className="constraint">
-          💰 {challenge.budgetLimit}B SAR/{language === 'ar' ? 'سنة' : 'yr'}
+          💰 {challenge.budgetLimit}B ZMW/{language === 'ar' ? 'سنة' : 'yr'}
         </span>
         <span className="constraint">
           ⏱️ {challenge.timeLimit} {language === 'ar' ? 'سنوات' : 'years'}

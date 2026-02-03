@@ -71,7 +71,7 @@ const BudgetGauge: React.FC<{ used: number; total: number; language: 'en' | 'ar'
           className="gauge-unit"
           style={{ fill: 'var(--text-secondary)', fontSize: '12px' }}
         >
-          {language === 'ar' ? 'مليار ريال' : 'SAR Bn'}
+          {language === 'ar' ? 'مليار ريال' : 'ZMW Bn'}
         </text>
         <text
           x="90"
@@ -339,14 +339,14 @@ const CommandCenter: React.FC<CommandCenterProps> = ({
             <span className="econ-icon">💰</span>
             <div className="econ-content">
               <span className="econ-label">{t.healthcareSavings}</span>
-              <span className="econ-value">{economicImpact.healthcareSavings.toFixed(1)} <small>SAR Bn</small></span>
+              <span className="econ-value">{economicImpact.healthcareSavings.toFixed(1)} <small>ZMW Bn</small></span>
             </div>
           </div>
           <div className="econ-card">
             <span className="econ-icon">📈</span>
             <div className="econ-content">
               <span className="econ-label">{language === 'ar' ? 'مكاسب الإنتاجية' : 'Productivity Gains'}</span>
-              <span className="econ-value">{economicImpact.productivityGains.toFixed(1)} <small>SAR Bn</small></span>
+              <span className="econ-value">{economicImpact.productivityGains.toFixed(1)} <small>ZMW Bn</small></span>
             </div>
           </div>
           <div className="econ-card">
@@ -361,7 +361,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({
             <div className="econ-content">
               <span className="econ-label">{language === 'ar' ? 'صافي الفائدة' : 'Net Benefit'}</span>
               <span className={`econ-value ${economicImpact.netBenefit > 0 ? 'positive' : 'negative'}`}>
-                {economicImpact.netBenefit > 0 ? '+' : ''}{economicImpact.netBenefit.toFixed(1)} <small>SAR Bn</small>
+                {economicImpact.netBenefit > 0 ? '+' : ''}{economicImpact.netBenefit.toFixed(1)} <small>ZMW Bn</small>
               </span>
             </div>
           </div>

@@ -8,8 +8,8 @@ export const HealthcareInfrastructure: React.FC = () => {
 
   // Calculate totals
   const totalHospitals = Object.values(provinces).reduce((sum, p) => sum + p.hospitals, 0);
-  const avgBeds = Object.values(provinces).reduce((sum, p) => sum + p.bedsPerCapita, 0) / 13;
-  const avgPhysicians = Object.values(provinces).reduce((sum, p) => sum + p.physicians, 0) / 13;
+  const avgBeds = Object.values(provinces).reduce((sum, p) => sum + p.bedsPerCapita, 0) / 10;
+  const avgPhysicians = Object.values(provinces).reduce((sum, p) => sum + p.physicians, 0) / 10;
 
   // Identify gaps
   const underserved = Object.values(provinces).filter(p => p.bedsPerCapita < 23);
@@ -25,7 +25,7 @@ export const HealthcareInfrastructure: React.FC = () => {
           <div className="stat-card-value" style={{ color: 'var(--accent-primary)' }}>
             {totalHospitals}
           </div>
-          <div className="stat-card-subtext">Across 13 provinces</div>
+          <div className="stat-card-subtext">Across 10 provinces</div>
         </div>
         <div className="stat-card">
           <div className="stat-card-accent" style={{ backgroundColor: 'var(--accent-secondary)' }} />
@@ -214,10 +214,10 @@ export const HealthcareInfrastructure: React.FC = () => {
                   borderRadius: 8,
                 }}>
                   <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-primary)' }}>
-                    Makkah Region
+                    Luapula Province
                   </div>
                   <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 4 }}>
-                    Needs ~4,000 additional beds to meet WHO standards for Hajj season capacity
+                    Needs additional beds to meet WHO standards for remote population access
                   </div>
                 </div>
                 <div style={{
@@ -226,7 +226,7 @@ export const HealthcareInfrastructure: React.FC = () => {
                   borderRadius: 8,
                 }}>
                   <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-primary)' }}>
-                    Jazan Region
+                    Northern Province
                   </div>
                   <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 4 }}>
                     Lowest beds per capita - priority for specialist center development
@@ -241,7 +241,7 @@ export const HealthcareInfrastructure: React.FC = () => {
                     Primary Care Expansion
                   </div>
                   <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 4 }}>
-                    Digital health centers needed in rural areas of Riyadh, Makkah
+                    Digital health centers needed in rural areas of Western, Muchinga
                   </div>
                 </div>
               </div>
@@ -250,15 +250,15 @@ export const HealthcareInfrastructure: React.FC = () => {
 
           <div className="card">
             <div className="card-header">
-              <span className="card-title">Vision 2030 Healthcare Goals</span>
+              <span className="card-title">NHSP 2022-2026 Healthcare Goals</span>
             </div>
             <div className="card-body" style={{ fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.6 }}>
               <ul style={{ margin: 0, paddingLeft: 16 }}>
-                <li>Increase private sector contribution to 35%</li>
-                <li>100% EHR adoption across all facilities</li>
-                <li>Achieve 30 beds per 10,000 population nationally</li>
-                <li>Reduce emergency room waiting times by 50%</li>
-                <li>Establish 5 medical cities across regions</li>
+                <li>Increase healthcare coverage to 80% of population</li>
+                <li>Strengthen health information systems nationally</li>
+                <li>Achieve 20 beds per 10,000 population nationally</li>
+                <li>Reduce maternal and child mortality by 30%</li>
+                <li>Establish district hospitals in underserved areas</li>
               </ul>
             </div>
           </div>

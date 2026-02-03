@@ -60,7 +60,7 @@ export interface PolicyIntervention {
   step: number;
 
   // Cost modeling
-  costPerUnit: number; // SAR Billions - negative means revenue
+  costPerUnit: number; // ZMW Billions - negative means revenue
   scalingFunction: 'linear' | 'logarithmic' | 'sigmoid';
 
   // Dependencies
@@ -855,34 +855,31 @@ export const interventions: PolicyIntervention[] = [
   },
 ];
 
-// Baseline national health statistics
+// Baseline national health statistics (Zambia)
 export const baselineStats = {
-  diabetesPrevalence: 16.4,
-  obesityRate: 30.5,
-  cvdPrevalence: 8.2,
-  hypertensionPrevalence: 15.2,
-  lifeExpectancy: 78.8,
-  healthyLifeExpectancy: 65,
-  healthcareCostsBn: 125,
-  productivityLossBn: 45,
-  population: 35.3,
+  diabetesPrevalence: 3.5,
+  obesityRate: 8.5,
+  cvdPrevalence: 5.8,
+  hypertensionPrevalence: 12.8,
+  lifeExpectancy: 64,
+  healthyLifeExpectancy: 55,
+  healthcareCostsBn: 4, // ZMW Billions
+  productivityLossBn: 1.5, // ZMW Billions
+  population: 19.6,
 };
 
-// Provincial intervention effectiveness multipliers
+// Provincial intervention effectiveness multipliers (Zambia)
 export const provincialMultipliers: Record<string, Record<string, number>> = {
-  riyadh: { urban: 1.1, digital: 1.2, screening: 1.0 },
-  makkah: { urban: 1.0, digital: 1.1, screening: 0.95 },
-  eastern: { urban: 1.05, digital: 1.15, screening: 1.0 },
-  madinah: { urban: 0.95, digital: 1.0, screening: 1.0 },
-  asir: { urban: 0.85, digital: 0.9, screening: 1.1 },
-  jazan: { urban: 0.75, digital: 0.8, screening: 1.2 },
-  qassim: { urban: 0.9, digital: 0.95, screening: 1.05 },
-  tabuk: { urban: 0.8, digital: 0.85, screening: 1.1 },
-  hail: { urban: 0.85, digital: 0.9, screening: 1.1 },
-  najran: { urban: 0.75, digital: 0.8, screening: 1.15 },
-  aljawf: { urban: 0.8, digital: 0.85, screening: 1.1 },
-  northernBorders: { urban: 0.7, digital: 0.75, screening: 1.2 },
-  albahah: { urban: 0.8, digital: 0.85, screening: 1.1 },
+  lusaka: { urban: 1.15, digital: 1.25, screening: 1.0 },
+  copperbelt: { urban: 1.1, digital: 1.2, screening: 1.0 },
+  southern: { urban: 0.95, digital: 1.0, screening: 1.05 },
+  eastern: { urban: 0.8, digital: 0.85, screening: 1.15 },
+  central: { urban: 0.9, digital: 0.95, screening: 1.05 },
+  northern: { urban: 0.75, digital: 0.8, screening: 1.2 },
+  luapula: { urban: 0.7, digital: 0.75, screening: 1.25 },
+  northwestern: { urban: 0.8, digital: 0.85, screening: 1.15 },
+  western: { urban: 0.75, digital: 0.8, screening: 1.2 },
+  muchinga: { urban: 0.7, digital: 0.75, screening: 1.2 },
 };
 
 // Get intervention by ID
