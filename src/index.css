@@ -544,123 +544,144 @@ body {
 }
 
 .dark-mode .stat-card {
-  background: var(--bg-card);
-  border-color: var(--border-color);
+  background: #1E252C !important;
+  border-color: rgba(228, 232, 236, 0.12) !important;
 }
 
 .dark-mode .card {
-  background: var(--bg-card);
-  border-color: var(--border-color);
+  background: #1E252C !important;
+  border-color: rgba(228, 232, 236, 0.12) !important;
 }
 
 .dark-mode .card-header {
-  background: var(--bg-tertiary);
-  border-bottom-color: var(--border-color);
+  background: #222930 !important;
+  border-bottom-color: rgba(228, 232, 236, 0.12) !important;
+}
+
+.dark-mode .card-body {
+  background: #1E252C !important;
 }
 
 .dark-mode .footer {
-  background: var(--bg-card);
-  border-top-color: var(--border-color);
+  background: #1E252C !important;
+  border-top-color: rgba(228, 232, 236, 0.12) !important;
 }
 
 .dark-mode .metric-item {
-  background: var(--bg-tertiary);
-  border-color: var(--border-color);
+  background: #222930 !important;
+  border-color: rgba(228, 232, 236, 0.12) !important;
 }
 
-.dark-mode .map-legend {
-  background: var(--bg-card);
-  border-color: var(--border-color);
-}
-
-.dark-mode .province-panel {
-  background: var(--bg-card);
-  border-color: var(--border-color);
-}
-
-.dark-mode .data-table th {
-  background: var(--bg-tertiary);
-}
-
-.dark-mode .data-table th:hover {
-  background: var(--bg-secondary);
-}
-
-.dark-mode .data-table td {
-  border-bottom-color: var(--border-color);
-}
-
-.dark-mode .data-table tr:hover {
-  background: var(--bg-tertiary);
-}
-
-.dark-mode .data-table tr.selected {
-  background: rgba(196, 167, 125, 0.15);
+.dark-mode .kpi-item {
+  background: #222930;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 8px;
 }
 
 .dark-mode .kpi-progress {
-  background: var(--bg-tertiary);
+  background: #151A1E !important;
+}
+
+.dark-mode .province-panel {
+  background: #1E252C !important;
+  border-color: rgba(228, 232, 236, 0.12) !important;
+}
+
+.dark-mode .province-panel-header {
+  background: #222930 !important;
+}
+
+.dark-mode .map-legend {
+  background: #1E252C !important;
+  border-color: rgba(228, 232, 236, 0.12) !important;
+}
+
+.dark-mode .data-table {
+  background: #1E252C !important;
+}
+
+.dark-mode .data-table th {
+  background: #222930 !important;
+  color: #A0AAB4;
+}
+
+.dark-mode .data-table th:hover {
+  background: #1A2027 !important;
+}
+
+.dark-mode .data-table td {
+  border-bottom-color: rgba(228, 232, 236, 0.08) !important;
+  color: #E4E8EC;
+}
+
+.dark-mode .data-table tr:hover {
+  background: #222930 !important;
+}
+
+.dark-mode .data-table tr.selected {
+  background: rgba(212, 184, 150, 0.15) !important;
 }
 
 .dark-mode .header-tag.sovereign-prominent {
-  background: linear-gradient(135deg, rgba(74, 124, 89, 0.25) 0%, rgba(74, 124, 89, 0.1) 100%);
-  border-color: rgba(74, 124, 89, 0.4);
+  background: linear-gradient(135deg, rgba(90, 175, 106, 0.2) 0%, rgba(90, 175, 106, 0.08) 100%) !important;
+  border-color: rgba(90, 175, 106, 0.35) !important;
 }
 
 .dark-mode .header-tag.toggle-btn {
-  background: var(--bg-tertiary);
-  border-color: var(--border-color);
+  background: #222930 !important;
+  border-color: rgba(228, 232, 236, 0.12) !important;
 }
 
 .dark-mode .header-tag.toggle-btn:hover {
-  background: var(--bg-secondary);
+  background: #1A2027 !important;
 }
 
 .dark-mode .leaflet-container {
-  background: var(--bg-tertiary);
+  background: #222930 !important;
 }
 
 .dark-mode .leaflet-popup-content-wrapper {
-  background: var(--bg-card);
+  background: #1E252C !important;
   border-radius: 8px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
 .dark-mode .leaflet-popup-tip {
-  background: var(--bg-card);
+  background: #1E252C !important;
 }
 
 .dark-mode .leaflet-popup-content {
-  color: var(--text-primary);
+  color: #E4E8EC !important;
 }
 
 /* Dark mode leaflet controls */
 .dark-mode .leaflet-control-zoom {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
+  background: #1E252C !important;
+  border: 1px solid rgba(228, 232, 236, 0.12) !important;
   border-radius: 8px;
   overflow: hidden;
 }
 
 .dark-mode .leaflet-control-zoom a {
-  background: var(--bg-card);
-  color: var(--text-primary);
-  border-bottom-color: var(--border-color);
+  background: #1E252C !important;
+  color: #E4E8EC !important;
+  border-bottom-color: rgba(228, 232, 236, 0.12) !important;
 }
 
 .dark-mode .leaflet-control-zoom a:hover {
-  background: var(--bg-tertiary);
-  color: var(--nuraxi-gold);
+  background: #222930 !important;
+  color: #D4B896 !important;
 }
 
 .dark-mode .leaflet-control-attribution {
-  background: rgba(30, 37, 44, 0.9);
-  color: var(--text-muted);
+  background: rgba(30, 37, 44, 0.95) !important;
+  color: #707A84 !important;
   border-radius: 4px;
 }
 
 .dark-mode .leaflet-control-attribution a {
-  color: var(--text-secondary);
+  color: #A0AAB4 !important;
 }
 
 /* Popup close button */
