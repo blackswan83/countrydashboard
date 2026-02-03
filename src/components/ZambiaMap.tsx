@@ -86,8 +86,14 @@ export const ZambiaMap: React.FC<ZambiaMapProps> = ({
           maxBounds={[[-18, 22], [-8, 33.5]]}
         >
           <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution={darkMode
+              ? '&copy; <a href="https://carto.com/">CARTO</a>'
+              : '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }
+            url={darkMode
+              ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+              : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+            }
           />
 
           <MapClickHandler onMapClick={() => onProvinceSelect(null)} />
@@ -105,10 +111,10 @@ export const ZambiaMap: React.FC<ZambiaMapProps> = ({
                 center={[province.coordinates[1], province.coordinates[0]]}
                 radius={isSelected ? radius + 5 : isHovered ? radius + 3 : radius}
                 pathOptions={{
-                  color: isSelected ? '#3D3D3D' : color,
+                  color: isSelected ? (darkMode ? '#E4E8EC' : '#3D3D3D') : (darkMode ? '#E4E8EC' : color),
                   fillColor: color,
-                  fillOpacity: isSelected ? 0.9 : isHovered ? 0.8 : 0.6,
-                  weight: isSelected ? 3 : isHovered ? 2 : 1,
+                  fillOpacity: isSelected ? 0.9 : isHovered ? 0.85 : 0.75,
+                  weight: isSelected ? 3 : isHovered ? 2 : 1.5,
                 }}
                 eventHandlers={{
                   click: (e) => {

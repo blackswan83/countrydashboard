@@ -449,59 +449,59 @@ body {
 .dark-mode {
   color-scheme: dark;
 
-  /* Background Colors - Layered depth */
-  --bg-primary: #0D1117;
-  --bg-secondary: #161B22;
-  --bg-tertiary: #21262D;
-  --bg-card: #1C2128;
-  --bg-elevated: #2D333B;
+  /* Background Colors - Warm, layered depth */
+  --bg-primary: #151A1E;
+  --bg-secondary: #1A2027;
+  --bg-tertiary: #222930;
+  --bg-card: #1E252C;
+  --bg-elevated: #2A333B;
 
-  /* Text Colors - High contrast hierarchy */
-  --text-primary: #F0F6FC;
-  --text-secondary: #8B949E;
-  --text-muted: #6E7681;
+  /* Text Colors - Soft, warm contrast (not harsh white) */
+  --text-primary: #E4E8EC;
+  --text-secondary: #A0AAB4;
+  --text-muted: #707A84;
 
-  /* Border */
-  --border-color: rgba(240, 246, 252, 0.1);
-  --border-color-light: rgba(240, 246, 252, 0.05);
+  /* Border - Subtle warm tone */
+  --border-color: rgba(228, 232, 236, 0.12);
+  --border-color-light: rgba(228, 232, 236, 0.06);
 
-  /* Nuraxi Brand - brighter gold for dark */
+  /* Nuraxi Brand - Warm gold for dark */
   --nuraxi-primary: #D4B896;
-  --nuraxi-accent: #E8CCA8;
+  --nuraxi-accent: #E2C9A8;
   --nuraxi-gold: #D4B896;
 
-  /* Shadows - Darker for depth */
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.6);
+  /* Shadows - Softer for depth */
+  --shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.45);
 
-  /* Semantic Colors - Vibrant but not harsh */
+  /* Semantic Colors - Softer, muted tones */
   --accent-primary: #D4B896;
-  --accent-success: #3FB950;
-  --accent-danger: #F85149;
-  --accent-warning: #D29922;
-  --accent-secondary: #39D0D6;
-  --accent-info: #58A6FF;
+  --accent-success: #5AAF6A;
+  --accent-danger: #E57373;
+  --accent-warning: #DCAA48;
+  --accent-secondary: #4DD0D8;
+  --accent-info: #6BB5F8;
 
   /* Dim Accent Colors (for backgrounds) */
-  --accent-success-dim: rgba(63, 185, 80, 0.15);
-  --accent-danger-dim: rgba(248, 81, 73, 0.15);
-  --accent-warning-dim: rgba(210, 153, 34, 0.15);
-  --accent-info-dim: rgba(88, 166, 255, 0.15);
+  --accent-success-dim: rgba(90, 175, 106, 0.12);
+  --accent-danger-dim: rgba(229, 115, 115, 0.12);
+  --accent-warning-dim: rgba(220, 170, 72, 0.12);
+  --accent-info-dim: rgba(107, 181, 248, 0.12);
 
-  /* Chart Colors - Distinct and visible */
-  --chart-bg: #21262D;
-  --chart-text: #8B949E;
-  --chart-grid: rgba(240, 246, 252, 0.1);
-  --chart-line-1: #58A6FF;
-  --chart-line-2: #3FB950;
-  --chart-line-3: #F85149;
-  --chart-line-4: #D29922;
-  --chart-line-5: #A371F7;
-  --chart-line-danger: #F85149;
-  --chart-line-success: #3FB950;
-  --chart-line-info: #58A6FF;
-  --chart-line-warning: #D29922;
+  /* Chart Colors - Softer but distinct */
+  --chart-bg: #222930;
+  --chart-text: #A0AAB4;
+  --chart-grid: rgba(228, 232, 236, 0.08);
+  --chart-line-1: #6BB5F8;
+  --chart-line-2: #5AAF6A;
+  --chart-line-3: #E57373;
+  --chart-line-4: #DCAA48;
+  --chart-line-5: #B088F9;
+  --chart-line-danger: #E57373;
+  --chart-line-success: #5AAF6A;
+  --chart-line-info: #6BB5F8;
+  --chart-line-warning: #DCAA48;
 }
 
 .dark-mode body {
@@ -622,6 +622,8 @@ body {
 
 .dark-mode .leaflet-popup-content-wrapper {
   background: var(--bg-card);
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
 .dark-mode .leaflet-popup-tip {
@@ -629,6 +631,44 @@ body {
 }
 
 .dark-mode .leaflet-popup-content {
+  color: var(--text-primary);
+}
+
+/* Dark mode leaflet controls */
+.dark-mode .leaflet-control-zoom {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.dark-mode .leaflet-control-zoom a {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border-bottom-color: var(--border-color);
+}
+
+.dark-mode .leaflet-control-zoom a:hover {
+  background: var(--bg-tertiary);
+  color: var(--nuraxi-gold);
+}
+
+.dark-mode .leaflet-control-attribution {
+  background: rgba(30, 37, 44, 0.9);
+  color: var(--text-muted);
+  border-radius: 4px;
+}
+
+.dark-mode .leaflet-control-attribution a {
+  color: var(--text-secondary);
+}
+
+/* Popup close button */
+.dark-mode .leaflet-popup-close-button {
+  color: var(--text-secondary);
+}
+
+.dark-mode .leaflet-popup-close-button:hover {
   color: var(--text-primary);
 }
 
